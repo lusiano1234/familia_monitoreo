@@ -1,9 +1,8 @@
-# Tareas de Implementación - Generación de Token
+# Tareas de Implementación - Entrada Manual de Token
 
-- [x] Generar y guardar token en `ConsentActivity.kt`
-- [x] Actualizar layout `activity_status.xml` para mostrar el token
-- [x] Implementar visualización y copia en `StatusActivity.kt`
+- [x] Modificar `activity_consent.xml` para incluir campo de entrada de token
+- [x] Actualizar `ConsentActivity.kt` para capturar y validar el token manual
+- [x] Asegurar que `StatusActivity.kt` muestre el token ingresado
 - [x] Verificación
-    - [x] Compilar y desplegar
-    - [x] Verificar generación de token tras consentimiento
-    - [x] Verificar visualización en pantalla de estado
+    - [x] Desplegar y probar el flujo de ingreso de token
+    - [x] Confirmar que el token se guarda y muestra correctamente

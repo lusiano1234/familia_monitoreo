@@ -1,37 +1,39 @@
-# Plan de Implementación: Generación de Token de Dispositivo
+# Plan de Implementación: Entrada de Token desde el Sitio Web
 
-Este plan aborda la falta de un token de identificación para el backend. Implementaremos una lógica para generar un identificador único (UUID) la primera vez que se otorga el consentimiento y lo mostraremos en la pantalla de estado.
+Este plan modifica la lógica de identificación para que el usuario ingrese manualmente el token proporcionado por el sitio web, en lugar de generar uno aleatorio en el dispositivo.
 
 ## Problemas Identificados
-- El backend requiere un token en los encabezados de autorización.
-- La aplicación móvil intenta leer `device_token` de `SharedPreferences` ("device"), pero este valor nunca se genera ni se guarda.
+- El flujo actual genera un token en el móvil, pero el usuario necesita ingresar un token que ya tiene del sitio web.
+- No hay campo de entrada en la interfaz para este propósito.
 
 ## Cambios Propuestos
 
-### 1. Generación de Token en `ConsentActivity`
-Generaremos un UUID aleatorio cuando el usuario presione el botón de "Continuar" después de aceptar los términos.
+### 1. Interfaz de Consentimiento y Configuración
+Añadiremos un campo de texto para que el usuario pegue o escriba el token del sitio web.
+
+#### [MODIFY] [activity_consent.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_consent.xml)
+- Añadir un `EditText` con un hint claro (ej. "Ingresa el token del sitio web").
+- Añadir un `TextView` instructivo.
 
 #### [MODIFY] [ConsentActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/ConsentActivity.kt)
-- Añadir lógica para generar un UUID.
-- Guardarlo en `getSharedPreferences("device", MODE_PRIVATE)`.
+- Validar que el campo del token no esté vacío antes de habilitar el botón "Continuar".
+- Guardar el valor ingresado por el usuario en `SharedPreferences` ("device_token").
 
-### 2. Visualización en `StatusActivity`
-Mostraremos el token generado en la pantalla de estado para que el usuario pueda copiarlo o verificarlo si el backend lo solicita manualmente durante el registro.
-
-#### [MODIFY] [activity_status.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_status.xml)
-- Añadir un `TextView` para mostrar el token.
-- Añadir un botón opcional para copiar el token al portapapeles.
+### 2. Pantalla de Estado
+Mantendremos la visualización del token para que el usuario pueda confirmar cuál ingresó.
 
 #### [MODIFY] [StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)
-- Leer el `device_token` y mostrarlo en el nuevo `TextView`.
-- Implementar la funcionalidad de copiar al portapapeles.
+- (Opcional) Permitir la edición del token si el usuario se equivocó al ingresarlo inicialmente. Por ahora, nos centraremos en mostrarlo correctamente.
 
 ## Plan de Verificación
 
 ### Pruebas Automatizadas
-- N/A (Cambios principalmente de UI y lógica simple de SharedPreferences).
+- N/A.
 
 ### Verificación Manual
-1. Abrir la app y aceptar el consentimiento.
-2. Verificar en el Logcat que `AlertUploader` ahora usa un UUID en lugar de "TOKEN_DE_PRUEBA".
-3. Navegar a la pantalla de estado y confirmar que el token es visible y se puede copiar.
+1. Abrir la app en la pantalla de consentimiento.
+2. Verificar que el botón "Continuar" esté deshabilitado si el token está vacío.
+3. Ingresar un token de prueba (ej: "TOKEN-WEB-123").
+4. Aceptar el consentimiento y continuar.
+5. Verificar en `StatusActivity` que se muestra "TOKEN-WEB-123".
+6. Verificar en el Logcat que las alertas (si se disparan) usan el nuevo token.

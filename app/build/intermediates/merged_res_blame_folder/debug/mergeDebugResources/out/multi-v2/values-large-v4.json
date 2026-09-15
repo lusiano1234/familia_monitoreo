@@ -1,8 +1,25 @@
 {
     "logs": [
         {
-            "outputFile": "com.familia.monitor.app-mergeDebugResources-21:/values-large-v4/values-large-v4.xml",
+            "outputFile": "com.familia.monitor.app-mergeDebugResources-29:/values-large-v4/values-large-v4.xml",
             "map": [
+                {
+                    "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\caches\\9.3.0\\transforms\\a830005bea064a70f9c1c680ed75d01c\\workspace\\transformed\\material-1.12.0\\res\\values-large-v4\\values-large-v4.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,169,285,407",
+                        "endColumns": "113,115,121,133",
+                        "endOffsets": "164,280,402,536"
+                    },
+                    "to": {
+                        "startLines": "11,12,13,14",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "752,866,982,1104",
+                        "endColumns": "113,115,121,133",
+                        "endOffsets": "861,977,1099,1233"
+                    }
+                },
                 {
                     "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\caches\\9.3.0\\transforms\\c2e4ba7fa86fb8af0bc722c3c4b388f8\\workspace\\transformed\\appcompat-1.7.0\\res\\values-large-v4\\values-large-v4.xml",
                     "from": {

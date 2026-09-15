@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.provider.Settings
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import java.util.UUID
+import androidx.core.widget.doAfterTextChanged
 
 /**
  * Esta pantalla es OBLIGATORIA y bloqueante: nada se activa hasta que
@@ -43,20 +44,27 @@ class ConsentActivity : AppCompatActivity() {
             Monitoreo Familiar.
         """.trimIndent()
 
+        val etToken = findViewById<EditText>(R.id.et_token)
         val checkbox = findViewById<CheckBox>(R.id.cb_consent)
         val btnContinue = findViewById<Button>(R.id.btn_continue)
         btnContinue.isEnabled = false
 
-        checkbox.setOnCheckedChangeListener { _, isChecked ->
-            btnContinue.isEnabled = isChecked
+        fun updateButtonState() {
+            val hasToken = etToken.text.toString().trim().isNotEmpty()
+            val hasConsent = checkbox.isChecked
+            btnContinue.isEnabled = hasToken && hasConsent
         }
 
+        etToken.doAfterTextChanged { updateButtonState() }
+        checkbox.setOnCheckedChangeListener { _, _ -> updateButtonState() }
+
         btnContinue.setOnClickListener {
-            // Generar y guardar un token único para el dispositivo
-            val deviceToken = UUID.randomUUID().toString()
+            val typedToken = etToken.text.toString().trim()
+            
+            // Guardar el token ingresado por el usuario
             getSharedPreferences("device", MODE_PRIVATE)
                 .edit()
-                .putString("device_token", deviceToken)
+                .putString("device_token", typedToken)
                 .apply()
 
             getSharedPreferences("consent", MODE_PRIVATE)
