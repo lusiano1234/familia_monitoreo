@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Monitoreo Familiar - Panel</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 780px; margin: 40px auto; padding: 0 16px; color: #1a1a1a; }
+  h1 { font-size: 1.4rem; }
+  .card { border: 1px solid #ddd; border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+  .level-high { border-left: 5px solid #d33; }
+  .level-medium { border-left: 5px solid #e0a300; }
+  .level-low { border-left: 5px solid #888; }
+  .meta { color: #666; font-size: 0.85rem; margin-top: 6px; }
+  input, button { font-size: 1rem; padding: 8px; }
+  #login { display: flex; gap: 8px; margin-bottom: 24px; }
+  #devices { margin-top: 40px; }
+  code { background: #f2f2f2; padding: 2px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+  <h1>Panel de Monitoreo Familiar</h1>
+
+  <div id="login">
+    <input id="password" type="password" placeholder="Contraseña del panel" />
+    <button onclick="load()">Entrar</button>
+  </div>
+
+  <div id="content" style="display:none">
+    <h2>Alertas recientes</h2>
+    <div id="alerts">Cargando...</div>
+
+    <div id="devices">
+      <h2>Dispositivos</h2>
+      <div id="deviceList"></div>
+      <input id="deviceLabel" placeholder="Nombre del dispositivo (ej: celular de Juli)" />
+      <button onclick="createDevice()">Generar token nuevo</button>
+      <p class="meta">Ese token va en la app Android, en Ajustes → Token de dispositivo.</p>
+    </div>
+  </div>
+
+<script>
+function getPassword() { return document.getElementById('password').value; }
+
+async function load() {
+  const password = getPassword();
+  const res = await fetch('/api/alerts?limit=100', {
+    headers: { Authorization: 'Bearer ' + password }
+  });
+  if (!res.ok) { alert('Contraseña incorrecta'); return; }
+  document.getElementById('content').style.display = 'block';
+  const alerts = await res.json();
+  const el = document.getElementById('alerts');
+  if (alerts.length === 0) { el.innerHTML = '<p>No hay alertas todavía.</p>'; }
+  else {
+    el.innerHTML = alerts.map(a => `
+      <div class="card level-${(a.level || '').toLowerCase()}">
+        <strong>${a.category}</strong> (${a.level}) — ${a.source_app}
+        <div>"${escapeHtml(a.fragment)}"</div>
+        <div class="meta">${a.device_label || 'dispositivo sin nombre'} · ${new Date(a.received_at).toLocaleString()}</div>
+      </div>
+    `).join('');
+  }
+  loadDevices();
+}
+
+async function loadDevices() {
+  const res = await fetch('/api/devices', { headers: { Authorization: 'Bearer ' + getPassword() } });
+  const devices = await res.json();
+  document.getElementById('deviceList').innerHTML = devices.map(d => `
+    <div class="card">
+      ${d.label || '(sin nombre)'} — token: <code>${d.device_token}</code>
+    </div>
+  `).join('') || '<p>No hay dispositivos registrados.</p>';
+}
+
+async function createDevice() {
+  const label = document.getElementById('deviceLabel').value;
+  const res = await fetch('/api/devices', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getPassword() },
+    body: JSON.stringify({ label })
+  });
+  const data = await res.json();
+  alert('Token generado: ' + data.deviceToken + '\n\nCopialo en la app Android.');
+  loadDevices();
+}
+
+function escapeHtml(s) {
+  return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+</script>
+</body>
+</html>
