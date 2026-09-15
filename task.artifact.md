@@ -1,17 +1,9 @@
-# Tareas de Corrección - Family Monitor
+# Tareas de Implementación - Generación de Token
 
-- [x] Corregir estructura de Gradle
-    - [x] Crear `build.gradle` en la raíz
-    - [x] Mover y corregir `settings.gradle` a la raíz
-    - [x] Actualizar `app/build.gradle`
-    - [x] Crear `gradle.properties` con soporte para AndroidX
-- [x] Corregir errores de recursos
-    - [x] Actualizar `AndroidManifest.xml` (eliminar referencia a ícono faltante)
-- [x] Mejorar diagnóstico y compatibilidad
-    - [x] Añadir logs en `AlertUploader.kt`
-    - [x] Actualizar versiones de Kotlin y AGP para compatibilidad
-- [x] Verificación y Despliegue
-    - [x] Sincronizar proyecto
-    - [x] Compilar APK (`assembleDebug`)
-    - [x] Desplegar en dispositivo conectado (Samsung SM-A556E)
-
+- [x] Generar y guardar token en `ConsentActivity.kt`
+- [x] Actualizar layout `activity_status.xml` para mostrar el token
+- [x] Implementar visualización y copia en `StatusActivity.kt`
+- [x] Verificación
+    - [x] Compilar y desplegar
+    - [x] Verificar generación de token tras consentimiento
+    - [x] Verificar visualización en pantalla de estado

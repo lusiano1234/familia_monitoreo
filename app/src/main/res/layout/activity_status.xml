@@ -19,6 +19,33 @@
         android:layout_height="wrap_content"
         android:textSize="16sp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Token del dispositivo:"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp" />
+
+    <TextView
+        android:id="@+id/tv_token"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#555555"
+        android:padding="8dp"
+        android:background="#EEEEEE"
+        android:layout_marginTop="4dp"
+        android:fontFamily="monospace"
+        android:text="No generado" />
+
+    <Button
+        android:id="@+id/btn_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?attr/borderlessButtonStyle"
+        android:text="Copiar Token"
+        android:textSize="12sp" />
+
     <Button
         android:id="@+id/btn_disable"
         android:layout_width="match_parent"

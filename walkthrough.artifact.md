@@ -1,34 +1,26 @@
-# Walkthrough - Correcciones Realizadas
+# Walkthrough - Generación de Token de Dispositivo
 
-Se han aplicado las correcciones necesarias para que el proyecto sea reconocible por Android Studio y pueda compilarse.
+Se ha implementado la lógica para generar, guardar y mostrar un token único de dispositivo, permitiendo la autenticación con el backend.
 
 ## Cambios Realizados
 
-### Configuración de Gradle
-*   **[settings.gradle](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/settings.gradle)**: Creado en la raíz del proyecto para definir el nombre del proyecto e incluir el módulo `:app`.
-*   **[build.gradle](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/build.gradle)**: Creado en la raíz para gestionar las versiones de los plugins de Android y Kotlin. Actualizado a Kotlin 1.9.24 y AGP 8.4.2 para mayor estabilidad.
-*   **[gradle.properties](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/gradle.properties)**: Creado con `android.useAndroidX=true` para habilitar el soporte de bibliotecas AndroidX, necesario para las dependencias actuales.
-*   **[app/build.gradle](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/build.gradle)**: Actualizado para integrarse con la configuración de raíz y añadir configuraciones estándar de Android.
+### Generación de Identidad
+*   **[ConsentActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/ConsentActivity.kt)**: Al momento de aceptar el consentimiento, la app genera un UUID aleatorio y lo guarda en `SharedPreferences` bajo la clave `device_token`.
 
+### Interfaz de Usuario
+*   **[activity_status.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_status.xml)**: Se añadió una sección de "Token del dispositivo" que muestra el identificador en un formato legible (monospace) y un botón para copiarlo.
+*   **[StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)**: Se programó la lógica para leer el token guardado y copiarlo al portapapeles del sistema al presionar el botón.
 
-### Manifiesto y Recursos
-*   **[AndroidManifest.xml](file:///C:/Users/LENOVO SERIES PRO/Downloads/family-monitor/family-monitor/android/app/src/main/AndroidManifest.xml)**: Se eliminó la referencia a `android:icon="@mipmap/ic_launcher"` ya que el recurso no existe, lo cual causaba un error de compilación. Android usará un ícono predeterminado por ahora.
+## Verificación
 
-### Diagnóstico
-*   **[AlertUploader.kt](file:///C:/Users/LENOVO SERIES PRO/Downloads/family-monitor/family-monitor/android/app/src/main/java/com/familia/monitor/AlertUploader.kt)**: Se añadieron logs mediante `Log.d` y `Log.e`. También se añadió un token de prueba temporal para que puedas ver los intentos de envío en el Logcat sin necesidad de configurar un token real de inmediato.
+1.  **Despliegue**: La aplicación se compiló y desplegó correctamente en el dispositivo Samsung.
+2.  **Visualización**: La pantalla de estado ahora muestra el token generado automáticamente.
+3.  **Captura de Pantalla**:
+![Token generado y visible en la pantalla de estado](/C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/build/tmp/screenshot.png)
 
-## Próximos Pasos Recomendados
-
-1.  **Sincronización Exitosa**: El proyecto se sincronizó correctamente con Gradle.
-2.  **Compilación y Despliegue**: Se generó el APK de depuración y se instaló en el dispositivo conectado (**Samsung SM-A556E**).
-3.  **Ejecución Inicial**: La aplicación se inició automáticamente y se encuentra en la pantalla de **Consentimiento Obligatorio**.
-
-## Próximos Pasos Recomendados
-
-1.  **Aceptar el Consentimiento**: En el dispositivo, marca el checkbox y presiona el botón para activar el servicio.
-2.  **Configurar Backend**: Actualiza la variable `BASE_URL` en `AlertUploader.kt` con tu dirección de servidor real.
-3.  **Añadir Íconos**: Deberías crear los recursos `mipmap` para el ícono de la aplicación si deseas que tenga una imagen personalizada.
-
+> [!IMPORTANT]
+> **Tu Token de Dispositivo actual es:** `c37bae76-784e-4329-8038-750f15bea185`.
+> Debes usar este identificador en tu backend para vincular los reportes de este móvil.
 
 > [!TIP]
-> Puedes filtrar el Logcat por la etiqueta `AlertUploader` para ver cuándo el motor de riesgo detecta un mensaje sospechoso e intenta subirlo.
+> Puedes usar el botón **"COPIAR TOKEN"** dentro de la app para obtenerlo fácilmente.

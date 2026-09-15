@@ -1,10 +1,14 @@
 [
     {
-        "merged": "com.familia.monitor.app-debug-23:/layout_activity_consent.xml.flat",
-        "source": "com.familia.monitor.app-main-25:/layout/activity_consent.xml"
+        "merged": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\daemon\\9.3.0\\com.familia.monitor.app-debug-23:\\layout_activity_consent.xml.flat",
+        "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\daemon\\9.3.0\\com.familia.monitor.app-main-25:\\layout\\activity_consent.xml"
     },
     {
         "merged": "com.familia.monitor.app-debug-23:/layout_activity_status.xml.flat",
         "source": "com.familia.monitor.app-main-25:/layout/activity_status.xml"
+    },
+    {
+        "merged": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\daemon\\9.3.0\\com.familia.monitor.app-debug-23:\\layout_activity_status.xml.flat",
+        "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\daemon\\9.3.0\\com.familia.monitor.app-main-25:\\layout\\activity_status.xml"
     }
 ]

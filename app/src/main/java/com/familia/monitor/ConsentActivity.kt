@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import java.util.UUID
 
 /**
  * Esta pantalla es OBLIGATORIA y bloqueante: nada se activa hasta que
@@ -51,6 +52,13 @@ class ConsentActivity : AppCompatActivity() {
         }
 
         btnContinue.setOnClickListener {
+            // Generar y guardar un token único para el dispositivo
+            val deviceToken = UUID.randomUUID().toString()
+            getSharedPreferences("device", MODE_PRIVATE)
+                .edit()
+                .putString("device_token", deviceToken)
+                .apply()
+
             getSharedPreferences("consent", MODE_PRIVATE)
                 .edit()
                 .putBoolean("consent_given", true)

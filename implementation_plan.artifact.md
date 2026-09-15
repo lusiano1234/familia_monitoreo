@@ -1,47 +1,37 @@
-# Plan de Corrección del Proyecto "Family Monitor"
+# Plan de Implementación: Generación de Token de Dispositivo
 
-Este plan detalla los pasos necesarios para corregir la estructura del proyecto y los recursos faltantes para que la aplicación pueda compilarse y ejecutarse correctamente.
+Este plan aborda la falta de un token de identificación para el backend. Implementaremos una lógica para generar un identificador único (UUID) la primera vez que se otorga el consentimiento y lo mostraremos en la pantalla de estado.
 
 ## Problemas Identificados
-
-1.  **Estructura de Gradle Incorrecta**: Los archivos `settings.gradle` y `build.gradle` están mal ubicados o incompletos. Falta el archivo `build.gradle` a nivel de raíz.
-2.  **Recursos Faltantes**: El archivo `AndroidManifest.xml` referencia un ícono de aplicación (`@mipmap/ic_launcher`) que no existe en el proyecto.
-3.  **Falta del Gradle Wrapper**: No existen los scripts `gradlew` ni la carpeta `gradle/`, lo que dificulta la ejecución desde la línea de comandos o en entornos sin Gradle instalado globalmente.
-4.  **Configuración de Backend**: El archivo `AlertUploader.kt` tiene una URL de marcador de posición que causará errores de conexión si no se configura.
+- El backend requiere un token en los encabezados de autorización.
+- La aplicación móvil intenta leer `device_token` de `SharedPreferences` ("device"), pero este valor nunca se genera ni se guarda.
 
 ## Cambios Propuestos
 
-### Reestructuración de Gradle
+### 1. Generación de Token en `ConsentActivity`
+Generaremos un UUID aleatorio cuando el usuario presione el botón de "Continuar" después de aceptar los términos.
 
-#### [MODIFY] [settings.gradle](file:///C:/Users/LENOVO SERIES PRO/Downloads/family-monitor/family-monitor/android/settings.gradle)
-* Mover el archivo desde `app/settings.gradle` a la raíz del proyecto.
-* Configurar correctamente la inclusión del módulo `:app`.
+#### [MODIFY] [ConsentActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/ConsentActivity.kt)
+- Añadir lógica para generar un UUID.
+- Guardarlo en `getSharedPreferences("device", MODE_PRIVATE)`.
 
-#### [NEW] [build.gradle](file:///C:/Users/LENOVO SERIES PRO/Downloads/family-monitor/family-monitor/android/build.gradle)
-* Crear un archivo de construcción a nivel de raíz para gestionar los plugins de Android y Kotlin.
+### 2. Visualización en `StatusActivity`
+Mostraremos el token generado en la pantalla de estado para que el usuario pueda copiarlo o verificarlo si el backend lo solicita manualmente durante el registro.
 
-#### [MODIFY] [build.gradle](file:///C:/Users/LENOVO SERIES PRO/Downloads/family-monitor/family-monitor/android/app/build.gradle)
-* Ajustar para que actúe como un módulo secundario y no como raíz.
+#### [MODIFY] [activity_status.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_status.xml)
+- Añadir un `TextView` para mostrar el token.
+- Añadir un botón opcional para copiar el token al portapapeles.
 
-### Corrección de Recursos y Manifiesto
-
-#### [MODIFY] [AndroidManifest.xml](file:///C:/Users/LENOVO SERIES PRO/Downloads/family-monitor/family-monitor/android/app/src/main/AndroidManifest.xml)
-* Cambiar temporalmente el ícono a un recurso del sistema o crear un ícono básico para evitar errores de compilación.
-
-### Mejoras de Código
-
-#### [MODIFY] [AlertUploader.kt](file:///C:/Users/LENOVO SERIES PRO/Downloads/family-monitor/family-monitor/android/app/src/main/java/com/familia/monitor/AlertUploader.kt)
-* Agregar logs básicos para que el usuario pueda ver en el Logcat qué se intentaría enviar, incluso sin un backend real.
+#### [MODIFY] [StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)
+- Leer el `device_token` y mostrarlo en el nuevo `TextView`.
+- Implementar la funcionalidad de copiar al portapapeles.
 
 ## Plan de Verificación
 
 ### Pruebas Automatizadas
-* Ejecutar `./gradlew assembleDebug` (una vez creado el wrapper) para verificar que el proyecto compila.
+- N/A (Cambios principalmente de UI y lógica simple de SharedPreferences).
 
 ### Verificación Manual
-* Abrir el proyecto en Android Studio y verificar que no hay errores de sincronización de Gradle.
-* Ejecutar la aplicación en un emulador o dispositivo físico.
-
----
-
-**¿Deseas que proceda con estos cambios?**
+1. Abrir la app y aceptar el consentimiento.
+2. Verificar en el Logcat que `AlertUploader` ahora usa un UUID en lugar de "TOKEN_DE_PRUEBA".
+3. Navegar a la pantalla de estado y confirmar que el token es visible y se puede copiar.

@@ -1,9 +1,13 @@
 package com.familia.monitor
 
 import android.content.Intent
+import android.content.ClipboardManager
+import android.content.ClipData
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 /**
@@ -25,6 +29,19 @@ class StatusActivity : AppCompatActivity() {
             "pedidos sospechosos)."
         } else {
             "Monitoreo INACTIVO."
+        }
+
+        // Mostrar el token del dispositivo
+        val devicePrefs = getSharedPreferences("device", MODE_PRIVATE)
+        val token = devicePrefs.getString("device_token", "No generado")
+        val tvToken = findViewById<TextView>(R.id.tv_token)
+        tvToken.text = token
+
+        findViewById<Button>(R.id.btn_copy).setOnClickListener {
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("Device Token", token)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(this, "Token copiado al portapapeles", Toast.LENGTH_SHORT).show()
         }
 
         findViewById<Button>(R.id.btn_disable).setOnClickListener {
