@@ -14,7 +14,7 @@ object AlertUploader {
     private const val TAG = "AlertUploader"
 
     // Reemplazar por la URL real del backend (HTTPS obligatorio en producción).
-    private const val BASE_URL = "https://TU-BACKEND.ejemplo.com/api/alerts"
+    private const val BASE_URL = "https://familia-monitoreo.onrender.com"
 
     private val client = OkHttpClient()
 
