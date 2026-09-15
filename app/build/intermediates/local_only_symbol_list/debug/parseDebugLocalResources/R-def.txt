@@ -1,0 +1,10 @@
+R_DEF: Internal format may change without notice
+local
+id btn_continue
+id btn_disable
+id cb_consent
+id tv_explanation
+id tv_status
+layout activity_consent
+layout activity_status
+style Theme.FamiliaMonitor

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.familia.monitor">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <application
+        android:label="Monitoreo Familiar"
+        android:allowBackup="false"
+        android:theme="@style/Theme.FamiliaMonitor">
+
+        <!-- Pantalla de consentimiento: es la primera y única entrada visible -->
+        <activity
+            android:name=".ConsentActivity"
+            android:exported="true"
+            android:label="Monitoreo Familiar - Configuración">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".StatusActivity"
+            android:exported="false"
+            android:label="Monitoreo Familiar - Estado" />
+
+        <!-- Requiere que el usuario active manualmente el acceso a notificaciones -->
+        <service
+            android:name=".NotificationCaptureService"
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:label="Monitoreo Familiar">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".ForegroundStatusService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+    </application>
+</manifest>
