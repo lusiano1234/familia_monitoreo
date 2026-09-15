@@ -3096,6 +3096,7 @@ id bounce
 id btn_continue
 id btn_copy
 id btn_disable
+id btn_request_contacts
 id buttonPanel
 id cancel_button
 id cb_consent
@@ -3446,6 +3447,7 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
+id tv_contacts_status
 id tv_explanation
 id tv_status
 id tv_token

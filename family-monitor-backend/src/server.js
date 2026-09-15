@@ -56,8 +56,18 @@ app.post("/api/alerts", requireDeviceAuth, async (req, res) => {
     [req.headers.authorization.slice(7), sourceApp, category, level, fragment, timestamp]
   );
 
-  // Acá es donde en el futuro se puede enchufar push notification / email / SMS
-  // a los padres en lugar de que tengan que abrir el panel.
+  // Lógica de notificación para alertas críticas
+  if (level === "HIGH") {
+    console.log("---------------------------------------------------------");
+    console.log("¡NOTIFICACIÓN CRÍTICA ENVIADA A LOS PADRES!");
+    console.log(`Dispositivo: ${req.device.label || req.device.id}`);
+    console.log(`Aplicación: ${sourceApp}`);
+    console.log(`Categoría: ${category}`);
+    console.log(`Fragmento Detectado: "${fragment}"`);
+    console.log("---------------------------------------------------------");
+
+    // Aquí se integraría Nodemailer para email o Firebase Cloud Messaging para Push
+  }
 
   res.status(201).json({ ok: true });
 });

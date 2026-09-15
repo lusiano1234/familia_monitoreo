@@ -1,32 +1,32 @@
-# Walkthrough - Entrada Manual de Token del Sitio Web
+# Walkthrough - Expansión de Reglas y Detección de Desconocidos
 
-Se ha modificado el flujo de la aplicación para que el usuario ingrese manualmente el token proporcionado por el sitio web.
+Se han implementado mejoras significativas en el motor de riesgo y en la capacidad de detección de la aplicación, incluyendo la identificación de contactos no registrados y la ampliación de patrones de mensajes peligrosos.
 
 ## Cambios Realizados
 
-### Configuración y Dependencias
-*   **[app/build.gradle](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/build.gradle)**: Se añadió la dependencia de Material Components para mejorar la interfaz de usuario.
-*   **[themes.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/values/themes.xml)**: Se actualizó el tema base a `Theme.MaterialComponents` para evitar cierres inesperados al usar componentes Material.
+### Motor de Riesgo (Risk Engine)
+*   **[RiskEngine.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/RiskEngine.kt)**: Se añadieron nuevas categorías de detección:
+    *   **Grooming**: Detección de preguntas sobre ubicación o soledad.
+    *   **Sextorsión**: Patrones de amenazas con material sensible.
+    *   **Citas Sospechosas**: Invitaciones a encuentros privados.
+    *   **Robo de Cuenta**: Solicitudes de códigos de verificación o SMS.
 
-### Pantalla de Consentimiento (Entrada de Token)
-*   **[activity_consent.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_consent.xml)**: Se incorporó un campo de texto (`TextInputLayout` + `TextInputEditText`) para que el usuario ingrese el token del sitio web.
-*   **[ConsentActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/ConsentActivity.kt)**:
-    *   Se implementó validación en tiempo real: el botón "Continuar" solo se habilita si el campo del token no está vacío y el checkbox de consentimiento está marcado.
-    *   La app ahora guarda el token ingresado por el usuario en lugar de generar uno aleatorio.
+### Detección de Contactos Desconocidos
+*   **[ContactHelper.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/ContactHelper.kt)**: Nuevo componente que utiliza el `ContentResolver` del sistema para verificar si un remitente (nombre o número) existe en la agenda del teléfono.
+*   **[NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)**:
+    *   Ahora cruza cada notificación con la agenda. Si el remitente es desconocido, se envía una alerta automática de nivel `MEDIUM`.
+    *   Se amplió el monitoreo para incluir las aplicaciones de **Teléfono (Llamadas)**.
 
-### Pantalla de Estado
-*   **[StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)**: Continúa mostrando el token guardado para verificación del usuario.
+### Gestión de Permisos
+*   **[AndroidManifest.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/AndroidManifest.xml)**: Se añadió el permiso `READ_CONTACTS`.
+*   **[StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)**: Se añadió una sección de "Permisos adicionales" para solicitar el acceso a contactos de forma transparente.
 
 ## Verificación Visual
 
-> [!NOTE]
-> La interfaz ahora requiere el token antes de permitir la activación del servicio.
-
-![Nueva pantalla de consentimiento con campo de token](/C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/build/tmp/screenshot_consent.png)
+![Pantalla de estado con detección de desconocidos activa](/C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/build/tmp/screenshot_status.png)
 
 ## Instrucciones para el Usuario
 
-1.  Abre la aplicación "Monitoreo Familiar".
-2.  Escribe o pega el **token que te dio el sitio web** en el campo indicado.
-3.  Marca la casilla de consentimiento.
-4.  Presiona el botón para continuar y activar los permisos necesarios.
+1.  **Permitir Contactos**: En la pantalla de estado de la app, presiona el botón **"Permitir detectar desconocidos"**. Esto es vital para que la app sepa quién es un contacto de confianza y quién no.
+2.  **Prueba de Llamada**: Puedes probar llamando desde un número que no tengas guardado; verás que el sistema genera una alerta en el panel web.
+3.  **Seguridad**: Recuerda que la app solo envía al servidor el nombre/número del desconocido y el fragmento del mensaje, manteniendo la privacidad de tus contactos conocidos.

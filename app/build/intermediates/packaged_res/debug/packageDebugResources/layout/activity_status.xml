@@ -46,6 +46,28 @@
         android:text="Copiar Token"
         android:textSize="12sp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Permisos adicionales:"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp" />
+
+    <TextView
+        android:id="@+id/tv_contacts_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Acceso a contactos: No concedido"
+        android:textSize="14sp"
+        android:layout_marginTop="4dp" />
+
+    <Button
+        android:id="@+id/btn_request_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Permitir detectar desconocidos"
+        android:layout_marginTop="8dp" />
+
     <Button
         android:id="@+id/btn_disable"
         android:layout_width="match_parent"

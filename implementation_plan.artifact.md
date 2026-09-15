@@ -1,39 +1,50 @@
-# Plan de Implementación: Entrada de Token desde el Sitio Web
+# Plan de Implementación: Expansión de Reglas y Detección de Desconocidos
 
-Este plan modifica la lógica de identificación para que el usuario ingrese manualmente el token proporcionado por el sitio web, en lugar de generar uno aleatorio en el dispositivo.
+Este plan expande las capacidades del motor de riesgo y añade la detección de interacciones (mensajes y llamadas) con contactos que no están en la agenda del teléfono.
 
-## Problemas Identificados
-- El flujo actual genera un token en el móvil, pero el usuario necesita ingresar un token que ya tiene del sitio web.
-- No hay campo de entrada en la interfaz para este propósito.
+## User Review Required
+
+> [!IMPORTANT]
+> **Permisos de Contactos**: Para detectar si un contacto es "desconocido", la aplicación ahora requerirá el permiso de **Leer Contactos** (`READ_CONTACTS`). Esto debe ser aceptado por el usuario en la pantalla de configuración.
 
 ## Cambios Propuestos
 
-### 1. Interfaz de Consentimiento y Configuración
-Añadiremos un campo de texto para que el usuario pegue o escriba el token del sitio web.
+### 1. Expansión de Palabras Clave
 
-#### [MODIFY] [activity_consent.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_consent.xml)
-- Añadir un `EditText` con un hint claro (ej. "Ingresa el token del sitio web").
-- Añadir un `TextView` instructivo.
+#### [MODIFY] [RiskEngine.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/RiskEngine.kt)
+- Añadir nuevas categorías de riesgo:
+    - **Grooming**: "donde vivis", "estas solo", "pasame tu direccion", "no le cuentes a nadie".
+    - **Sextorsión**: "tengo tus fotos", "voy a publicar el video", "borra el chat".
+    - **Citas Sospechosas**: "encontremonos", "te paso a buscar", "veni a mi casa".
+    - **Robo de Cuenta**: "pasame el codigo", "llego un SMS", "validar cuenta".
 
-#### [MODIFY] [ConsentActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/ConsentActivity.kt)
-- Validar que el campo del token no esté vacío antes de habilitar el botón "Continuar".
-- Guardar el valor ingresado por el usuario en `SharedPreferences` ("device_token").
+### 2. Detección de Contactos Desconocidos
 
-### 2. Pantalla de Estado
-Mantendremos la visualización del token para que el usuario pueda confirmar cuál ingresó.
+#### [MODIFY] [AndroidManifest.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/AndroidManifest.xml)
+- Añadir `<uses-permission android:name="android.permission.READ_CONTACTS" />`.
+
+#### [NEW] [ContactHelper.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/ContactHelper.kt)
+- Implementar función `isContactUnknown(context, nameOrNumber)` que consulta el `ContentResolver` para verificar si el remitente existe en los contactos del sistema.
+
+#### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
+- Extraer el nombre del remitente de los extras de la notificación.
+- Si el remitente es desconocido, generar una alerta automática de nivel `MEDIUM` con la categoría `contacto_desconocido`.
+
+### 3. Monitoreo de Llamadas
+
+#### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
+- Añadir paquetes de telefonía (Dialer) a la lista de monitoreo.
+- Detectar notificaciones de categoría `Notification.CATEGORY_CALL`.
+- Verificar si el número de la llamada entrante es desconocido y avisar.
+
+### 4. Solicitud de Permisos en UI
 
 #### [MODIFY] [StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)
-- (Opcional) Permitir la edición del token si el usuario se equivocó al ingresarlo inicialmente. Por ahora, nos centraremos en mostrarlo correctamente.
+- Añadir un botón o chequeo para solicitar el permiso de contactos si aún no ha sido otorgado.
 
 ## Plan de Verificación
 
-### Pruebas Automatizadas
-- N/A.
-
-### Verificación Manual
-1. Abrir la app en la pantalla de consentimiento.
-2. Verificar que el botón "Continuar" esté deshabilitado si el token está vacío.
-3. Ingresar un token de prueba (ej: "TOKEN-WEB-123").
-4. Aceptar el consentimiento y continuar.
-5. Verificar en `StatusActivity` que se muestra "TOKEN-WEB-123".
-6. Verificar en el Logcat que las alertas (si se disparan) usan el nuevo token.
+### Pruebas Manuales
+1.  **Nuevas palabras**: Enviar un WhatsApp con "pasame tu dirección" y verificar la alerta.
+2.  **Contacto desconocido**: Enviar un mensaje desde un número que NO esté en los contactos del teléfono y verificar que llegue el aviso de "Contacto desconocido".
+3.  **Llamada desconocida**: Realizar una llamada desde un número no registrado y verificar el aviso en el backend.

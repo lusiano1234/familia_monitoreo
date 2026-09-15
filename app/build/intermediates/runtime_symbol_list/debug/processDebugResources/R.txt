@@ -3095,6 +3095,7 @@ int id bounce 0x7f080057
 int id btn_continue 0x7f080058
 int id btn_copy 0x7f080059
 int id btn_disable 0x7f08005a
+int id btn_request_contacts 0x7f0801cd
 int id buttonPanel 0x7f08005b
 int id cancel_button 0x7f08005c
 int id cb_consent 0x7f08005d
@@ -3445,6 +3446,7 @@ int id transition_position 0x7f0801b5
 int id transition_scene_layoutid_cache 0x7f0801b6
 int id transition_transform 0x7f0801b7
 int id triangle 0x7f0801b8
+int id tv_contacts_status 0x7f0801ce
 int id tv_explanation 0x7f0801b9
 int id tv_status 0x7f0801ba
 int id tv_token 0x7f0801bb

@@ -14,7 +14,7 @@ object AlertUploader {
     private const val TAG = "AlertUploader"
 
     // Reemplazar por la URL real del backend (HTTPS obligatorio en producción).
-    private const val BASE_URL = "https://familia-monitoreo.onrender.com"
+    private const val BASE_URL = "https://familia-monitoreo.onrender.com/api/alerts"
 
     private val client = OkHttpClient()
 
@@ -26,18 +26,28 @@ object AlertUploader {
         fragment: String,
         timestamp: Long
     ) {
-        Log.d(TAG, "Intentando enviar alerta: App=$sourceApp, Cat=$category, Fragment=$fragment")
-
         val deviceToken = context.getSharedPreferences("device", Context.MODE_PRIVATE)
-            .getString("device_token", "TOKEN_DE_PRUEBA") // Usar uno por defecto para ver logs
+            .getString("device_token", null)
 
-        val body = JSONObject().apply {
+        Log.d(TAG, "Iniciando envío de alerta. Token actual: $deviceToken")
+        Log.d(TAG, "URL de destino: $BASE_URL")
+
+        if (deviceToken == null) {
+            Log.e(TAG, "ERROR: No hay token de dispositivo configurado. Abortando envío.")
+            return
+        }
+
+        val bodyJson = JSONObject().apply {
             put("sourceApp", sourceApp)
             put("category", category)
             put("level", level)
             put("fragment", fragment)
             put("timestamp", timestamp)
-        }.toString().toRequestBody("application/json".toMediaType())
+        }.toString()
+        
+        Log.d(TAG, "Cuerpo del JSON: $bodyJson")
+
+        val body = bodyJson.toRequestBody("application/json".toMediaType())
 
         val request = Request.Builder()
             .url(BASE_URL)
@@ -47,14 +57,23 @@ object AlertUploader {
 
         try {
             client.newCall(request).execute().use { response ->
+                val responseCode = response.code
+                val responseBody = response.body?.string() ?: "Cuerpo vacío"
+                
                 if (!response.isSuccessful) {
-                    Log.e(TAG, "Error en el servidor: ${response.code}")
+                    Log.e(TAG, "FALLO EN EL SERVIDOR. Código: $responseCode")
+                    Log.e(TAG, "Respuesta del servidor: $responseBody")
                 } else {
-                    Log.d(TAG, "Alerta enviada con éxito")
+                    Log.d(TAG, "ÉXITO. Alerta enviada correctamente. Código: $responseCode")
+                    Log.d(TAG, "Respuesta: $responseBody")
                 }
             }
         } catch (e: IOException) {
-            Log.e(TAG, "Error de red al enviar alerta: ${e.message}")
+            Log.e(TAG, "ERROR DE RED (IOException): ${e.message}")
+            e.printStackTrace()
+        } catch (e: Exception) {
+            Log.e(TAG, "ERROR INESPERADO: ${e.message}")
+            e.printStackTrace()
         }
     }
 }

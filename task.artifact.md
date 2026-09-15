@@ -1,8 +1,11 @@
-# Tareas de Implementación - Entrada Manual de Token
+# Tareas de Expansión de Reglas y Detección de Desconocidos
 
-- [x] Modificar `activity_consent.xml` para incluir campo de entrada de token
-- [x] Actualizar `ConsentActivity.kt` para capturar y validar el token manual
-- [x] Asegurar que `StatusActivity.kt` muestre el token ingresado
+- [x] Expandir reglas en `RiskEngine.kt` (Grooming, Sextorsión, etc.)
+- [x] Añadir permiso `READ_CONTACTS` en `AndroidManifest.xml`
+- [x] Crear `ContactHelper.kt` para verificar contactos en la agenda
+- [x] Actualizar `NotificationCaptureService.kt` para detectar desconocidos y llamadas
+- [x] Añadir solicitud de permiso en `StatusActivity.kt`
 - [x] Verificación
-    - [x] Desplegar y probar el flujo de ingreso de token
-    - [x] Confirmar que el token se guarda y muestra correctamente
+    - [x] Compilar y desplegar
+    - [x] Probar nuevas palabras clave
+    - [x] Probar detección de remitente desconocido

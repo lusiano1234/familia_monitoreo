@@ -31,20 +31,16 @@
             android:textStyle="bold"
             android:layout_marginTop="24dp" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+            android:id="@+id/et_token"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_token"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ingresa el token del sitio web"
-                android:inputType="textNoSuggestions"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:hint="Ingresa el token del sitio web"
+            android:inputType="textNoSuggestions"
+            android:maxLines="1"
+            android:background="@android:drawable/edit_text"
+            android:padding="12dp" />
 
         <CheckBox
             android:id="@+id/cb_consent"
