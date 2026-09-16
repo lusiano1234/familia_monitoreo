@@ -30,17 +30,26 @@ class NotificationCaptureService : NotificationListenerService() {
     private val scope = CoroutineScope(Dispatchers.IO)
     private val mainHandler = Handler(Looper.getMainLooper())
 
+    override fun onCreate() {
+        super.onCreate()
+        Log.d(TAG, "SERVICIO CREADO (onCreate)")
+    }
+
     override fun onListenerConnected() {
         super.onListenerConnected()
         Log.d(TAG, "Servicio de captura conectado y escuchando...")
 
+        val prefs = getSharedPreferences("consent", MODE_PRIVATE)
+        val consentGiven = prefs.getBoolean("consent_given", false)
+        Log.d(TAG, "Estado del consentimiento: $consentGiven")
+
         // Señal visual de que el servicio arrancó
         mainHandler.post {
-            Toast.makeText(applicationContext, "Monitoreo Familiar: Escuchando...", Toast.LENGTH_SHORT).show()
+            val status = if (consentGiven) "ACTIVO" else "INACTIVO (Falta Consentimiento)"
+            Toast.makeText(applicationContext, "Monitoreo Familiar: $status", Toast.LENGTH_SHORT).show()
         }
 
-        val prefs = getSharedPreferences("consent", MODE_PRIVATE)
-        if (!prefs.getBoolean("consent_given", false)) {
+        if (!consentGiven) {
             Log.w(TAG, "Consentimiento no detectado, desconectando servicio.")
             requestUnbind()
         }
@@ -48,40 +57,51 @@ class NotificationCaptureService : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val packageName = sbn.packageName
-        if (packageName !in MONITORED_PACKAGES) return
+        
+        // MODO VERBOSO TOTAL: Loguear absolutamente todo para diagnóstico
+        Log.d(TAG, "==> Notificación entrante: $packageName")
 
         val extras = sbn.notification.extras
-        val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
-        val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
+        val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: "Sin Título"
+        val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: "Sin Texto"
         val fullText = "$title: $text"
 
-        Log.d(TAG, "Notificación detectada de: $packageName. Evaluando contenido...")
-
-        // 1. Detectar si el remitente es desconocido (Llamada o mensaje)
-        val isUnknown = ContactHelper.isContactUnknown(applicationContext, title)
-        if (isUnknown && title.isNotEmpty()) {
-            val category = if (sbn.notification.category == Notification.CATEGORY_CALL) "llamada_desconocida" else "mensaje_desconocido"
-
-            Log.i(TAG, "Detección: Contacto desconocido ($title)")
-
-            scope.launch {
-                AlertUploader.sendAlert(applicationContext, packageName, category, RiskEngine.RiskLevel.MEDIUM.name, "Interacción con: $title. Texto: $text", sbn.postTime)
-            }
-        }
-
-        // 2. Evaluar reglas de riesgo
-        val match = RiskEngine.evaluate(fullText)
-        if (match != null) {
-            Log.i(TAG, "¡RIESGO DETECTADO! Categoría: ${match.category}")
-
-            // Señal visual para el testeo
+        if (packageName in MONITORED_PACKAGES) {
+            Log.i(TAG, "DETECTADA APP MONITOREADA: $packageName. Texto: $fullText")
+            
+            // AVISO VISUAL DE RECEPCIÓN (Aunque no sea riesgo)
             mainHandler.post {
-                Toast.makeText(applicationContext, "⚠️ RIESGO: ${match.category}", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "Leyendo de $packageName...", Toast.LENGTH_SHORT).show()
             }
 
-            scope.launch {
-                AlertUploader.sendAlert(applicationContext, packageName, match.category, match.level.name, match.matchedFragment, sbn.postTime)
+            // 1. Detección de desconocidos
+            try {
+                val isUnknown = ContactHelper.isContactUnknown(applicationContext, title)
+                if (isUnknown && title.isNotEmpty() && title != "Sin Título") {
+                    Log.w(TAG, "¡CONTACTO DESCONOCIDO! -> $title")
+                    scope.launch {
+                        AlertUploader.sendAlert(applicationContext, packageName, "contacto_desconocido", RiskEngine.RiskLevel.MEDIUM.name, "Remitente no en agenda: $title. Msg: $text", sbn.postTime)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error ContactHelper: ${e.message}")
             }
+
+            // 2. Motor de Riesgo
+            val match = RiskEngine.evaluate(fullText)
+            if (match != null) {
+                Log.e(TAG, "¡¡¡RIESGO CRÍTICO DETECTADO!!! Categoría: ${match.category}")
+                mainHandler.post {
+                    Toast.makeText(applicationContext, "🚨 RIESGO DETECTADO: ${match.category}", Toast.LENGTH_LONG).show()
+                }
+                scope.launch {
+                    AlertUploader.sendAlert(applicationContext, packageName, match.category, match.level.name, match.matchedFragment, sbn.postTime)
+                }
+            } else {
+                Log.d(TAG, "Texto evaluado sin riesgos.")
+            }
+        } else {
+            Log.v(TAG, "Ignorando app no monitoreada.")
         }
     }
 }
