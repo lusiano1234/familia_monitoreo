@@ -26,7 +26,15 @@ private val MONITORED_PACKAGES = setOf(
     "com.android.server.telecom",
     "com.google.android.apps.messaging",
     "com.samsung.android.messaging",
-    "com.android.mms"
+    "com.android.mms",
+    "com.zhiliaoapp.musically", // TikTok
+    "com.ss.android.ugc.trill", // TikTok (otra variante)
+    "com.discord", // Discord
+    "com.twitter.android", // X (Twitter)
+    "com.facebook.katana", // Facebook
+    "com.facebook.lite", // Facebook Lite
+    "com.google.android.youtube", // YouTube
+    "tv.twitch.android.app" // Twitch
 )
 
 private val APP_NAMES = mapOf(
@@ -42,7 +50,15 @@ private val APP_NAMES = mapOf(
     "com.android.server.telecom" to "Llamada de Sistema",
     "com.google.android.apps.messaging" to "Mensaje SMS",
     "com.samsung.android.messaging" to "Mensaje SMS",
-    "com.android.mms" to "Mensaje SMS"
+    "com.android.mms" to "Mensaje SMS",
+    "com.zhiliaoapp.musically" to "TikTok",
+    "com.ss.android.ugc.trill" to "TikTok",
+    "com.discord" to "Discord",
+    "com.twitter.android" to "X (Twitter)",
+    "com.facebook.katana" to "Facebook",
+    "com.facebook.lite" to "Facebook Lite",
+    "com.google.android.youtube" to "YouTube",
+    "tv.twitch.android.app" to "Twitch"
 )
 
 class NotificationCaptureService : NotificationListenerService() {

@@ -1,30 +1,30 @@
-# Plan de Implementación: Captura Detallada de Todos los Mensajes (Sin Resúmenes)
+# Plan de Implementación: Expansión de Cobertura de Aplicaciones
 
-Este plan asegura que el sistema capture cada mensaje individual enviado, incluso si llegan varios al mismo tiempo, mientras elimina las notificaciones de resumen ("2 mensajes nuevos") que ensucian el panel.
+Este plan tiene como objetivo ampliar el monitoreo a aplicaciones adicionales como TikTok, Discord y otras redes sociales populares para garantizar que no haya puntos ciegos en la supervisión de seguridad.
 
 ## Objetivos
-1.  **Eliminar Resúmenes de Android**: Ignorar las notificaciones técnicas que agrupan chats (`FLAG_GROUP_SUMMARY`).
-2.  **Captura Múltiple**: Si una notificación de WhatsApp contiene 3 mensajes nuevos, procesar los 3 individualmente en lugar de solo el último.
-3.  **Deduplicación por Timestamp**: Utilizar la hora exacta de cada mensaje (según WhatsApp) para asegurar que se reporte cada interacción una sola vez, incluso si la notificación se actualiza repetidamente.
-4.  **Preservar Blindaje**: Mantener el sistema de PIN, camuflaje y reporte de batería/red.
+1.  **Monitoreo de TikTok**: Añadir los paquetes de TikTok e implementar la captura de sus notificaciones de mensajes directos.
+2.  **Ampliación Social**: Incluir soporte para Discord, X (Twitter) y otras apps de interacción social.
+3.  **Mantenimiento de Nombres Amigables**: Asegurar que en el panel estas nuevas apps aparezcan con sus nombres reales y no con códigos técnicos.
 
 ## Cambios Propuestos
 
 ### 1. App Android
 
 #### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
-- **Filtro de Flags**: Al inicio de `onNotificationPosted`, descartar la notificación si es un resumen de grupo.
-- **Procesamiento de Historial**:
-    - Extraer la lista completa de mensajes de `MessagingStyle`.
-    - Iterar por todos ellos.
-    - Para cada mensaje, crear un identificador único combinando: `Remitente + Texto + HoraExactaDelMensaje`.
-- **Memoria de Auditoría**: Ampliar el historial de mensajes procesados para manejar ráfagas de mensajes de forma eficiente.
+- Añadir a `MONITORED_PACKAGES`:
+    - `com.zhiliaoapp.musically` (TikTok Internacional)
+    - `com.ss.android.ugc.trill` (TikTok variante)
+    - `com.discord` (Discord)
+    - `com.twitter.android` (X / Twitter)
+    - `com.google.android.youtube` (YouTube - Comentarios/Mensajes)
+- Actualizar el mapa `APP_NAMES` con las etiquetas correspondientes.
 
 ## Plan de Verificación
-1.  **Prueba de Ráfaga**: Enviar 3 mensajes distintos rápidamente (ej: "Hola", "Donde estas?", "ven a casa"). Verificar que el panel muestra los 3 como tarjetas separadas.
-2.  **Prueba de Grupo**: Verificar que en un grupo con mucha actividad, cada mensaje de cada persona se reporte correctamente.
-3.  **Limpieza de Resumen**: Provocar una notificación de "X mensajes nuevos" (recibiendo mensajes de varios chats) y confirmar que esa frase NO aparece en el panel.
+1.  **Prueba de TikTok**: Enviar un mensaje directo a la cuenta de TikTok en el teléfono del niño. Verificar que el panel web registra el mensaje y el nombre del remitente.
+2.  **Prueba de Discord/X**: Confirmar que las notificaciones de estas apps disparan el proceso de evaluación de riesgo.
+3.  **Robustez de Nombres**: Asegurar que en el panel web se lea claramente "TikTok" o "Discord".
 
 ---
 
-**¿Deseas que proceda con esta captura detallada y masiva de mensajes?**
+**¿Deseas que proceda con la expansión a TikTok y estas redes sociales adicionales?**
