@@ -1,55 +1,35 @@
-# Plan de Implementación: Restauración y Profesionalización (Real-Time & Blindaje)
+# Plan de Diagnóstico: Fallo en Actualización de Reportes
 
-Este plan restaura las funcionalidades profesionales perdidas y asegura que los reportes se actualicen en tiempo real mediante WebSockets, además de blindar el motor de riesgo contra extorsiones.
+El objetivo es identificar por qué el panel web (EN VIVO) no muestra alertas nuevas a pesar de que el servicio está conectado.
 
-## Objetivos
-1.  **Tiempo Real**: Integrar `Socket.io` para que las alertas aparezcan en el panel sin refrescar.
-2.  **Arquitectura Profesional**: Organizar el backend en Controladores, Middlewares y Rutas.
-3.  **Seguridad**: Implementar JWT para el panel administrativo y proteger el login contra ataques.
-4.  **Notificaciones**: Configurar la vía de e-mail mediante SendGrid (inmune a bloqueos de Render).
-5.  **Blindaje de Riesgo**: Reforzar la app Android con reglas neutras contra extorsión y grooming.
+## Diagnóstico Técnico
+Tras revisar los logs del servidor, notamos que el panel web se conecta (`Panel conectado: ...`), pero **no hay rastro de peticiones `POST /api/alerts`**. Esto indica que el teléfono no está logrando enviar los datos al servidor.
 
-## Cambios Propuestos
+## Cambios Propuestos para Diagnóstico
 
-### 1. Backend (Node.js)
+### 1. Visibilidad en el Teléfono (App Android)
+Añadiremos señales visuales en el teléfono para saber si la app está detectando el riesgo antes de intentar enviarlo.
 
-#### [MODIFY] [package.json](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/package.json)
-- Añadir dependencias: `jsonwebtoken`, `socket.io`, `express-rate-limit`, `helmet`, `morgan`, `@sendgrid/mail`, `bcryptjs`.
+#### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
+- Añadir un `Toast` que diga "Riesgo detectado: [categoría]" para confirmar que el motor de reglas funciona.
+- Añadir logs de "Iniciando proceso de envío".
 
-#### [NEW] [auth.js (Middleware)](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/middlewares/auth.js)
-- Validación de JWT para padres y Device Token para la app.
+#### [MODIFY] [AlertUploader.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/AlertUploader.kt)
+- Añadir logs del resultado exacto del intento de red (ej: "Error de certificado", "Timeout", "DNS Error").
 
-#### [NEW] [alertController.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/controllers/alertController.js)
-- Lógica de alertas: Guardar en DB -> Emitir por Socket -> Notificar por SendGrid.
+### 2. Visibilidad en el Panel (Backend)
+Aseguraremos que el servidor reporte cada intento de conexión de la app.
 
-#### [NEW] [deviceController.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/controllers/deviceController.js)
-- Gestión de tokens de vinculación.
-
-#### [NEW] [authController.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/controllers/authController.js)
-- Login administrativo con generación de tokens JWT.
-
-#### [MODIFY] [server.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/server.js)
-- Reescritura completa para integrar Socket.io y la nueva estructura modular.
-
-### 2. Frontend (Panel Web)
-
-#### [MODIFY] [index.html](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/public/index.html)
-- Integrar cliente de Socket.io (desde CDN para máxima compatibilidad).
-- Sistema de login real con persistencia de sesión en `localStorage`.
-- Interfaz moderna con animaciones para alertas nuevas.
-
-### 3. App Android (Protección)
-
-#### [MODIFY] [RiskEngine.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/RiskEngine.kt)
-- Expandir categorías (Extorsión Digital, Aislamiento, Difusión).
-- Implementar normalización de texto (ignora acentos y mayúsculas).
-- Neutralizar idioma (español neutro).
+#### [MODIFY] [middlewares/auth.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/middlewares/auth.js)
+- Añadir un log: `console.log("[AUTH] Intento de dispositivo con token: ...")`.
 
 ## Plan de Verificación
-1.  **Conectividad**: Verificar que el panel muestra "MONITOREO EN VIVO".
-2.  **Tiempo Real**: Enviar una alerta desde la app y confirmar su aparición instantánea.
-3.  **Seguridad**: Validar que los endpoints administrativos requieren el token JWT.
+1. **Paso 1**: Desplegar estos cambios.
+2. **Paso 2**: Enviar el mensaje de WhatsApp `"borra los mensajes"`.
+3. **Paso 3**:
+    - ¿Apareció el mensaje negro (Toast) en el teléfono? -> El problema es de red/backend.
+    - ¿No apareció nada? -> El servicio de captura no está leyendo WhatsApp (posible permiso desactivado).
 
 ---
 
-**¿Deseas que proceda con la restauración masiva para arreglar el tiempo real?**
+**¿Procedo con este diagnóstico para encontrar la raíz del problema?**

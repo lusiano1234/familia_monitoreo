@@ -10,6 +10,8 @@ async function requireDeviceAuth(req, res, next) {
   const auth = req.headers.authorization || "";
   const token = auth.startsWith("Bearer ") ? auth.slice(7) : null;
 
+  console.log(`[AUTH] Intento de acceso de dispositivo. Token: ${token ? (token.substring(0, 8) + "...") : "NINGUNO"}`);
+
   if (!token) {
     return res.status(401).json({ error: "Falta token de dispositivo" });
   }

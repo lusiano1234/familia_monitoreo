@@ -1,14 +1,9 @@
-# Tareas: Restauración y Profesionalización
+# Tareas: Diagnóstico de Actualización Real-Time
 
-- [x] Actualizar dependencias (`package.json`)
-- [x] Crear estructura modular en el backend
-    - [x] `src/middlewares/auth.js`: Protección JWT y Device Auth
-    - [x] `src/controllers/authController.js`: Login administrativo
-    - [x] `src/controllers/alertController.js`: Lógica de alertas y Sockets
-    - [x] `src/controllers/deviceController.js`: Gestión de dispositivos
-- [x] Refactorizar `src/server.js` (Integración Socket.io y Rutas)
-- [x] Actualizar panel web (`public/index.html`) para soporte Real-Time
-- [x] Reforzar la app Android (`RiskEngine.kt`)
-- [x] Verificación
-    - [x] Validar arranque del servidor
-    - [x] Probar recepción de alertas en tiempo real
+- [x] Añadir avisos visuales (Toasts) en `NotificationCaptureService.kt`
+- [x] Mejorar logs de red en `AlertUploader.kt`
+- [x] Habilitar logs de intentos de dispositivos en el backend
+- [/] Verificación
+    - [ ] Desplegar app actualizada
+    - [ ] Realizar prueba de envío (WhatsApp: "borra los mensajes")
+    - [ ] Observar pantalla del teléfono y logs de Render

@@ -12,7 +12,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <permission
         android:name="com.familia.monitor.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
@@ -26,6 +25,7 @@
         android:debuggable="true"
         android:extractNativeLibs="false"
         android:label="Monitoreo Familiar"
+        android:testOnly="true"
         android:theme="@style/Theme.FamiliaMonitor" >
 
         <!-- Pantalla de consentimiento: es la primera y única entrada visible -->

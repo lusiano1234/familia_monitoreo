@@ -56,24 +56,27 @@ object AlertUploader {
             .build()
 
         try {
-            client.newCall(request).execute().use { response ->
-                val responseCode = response.code
-                val responseBody = response.body?.string() ?: "Cuerpo vacío"
-                
-                if (!response.isSuccessful) {
-                    Log.e(TAG, "FALLO EN EL SERVIDOR. Código: $responseCode")
-                    Log.e(TAG, "Respuesta del servidor: $responseBody")
-                } else {
-                    Log.d(TAG, "ÉXITO. Alerta enviada correctamente. Código: $responseCode")
-                    Log.d(TAG, "Respuesta: $responseBody")
+            Log.d(TAG, "Ejecutando petición HTTP POST...")
+            val response = client.newCall(request).execute()
+            
+            val responseCode = response.code
+            val responseBody = response.body?.string() ?: "Cuerpo vacío"
+            
+            if (!response.isSuccessful) {
+                Log.e(TAG, "FALLO EN EL SERVIDOR. Código: $responseCode")
+                Log.e(TAG, "Respuesta del servidor: $responseBody")
+                if (responseCode == 401) {
+                    Log.e(TAG, "Sugerencia: El token del dispositivo puede ser inválido o haber expirado.")
                 }
+            } else {
+                Log.d(TAG, "ÉXITO TOTAL. Alerta recibida por el servidor. Código: $responseCode")
             }
+            response.close()
         } catch (e: IOException) {
-            Log.e(TAG, "ERROR DE RED (IOException): ${e.message}")
-            e.printStackTrace()
+            Log.e(TAG, "ERROR DE CONEXIÓN CRÍTICO: ${e.message}")
+            Log.e(TAG, "Verifica si el servidor está caído o si el teléfono no tiene internet.")
         } catch (e: Exception) {
-            Log.e(TAG, "ERROR INESPERADO: ${e.message}")
-            e.printStackTrace()
+            Log.e(TAG, "ERROR INTERNO EN UPLOADER: ${e.message}")
         }
     }
 }

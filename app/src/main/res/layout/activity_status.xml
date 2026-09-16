@@ -47,17 +47,10 @@
         android:textSize="12sp" />
 
     <Button
-        android:id="@+id/btn_request_contacts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Permitir detección de desconocidos"
-        android:layout_marginTop="24dp" />
-
-    <Button
         android:id="@+id/btn_disable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:text="Ir a ajustes para desactivar" />
 
 </LinearLayout>
