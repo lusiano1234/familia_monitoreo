@@ -54,15 +54,11 @@ class NotificationCaptureService : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val packageName = sbn.packageName
         
-        // LOG Y AVISO VISUAL PARA DIAGNÓSTICO (Cualquier app)
         Log.d(TAG, "Notificación detectada de: $packageName")
-        mainHandler.post {
-            Toast.makeText(applicationContext, "Captura: $packageName", Toast.LENGTH_SHORT).show()
-        }
 
         val extras = sbn.notification.extras
-        val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: "Sin Título"
-        val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: "Sin Texto"
+        val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: "Desconocido"
+        val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
         val fullText = "$title: $text"
 
         if (packageName in MONITORED_PACKAGES) {
@@ -71,10 +67,10 @@ class NotificationCaptureService : NotificationListenerService() {
             // 1. Detección de desconocidos
             try {
                 val isUnknown = ContactHelper.isContactUnknown(applicationContext, title)
-                if (isUnknown && title.isNotEmpty() && title != "Sin Título") {
+                if (isUnknown && title.isNotEmpty() && title != "Desconocido") {
                     Log.w(TAG, "¡CONTACTO DESCONOCIDO! -> $title")
                     scope.launch {
-                        AlertUploader.sendAlert(applicationContext, packageName, "contacto_desconocido", RiskEngine.RiskLevel.MEDIUM.name, "Remitente no en agenda: $title. Msg: $text", sbn.postTime)
+                        AlertUploader.sendAlert(applicationContext, packageName, "contacto_desconocido", RiskEngine.RiskLevel.MEDIUM.name, "Remitente no en agenda: $title. Mensaje completo: $text", sbn.postTime)
                     }
                 }
             } catch (e: Exception) {
@@ -86,10 +82,11 @@ class NotificationCaptureService : NotificationListenerService() {
             if (match != null) {
                 Log.e(TAG, "¡RIESGO DETECTADO! Categoría: ${match.category}")
                 mainHandler.post {
-                    Toast.makeText(applicationContext, "🚨 ALERTA: ${match.category}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "🚨 ALERTA DE RIESGO DETECTADA", Toast.LENGTH_LONG).show()
                 }
                 scope.launch {
-                    AlertUploader.sendAlert(applicationContext, packageName, match.category, match.level.name, match.matchedFragment, sbn.postTime)
+                    // Enviamos el fullText que ya tiene "Remitente: Mensaje"
+                    AlertUploader.sendAlert(applicationContext, packageName, match.category, match.level.name, fullText, sbn.postTime)
                 }
             }
         }

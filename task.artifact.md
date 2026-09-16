@@ -1,9 +1,8 @@
-# Tareas: Visibilidad y Persistencia Total
+# Tareas: Detalle Completo de Mensajes
 
-- [x] Activar `ForegroundStatusService` desde las actividades
-- [x] Implementar "Modo Verboso" (Toast para cada notificación) en `NotificationCaptureService.kt`
-- [x] Ampliar lista de paquetes monitoreados (WhatsApp Business)
+- [x] Modificar `RiskEngine.kt` para capturar el texto completo
+- [x] Ajustar `NotificationCaptureService.kt` para enviar el contexto íntegro
+- [x] Actualizar el Panel Web (`index.html`) para mostrar detalles extensos
 - [x] Verificación
-    - [x] Confirmar notificación permanente "Monitoreo Familiar activo"
-    - [x] Confirmar Toasts al recibir cualquier notificación
-    - [x] Probar WhatsApp y panel web
+    - [x] Enviar mensaje largo con riesgo
+    - [x] Confirmar visualización completa en el panel

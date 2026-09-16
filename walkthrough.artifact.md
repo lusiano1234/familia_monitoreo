@@ -1,27 +1,26 @@
-# Walkthrough - Visibilidad y Persistencia Total
+# Walkthrough - Detalle Completo de Mensajes
 
-Se han aplicado cambios críticos para asegurar que el sistema Android no detenga la aplicación y para confirmar que las notificaciones están siendo procesadas.
+Se ha actualizado el sistema para que los padres puedan ver la conversación íntegra y el remitente de cada alerta detectada, en lugar de solo un fragmento.
 
-## Cambios Realizados
+## Mejoras Realizadas
 
-### Persistencia del Sistema
-*   Se activó el **Servicio en Primer Plano (`ForegroundStatusService`)**.
-*   Ahora aparecerá una **notificación permanente** que dice "Monitoreo Familiar activo". Esto indica a Android que la aplicación es importante y no debe ser cerrada para ahorrar batería.
+### Captura de Contexto Total
+*   **Motor de Riesgo**: Se modificó el `RiskEngine` para que, al detectar una palabra clave (ej: "dinero"), capture y envíe el **100% del contenido** del mensaje original.
+*   **Identificación del Remitente**: El sistema ahora separa y resalta quién envió el mensaje (nombre del contacto o número).
 
-### Visibilidad Total (Modo Verboso)
-*   Se modificó el `NotificationCaptureService` para mostrar un **mensaje negro (Toast)** por cada notificación que llegue al teléfono, sin importar de qué aplicación sea.
-*   Esto nos permite verificar en tiempo real si el sistema Android le está entregando los mensajes a nuestra app.
+### Rediseño del Panel Web
+*   **Tarjetas de Detalle**: Las alertas ahora tienen un contenedor dedicado para el mensaje, con mejor tipografía y espaciado.
+*   **Claridad Visual**: Se añadió la etiqueta "Enviado por: [Nombre]" para que no haya dudas sobre el origen de la amenaza.
+*   **Soporte Multilínea**: Si el mensaje es muy largo, el panel lo mostrará completo respetando los saltos de línea.
 
-### Soporte de Aplicaciones
-*   Se añadió soporte explícito para **WhatsApp Business (`com.whatsapp.w4b`)**.
+## Prueba de funcionamiento
 
-## Cómo realizar la prueba final
+1.  **Sube los cambios** a Render para actualizar el diseño del panel.
+2.  **En el teléfono**: Recibe un WhatsApp largo, por ejemplo: *"Hola hijo, espero que estés bien. Escuchame, necesito que me hagas un favor urgente: **transferime dinero** a esta cuenta."*
+3.  **En el Panel**: Verás aparecer una tarjeta que muestra:
+    *   **Categoría**: EXTORSION DINERO
+    *   **Enviado por**: [Nombre del contacto]
+    *   **Mensaje**: El texto completo de arriba.
 
-1.  **Verifica la Notificación**: Al abrir la app, deberías ver un icono de información en la barra de notificaciones del teléfono.
-2.  **Prueba de "Cualquier App"**: Pide a alguien que te envíe un correo (Gmail) o que te llegue una notificación de YouTube. El teléfono **DEBE** mostrar un mensaje negro abajo que diga `Captura: com.google.android.gm` (o el nombre de la app).
-3.  **Prueba de WhatsApp**:
-    *   Si al recibir un WhatsApp NO aparece el mensaje negro de `Captura: com.whatsapp`, el permiso de Android sigue bloqueado.
-    *   **Solución**: Ve a ajustes, apaga y vuelve a encender el interruptor de "Monitoreo Familiar" en Acceso a Notificaciones.
-
-> [!IMPORTANT]
-> Si logras ver el mensaje negro de `Captura: com.whatsapp`, el sistema ya está leyendo los mensajes y las alertas deberían aparecer en el panel web de inmediato.
+> [!TIP]
+> Si el mensaje es inofensivo, el sistema seguirá ignorándolo para proteger la privacidad del niño. Solo se envía el detalle cuando hay un riesgo real.

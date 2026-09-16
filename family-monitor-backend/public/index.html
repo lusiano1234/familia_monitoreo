@@ -6,37 +6,56 @@
 <title>Monitor PRO - Panel</title>
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <style>
-  body { font-family: system-ui, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 20px; background: #f3f4f6; }
-  .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-  .level-high { border-left: 6px solid #ef4444; }
-  .level-medium { border-left: 6px solid #f59e0b; }
-  .live { color: #10b981; font-weight: bold; font-size: 0.8rem; }
-  input, button { padding: 10px; border-radius: 6px; border: 1px solid #ddd; }
-  button { background: #4f46e5; color: white; border: none; cursor: pointer; }
+  body { font-family: system-ui, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 20px; background: #f3f4f6; color: #1f2937; }
+  .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: background 0.5s; }
+  .level-high { border-left: 8px solid #ef4444; background: #fff1f2; }
+  .level-medium { border-left: 8px solid #f59e0b; background: #fffbeb; }
+  .new-item { animation: highlight 2s ease-out; }
+  @keyframes highlight { from { background: #dcfce7; } to { background: white; } }
+  .status-bar { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #e5e7eb; }
+  .live { color: #10b981; font-weight: bold; }
+  .offline { color: #ef4444; font-weight: bold; }
+  input, button { padding: 12px; border-radius: 8px; border: 1px solid #ddd; }
+  button { background: #4f46e5; color: white; border: none; cursor: pointer; font-weight: 600; }
+  #login { text-align: center; margin-top: 100px; }
+  code { background: #e5e7eb; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+  .msg-container { background: #f9fafb; padding: 12px; border-radius: 8px; border: 1px solid #f3f4f6; margin: 10px 0; }
 </style>
 </head>
 <body>
   <div id="login">
-    <h2>Acceso Padres</h2>
-    <input id="password" type="password" placeholder="Contraseña" />
-    <button onclick="login()">Entrar</button>
+    <h1>Protección Familiar</h1>
+    <p>Ingrese su contraseña administrativa</p>
+    <input id="password" type="password" placeholder="Contraseña" style="width: 250px;" />
+    <button onclick="login()">Acceder al Panel</button>
   </div>
 
   <div id="content" style="display:none">
-    <div style="display:flex; justify-content: space-between;">
-      <h1>Alertas <span class="live">● EN VIVO</span></h1>
-      <button onclick="logout()" style="background:#6b7280">Salir</button>
+    <div class="status-bar">
+      <div>
+        <h1 style="margin:0; font-size: 1.5rem;">Panel de Monitoreo</h1>
+        <div id="socket-status" class="offline">● DESCONECTADO</div>
+      </div>
+      <button onclick="logout()" style="background:#6b7280">Cerrar Sesión</button>
     </div>
-    <div id="alerts">Cargando...</div>
-    <hr>
-    <h2>Dispositivos</h2>
-    <div id="deviceList"></div>
-    <input id="deviceLabel" placeholder="Nombre dispositivo" />
-    <button onclick="createDevice()">Vincular Nuevo</button>
+
+    <div id="alerts">Cargando reportes...</div>
+
+    <div id="devices" style="margin-top: 50px;">
+      <h3>Dispositivos Vinculados</h3>
+      <div id="deviceList" style="display: grid; gap: 10px;"></div>
+      <div style="margin-top: 20px; background: #fff; padding: 15px; border-radius: 10px;">
+        <strong>Vincular nuevo dispositivo:</strong><br><br>
+        <input id="deviceLabel" placeholder="Nombre (ej: Celular de Juli)" style="width: 200px;" />
+        <button onclick="createDevice()">Generar Token</button>
+      </div>
+    </div>
   </div>
 
 <script>
 let token = localStorage.getItem('fm_token');
+let socket;
+
 if (token) showDashboard();
 
 async function login() {
@@ -51,7 +70,7 @@ async function login() {
     token = data.token;
     localStorage.setItem('fm_token', token);
     showDashboard();
-  } else alert('Error');
+  } else alert('Contraseña incorrecta');
 }
 
 function logout() {
@@ -64,27 +83,63 @@ function showDashboard() {
   document.getElementById('content').style.display = 'block';
   loadAlerts();
   loadDevices();
-  const socket = io();
+  initSocket();
+}
+
+function initSocket() {
+  socket = io({
+    reconnection: true,
+    transports: ['websocket', 'polling']
+  });
+
+  const statusEl = document.getElementById('socket-status');
+
+  socket.on('connect', () => {
+    statusEl.innerText = '● EN VIVO';
+    statusEl.className = 'live';
+  });
+
+  socket.on('disconnect', () => {
+    statusEl.innerText = '● DESCONECTADO';
+    statusEl.className = 'offline';
+  });
+
   socket.on('new_alert', (alert) => {
     const el = document.getElementById('alerts');
-    if (el.innerHTML.includes('No hay')) el.innerHTML = '';
-    el.insertAdjacentHTML('afterbegin', renderAlert(alert));
+    if (el.innerHTML.includes('No hay reportes') || el.innerHTML.includes('Cargando')) el.innerHTML = '';
+    el.insertAdjacentHTML('afterbegin', renderAlert(alert, true));
   });
 }
 
 async function loadAlerts() {
   const res = await fetch('/api/alerts', { headers: { Authorization: 'Bearer ' + token } });
-  if (res.status > 400) return logout();
+  if (res.status === 401 || res.status === 403) return logout();
   const alerts = await res.json();
-  document.getElementById('alerts').innerHTML = alerts.map(a => renderAlert(a)).join('') || 'No hay alertas';
+  const el = document.getElementById('alerts');
+  el.innerHTML = alerts.map(a => renderAlert(a)).join('') || '<p>No hay reportes guardados.</p>';
 }
 
-function renderAlert(a) {
+function renderAlert(a, isNew = false) {
+  const parts = a.fragment.split(': ');
+  const sender = parts.length > 1 ? parts[0] : 'Sistema';
+  const message = parts.length > 1 ? parts.slice(1).join(': ') : a.fragment;
+
   return `
-    <div class="card level-${(a.level || '').toLowerCase()}">
-      <strong>${a.category.toUpperCase()}</strong> - ${a.source_app}
-      <div style="font-style:italic; margin: 10px 0;">"${a.fragment}"</div>
-      <div style="font-size:0.8rem; color: #666;">📱 ${a.device_label} · ${new Date(a.received_at).toLocaleString()}</div>
+    <div class="card level-${(a.level || 'low').toLowerCase()} ${isNew ? 'new-item' : ''}">
+      <div style="display:flex; justify-content: space-between; margin-bottom: 8px;">
+        <span style="font-weight: bold; color: #4f46e5;">${a.category.replace('_', ' ').toUpperCase()}</span>
+        <small style="background:#f3f4f6; padding: 2px 8px; border-radius: 6px; color: #6b7280;">${a.source_app}</small>
+      </div>
+
+      <div class="msg-container">
+        <div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 4px;">Enviado por: <strong>${sender}</strong></div>
+        <div style="font-size: 1.15rem; color: #111827; line-height: 1.5; white-space: pre-wrap;">${escapeHtml(message)}</div>
+      </div>
+
+      <div style="font-size:0.8rem; color: #9ca3af; display:flex; justify-content: space-between; margin-top: 12px;">
+        <span>📱 ${a.device_label || 'Dispositivo'}</span>
+        <span>${new Date(a.received_at).toLocaleString()}</span>
+      </div>
     </div>
   `;
 }
@@ -92,17 +147,30 @@ function renderAlert(a) {
 async function loadDevices() {
   const res = await fetch('/api/devices', { headers: { Authorization: 'Bearer ' + token } });
   const devices = await res.json();
-  document.getElementById('deviceList').innerHTML = devices.map(d => `<div>${d.label}: <code>${d.device_token}</code></div>`).join('');
+  document.getElementById('deviceList').innerHTML = devices.map(d => `
+    <div style="background:#fff; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb; display:flex; justify-content: space-between;">
+      <strong>${d.label || 'Sin nombre'}</strong>
+      <code>${d.device_token}</code>
+    </div>
+  `).join('') || 'No hay dispositivos.';
 }
 
 async function createDevice() {
   const label = document.getElementById('deviceLabel').value;
-  await fetch('/api/devices', {
+  if (!label) return alert('Pon un nombre');
+  const res = await fetch('/api/devices', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
     body: JSON.stringify({ label })
   });
-  loadDevices();
+  if (res.ok) {
+    document.getElementById('deviceLabel').value = '';
+    loadDevices();
+  }
+}
+
+function escapeHtml(s) {
+  return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 </script>
 </body>

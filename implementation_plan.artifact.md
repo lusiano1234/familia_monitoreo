@@ -1,32 +1,31 @@
-# Plan de Implementación: Modo Verboso y Persistencia Total
+# Plan de Implementación: Detalle Completo de Mensajes
 
-Este plan tiene como objetivo forzar al sistema Android a mantener la aplicación viva y capturar absolutamente cualquier notificación para diagnosticar por qué WhatsApp no está siendo detectado.
+Este plan modifica el motor de riesgo y el panel web para que, en lugar de mostrar solo la palabra "prohibida", se muestre el **mensaje completo** recibido por el niño, permitiendo a los padres entender todo el contexto.
 
 ## Objetivos
-1.  **Visibilidad Total**: Mostrar un mensaje en pantalla (Toast) por **CUALQUIER** notificación que llegue al teléfono, sin importar la app.
-2.  **Persistencia (Foreground Service)**: Activar la notificación permanente "Monitoreo Familiar activo" para evitar que Android mate la aplicación en segundo plano.
-3.  **Soporte Ampliado**: Añadir soporte para WhatsApp Business y otras variantes.
+1.  **Contexto Total**: Capturar y enviar el mensaje íntegro (remitente y texto) cuando se detecte un riesgo.
+2.  **Mejora Visual**: Actualizar el panel web para que el detalle sea legible y profesional.
 
 ## Cambios Propuestos
 
 ### 1. App Android
 
+#### [MODIFY] [RiskEngine.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/RiskEngine.kt)
+- Cambiar la lógica de `evaluate` para que, cuando encuentre una coincidencia, devuelva el **texto original completo** en lugar de solo el fragmento que coincidió con la regla.
+
 #### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
-- Eliminar el filtro inicial: Mostrar un Toast que diga `Recibido de: [paquete]` para **todas** las notificaciones.
-- Añadir `com.whatsapp.w4b` a la lista de apps monitoreadas.
-- Asegurar que el servicio esté vinculado correctamente.
+- Asegurar que el formato enviado sea claro (ej: `Nombre: Mensaje`).
 
-#### [MODIFY] [ConsentActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/ConsentActivity.kt)
-- Iniciar explícitamente el `ForegroundStatusService` al pulsar "Continuar".
+### 2. Frontend (Panel Web)
 
-#### [MODIFY] [StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)
-- Añadir un chequeo para iniciar el servicio de estado si no está corriendo.
+#### [MODIFY] [index.html](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/public/index.html)
+- Ajustar el diseño de las tarjetas para que el mensaje completo se vea en una fuente más clara y grande.
+- Implementar una separación visual entre el remitente y el contenido si el formato lo permite.
 
 ## Plan de Verificación
-1.  **Prueba de Vida**: Recibir cualquier notificación (ej: Gmail, Sistema, YouTube). Debería aparecer un Toast negro diciendo el nombre de la app.
-2.  **Prueba de WhatsApp**: Enviar un mensaje y observar si aparece el Toast de WhatsApp.
-3.  **Prueba de Riesgo**: Enviar mensaje de riesgo y verificar subida al panel.
+1.  **Prueba de Contexto**: Enviar un WhatsApp largo que incluya una palabra de riesgo (ej: "Hola hijo, como estas, decime **donde vives**").
+2.  **Validación en Panel**: Confirmar que en el panel web aparece la frase completa "Hola hijo... donde vives" y no solo "donde vives".
 
 ---
 
-**¿Procedo con esta actualización de visibilidad total?**
+**¿Deseas que proceda a mostrar el detalle completo de los mensajes?**

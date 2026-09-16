@@ -74,12 +74,13 @@ object RiskEngine {
         for ((category, rule) in patterns) {
             val (level, regexList) = rule
             for (regex in regexList) {
-                val match = regex.find(normalizedText)
-                if (match != null) {
+                if (regex.containsMatchIn(normalizedText)) {
+                    // Si hay riesgo, devolvemos el texto ORIGINAL completo (sin normalizar)
+                    // para que los padres tengan todo el contexto.
                     return RiskMatch(
                         level = level,
                         category = category,
-                        matchedFragment = truncate(match.value, 200)
+                        matchedFragment = text
                     )
                 }
             }
@@ -94,7 +95,4 @@ object RiskEngine {
         val temp = java.text.Normalizer.normalize(s, java.text.Normalizer.Form.NFD)
         return Regex("\\p{InCombiningDiacriticalMarks}+").replace(temp, "")
     }
-
-    private fun truncate(s: String, max: Int) =
-        if (s.length <= max) s else s.substring(0, max) + "…"
 }
