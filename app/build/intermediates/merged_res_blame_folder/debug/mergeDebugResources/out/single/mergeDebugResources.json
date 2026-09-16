@@ -12,11 +12,11 @@
         "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\daemon\\9.3.0\\com.familia.monitor.app-main-33:\\layout\\activity_consent.xml"
     },
     {
-        "merged": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\daemon\\9.3.0\\com.familia.monitor.app-debug-31:\\layout_activity_pin.xml.flat",
-        "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\daemon\\9.3.0\\com.familia.monitor.app-main-33:\\layout\\activity_pin.xml"
+        "merged": "com.familia.monitor.app-debug-31:/layout_activity_status.xml.flat",
+        "source": "com.familia.monitor.app-main-33:/layout/activity_status.xml"
     },
     {
-        "merged": "com.familia.monitor.app-debug-31:/layout_activity_pin.xml.flat",
-        "source": "com.familia.monitor.app-main-33:/layout/activity_pin.xml"
+        "merged": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\daemon\\9.3.0\\com.familia.monitor.app-debug-31:\\layout_activity_pin.xml.flat",
+        "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\daemon\\9.3.0\\com.familia.monitor.app-main-33:\\layout\\activity_pin.xml"
     }
 ]

@@ -20,6 +20,53 @@
             android:textColor="#111827"
             android:layout_marginBottom="24dp" />
 
+        <!-- Banner de Advertencia de Permisos (Visible solo si falta permiso) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_permission_warning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#FECACA"
+            app:cardBackgroundColor="#FEF2F2"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⚠️ Permisos Bloqueados"
+                    android:textColor="#991B1B"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Android 13+ ha restringido el acceso a notificaciones. Debe desbloquearlo manualmente."
+                    android:textColor="#B91C1C"
+                    android:textSize="13sp"
+                    android:layout_marginTop="4dp" />
+
+                <Button
+                    android:id="@+id/btn_help_permission"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="VER CÓMO DESBLOQUEAR"
+                    android:backgroundTint="#EF4444"
+                    android:textColor="@android:color/white"
+                    style="@style/Widget.Material3.Button.TonalButton" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <!-- Interruptor Maestro -->
         <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/sw_monitoring"
@@ -94,7 +141,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="PERMISOS DE SISTEMA (AVANZADO)"
+            android:text="AJUSTES DE NOTIFICACIONES"
+            style="?attr/materialButtonOutlinedStyle" />
+
+        <Button
+            android:id="@+id/btn_app_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="INFORMACIÓN DE LA APP (3 PUNTOS ⋮)"
+            style="?attr/materialButtonOutlinedStyle" />
+
+        <Button
+            android:id="@+id/btn_battery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="OPTIMIZACIÓN DE BATERÍA"
             style="?attr/materialButtonOutlinedStyle" />
 
     </LinearLayout>

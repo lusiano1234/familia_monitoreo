@@ -1,34 +1,45 @@
-# Plan de Reparación: Desbloqueo del Panel Administrativo
+# Plan de Implementación: Solución Definitiva para Permisos Bloqueados (Android 13/14)
 
-Este plan corrige de forma definitiva el problema técnico que impide presionar el botón de acceso al panel web, añadiendo además mejoras de usabilidad y diagnóstico.
+Este plan aborda de manera integral el bloqueo de "Ajustes restringidos" en Android 13 y 14, proporcionando una interfaz de asistencia que guía al usuario para habilitar el monitoreo de mensajes en cualquier teléfono moderno.
 
-## Diagnóstico
-Aunque el código parece correcto, el síntoma de "no poder presionar el botón" suele indicar un error de JavaScript que detiene la ejecución antes de que el usuario interactúe, o una falla silenciosa en la red (CORS o Mixed Content) que no muestra avisos.
+## Diagnóstico Técnico
+Android 13+ introdujo una protección que deshabilita el "Acceso a notificaciones" para apps instaladas por APK. El interruptor aparece "gris" y dice "Ajuste restringido". La única forma de habilitarlo es a través de un menú oculto en la pantalla de **Información de la aplicación**.
 
 ## Objetivos
-1.  **Restaurar el Botón de Acceso**: Asegurar que la función `login()` se ejecute sin errores.
-2.  **Soporte de Tecla ENTER**: Permitir que el usuario ingrese presionando la tecla Enter en lugar de solo hacer clic.
-3.  **Diagnóstico Visible**: Mostrar mensajes de error detallados si la conexión con Render falla (ej: "Error de red", "Servidor no responde").
-4.  **Estado de Carga**: Cambiar el texto del botón a "Verificando..." para que el usuario sepa que la petición está en curso.
+1.  **Detección Automática**: Avisar al usuario con un banner rojo si el sistema no tiene permiso para leer mensajes.
+2.  **Guía de Desbloqueo (3 Puntos)**: Mostrar instrucciones visuales claras sobre cómo habilitar los "Ajustes restringidos".
+3.  **Accesos Directos Inteligentes**:
+    *   Botón para ir a **Ajustes de Notificaciones** (donde está el interruptor).
+    *   Botón para ir a **Información de la App** (donde están los 3 puntos para desbloquear).
+4.  **Optimización de Batería**: Guía para desactivar el ahorro de energía que detiene el monitoreo.
 
 ## Cambios Propuestos
 
-### 1. Frontend (Panel Web)
+### 1. App Android
 
-#### [MODIFY] [index.html](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/public/index.html)
-- Reemplazar el contenedor de login por un elemento `<form>` para soporte nativo de teclado.
-- Envolver la petición `fetch` en un bloque `try/catch` robusto.
-- Añadir un indicador visual de carga en el botón.
-- Asegurar que no existan funciones duplicadas o etiquetas mal cerradas.
+#### [MODIFY] [StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)
+- Implementar `isNotificationServiceEnabled()` para detectar el estado real del permiso.
+- Añadir lógica para mostrar un diálogo de "Asistente de Configuración" si el permiso está bloqueado.
+- Añadir función `openAppInfo()` para llevar al usuario directamente al menú de los 3 puntos.
 
-### 2. Backend (Opcional/Seguridad)
-- No se requieren cambios en el servidor, ya que el problema es de interfaz.
+#### [MODIFY] [res/layout/activity_status.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_status.xml)
+- Añadir un **CardView de Alerta** que solo aparezca cuando falten permisos.
+- Incluir un botón de "Cómo desbloquear permisos" con un diseño llamativo.
+
+### 2. Guía Visual (Diálogo de Ayuda)
+- Crear un diálogo interactivo que explique los 3 pasos:
+    1.  Abrir "Información de la aplicación".
+    2.  Tocar los **3 puntos (⋮)** arriba a la derecha.
+    3.  Elegir **"Permitir ajustes restringidos"**.
 
 ## Plan de Verificación
-1. **Acceso**: Ingresar la clave y pulsar ENTER. El panel debe cargar.
-2. **Error**: Ingresar una clave incorrecta y verificar que aparece el mensaje "Contraseña incorrecta".
-3. **Red**: Si el servidor está caído, verificar que aparece un aviso de "No se pudo conectar con el servidor".
+1.  **Sideload Test**: Instalar la app en un teléfono con Android 13/14.
+2.  **Validación de Banner**: Confirmar que el banner de error aparece si el interruptor está bloqueado.
+3.  **Flujo de Desbloqueo**: Seguir la guía de los 3 puntos y confirmar que el interruptor se vuelve habilitable.
 
 ---
 
-**¿Deseas que proceda con esta reparación final de la interfaz para que puedas entrar al panel?**
+> [!IMPORTANT]
+> Sin este cambio, los usuarios de teléfonos nuevos no podrán activar el monitoreo por más que intenten mover el interruptor. Esta es la única solución técnica permitida por Android.
+
+**¿Deseas que proceda con este asistente de permisos avanzados para cubrir todos los teléfonos?**

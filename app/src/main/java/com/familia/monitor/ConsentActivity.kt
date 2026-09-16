@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 
@@ -69,8 +70,8 @@ class ConsentActivity : AppCompatActivity() {
             getSharedPreferences("device", MODE_PRIVATE)
                 .edit()
                 .putString("device_token", typedToken)
-                .putString("admin_password", typedPassword) // Nueva clave unificada
-                .putBoolean("monitoring_enabled", true) // Activado por defecto
+                .putString("admin_password", typedPassword)
+                .putBoolean("monitoring_enabled", true)
                 .apply()
 
             getSharedPreferences("consent", MODE_PRIVATE)
@@ -79,20 +80,26 @@ class ConsentActivity : AppCompatActivity() {
                 .putLong("consent_timestamp", System.currentTimeMillis())
                 .apply()
 
-            // Activar el servicio de estado (Notificación permanente)
+            // Iniciar servicio en primer plano
             val serviceIntent = Intent(this, ForegroundStatusService::class.java)
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                startForegroundService(serviceIntent)
-            } else {
-                startService(serviceIntent)
-            }
+            startForegroundService(serviceIntent)
 
-            // Lleva al usuario al ajuste del sistema donde debe habilitar
-            // manualmente el acceso a notificaciones (Android no permite
-            // hacerlo automáticamente, por diseño).
-            startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
-            startActivity(Intent(this, StatusActivity::class.java))
-            finish()
+            // Aviso especial para Android 13+ antes de ir a ajustes
+            if (android.os.Build.VERSION.SDK_INT >= 33) {
+                AlertDialog.Builder(this)
+                    .setTitle("Paso Importante (Android 13+)")
+                    .setMessage("Si al intentar activar el permiso ves que el interruptor está en gris, deberás tocar los 3 puntos (⋮) en 'Información de la aplicación' y elegir 'Permitir ajustes restringidos'.")
+                    .setPositiveButton("ENTENDIDO") { _, _ ->
+                        startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+                        startActivity(Intent(this, StatusActivity::class.java))
+                        finish()
+                    }
+                    .show()
+            } else {
+                startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+                startActivity(Intent(this, StatusActivity::class.java))
+                finish()
+            }
         }
     }
 }
