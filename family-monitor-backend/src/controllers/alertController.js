@@ -72,7 +72,7 @@ async function getAlerts(req, res) {
  * Skeleton para notificaciones por email
  */
 async function sendEmailNotification(alert) {
-  console.log("[EMAIL] Iniciando proceso de envío...");
+  console.log("[EMAIL] Iniciando proceso de envío (Modo Gmail Service)...");
 
   const { SMTP_USER, SMTP_PASS, PARENT_EMAIL } = process.env;
 
@@ -81,26 +81,20 @@ async function sendEmailNotification(alert) {
     return;
   }
 
-  console.log(`[EMAIL] Configurando transporte para: ${SMTP_USER}`);
-
-  // Cambiamos a Puerto 587 con STARTTLS, que suele ser más compatible en la nube
+  // Usamos el 'service' predefinido para Gmail, que Nodemailer configura automáticamente
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // TLS
+    service: "gmail",
     auth: {
       user: SMTP_USER,
       pass: SMTP_PASS
     },
-    connectionTimeout: 10000, // 10 segundos
-    greetingTimeout: 10000,
-    socketTimeout: 10000
+    // Activamos debug para ver la conversación completa en los logs
+    debug: true,
+    logger: true
   });
 
   try {
-    console.log("[EMAIL] Verificando conexión (Puerto 587)...");
-    await transporter.verify();
-    console.log("[EMAIL] Conexión SMTP verificado con éxito.");
+    console.log("[EMAIL] Enviando mensaje crítico...");
 
     const mailOptions = {
       from: `"Protección Familiar" <${SMTP_USER}>`,
@@ -127,12 +121,13 @@ async function sendEmailNotification(alert) {
       `
     };
 
-    console.log("[EMAIL] Enviando mensaje final...");
     const info = await transporter.sendMail(mailOptions);
     console.log("[EMAIL] ÉXITO: Correo enviado. ID:", info.messageId);
   } catch (err) {
-    console.error("[EMAIL] ERROR DURANTE EL PROCESO:", err.message);
-    console.error("[EMAIL] STACK:", err.stack);
+    console.error("[EMAIL] ERROR FINAL:", err.message);
+    if (err.message.includes("Invalid login") || err.message.includes("auth")) {
+      console.error("[EMAIL] RECOMENDACIÓN: Verifica tu App Password en Google. No debe tener espacios.");
+    }
   }
 }
 
