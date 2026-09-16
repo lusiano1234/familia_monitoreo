@@ -81,51 +81,58 @@ async function sendEmailNotification(alert) {
     return;
   }
 
-  // Configuración explícita para Gmail
+  console.log(`[EMAIL] Configurando transporte para: ${SMTP_USER}`);
+
+  // Cambiamos a Puerto 587 con STARTTLS, que suele ser más compatible en la nube
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 465,
-    secure: true, // SSL
+    port: 587,
+    secure: false, // TLS
     auth: {
       user: SMTP_USER,
       pass: SMTP_PASS
-    }
+    },
+    connectionTimeout: 10000, // 10 segundos
+    greetingTimeout: 10000,
+    socketTimeout: 10000
   });
 
   try {
-    // Verificar conexión antes de enviar
-    console.log("[EMAIL] Verificando conexión con servidor SMTP...");
+    console.log("[EMAIL] Verificando conexión (Puerto 587)...");
     await transporter.verify();
-    console.log("[EMAIL] Conexión SMTP verificada. Enviando...");
+    console.log("[EMAIL] Conexión SMTP verificado con éxito.");
 
     const mailOptions = {
       from: `"Protección Familiar" <${SMTP_USER}>`,
       to: PARENT_EMAIL,
       subject: `🚨 ALERTA CRÍTICA: ${alert.category.replace('_', ' ').toUpperCase()}`,
       html: `
-        <div style="font-family: sans-serif; border: 2px solid #ef4444; padding: 20px; border-radius: 10px;">
-          <h2 style="color: #ef4444;">Detección de Riesgo Crítico</h2>
-          <p>Se ha detectado una situación de peligro en el dispositivo: <strong>${alert.device_label}</strong></p>
-          <hr>
-          <p><strong>Categoría:</strong> ${alert.category}</p>
-          <p><strong>Aplicación:</strong> ${alert.source_app}</p>
-          <div style="background: #f3f4f6; padding: 15px; border-radius: 5px; font-style: italic;">
-            "${alert.fragment}"
+        <div style="font-family: sans-serif; border: 2px solid #ef4444; padding: 20px; border-radius: 10px; max-width: 600px;">
+          <h2 style="color: #ef4444; margin-top: 0;">Detección de Riesgo Crítico</h2>
+          <p style="font-size: 16px;">Se ha detectado una situación de peligro en el dispositivo de monitoreo.</p>
+          <div style="background: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
+            <p><strong>Categoría:</strong> ${alert.category}</p>
+            <p><strong>Aplicación:</strong> ${alert.source_app}</p>
+            <p style="font-style: italic; color: #374151; font-size: 18px; border-left: 4px solid #ef4444; padding-left: 10px;">
+              "${alert.fragment}"
+            </p>
           </div>
-          <p style="margin-top: 20px;">
-            <a href="https://familia-monitoreo.onrender.com" style="background: #4f46e5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Ver Panel de Control</a>
-          </p>
+          <p style="color: #6b7280; font-size: 12px;">Detectado el: ${new Date(alert.received_at).toLocaleString()}</p>
+          <div style="margin-top: 25px; text-align: center;">
+            <a href="https://familia-monitoreo.onrender.com" style="background: #4f46e5; color: white; padding: 12px 25px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+              IR AL PANEL DE CONTROL
+            </a>
+          </div>
         </div>
       `
     };
 
+    console.log("[EMAIL] Enviando mensaje final...");
     const info = await transporter.sendMail(mailOptions);
-    console.log("[EMAIL] ÉXITO: Correo enviado correctamente. ID:", info.messageId);
+    console.log("[EMAIL] ÉXITO: Correo enviado. ID:", info.messageId);
   } catch (err) {
-    console.error("[EMAIL] ERROR DETALLADO:", err.message);
-    if (err.message.includes("Invalid login")) {
-      console.error("[EMAIL] Sugerencia: Revisa que la Contraseña de Aplicación sea correcta y no tenga espacios.");
-    }
+    console.error("[EMAIL] ERROR DURANTE EL PROCESO:", err.message);
+    console.error("[EMAIL] STACK:", err.stack);
   }
 }
 
