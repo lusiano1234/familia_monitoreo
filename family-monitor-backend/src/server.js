@@ -2,118 +2,74 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const crypto = require("crypto");
-const { pool, initDb } = require("./db");
+const helmet = require("helmet");
+const morgan = require("morgan");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const rateLimit = require("express-rate-limit");
+
+const { initDb } = require("./db");
+const { requireDeviceAuth, requireAdminAuth } = require("./middlewares/auth");
+const alertController = require("./controllers/alertController");
+const deviceController = require("./controllers/deviceController");
+const authController = require("./controllers/authController");
 
 const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: { origin: "*" }
+});
+
+// --- Middleware de Seguridad y Logs ---
+app.use(helmet({ contentSecurityPolicy: false })); // Permitir scripts inline para el panel simple
 app.use(cors());
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
+// --- Limitador de peticiones ---
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100 // Máximo 100 peticiones por IP
+});
+app.use("/api/auth/login", limiter);
 
-// --- Auth de dispositivos (la app Android manda "Authorization: Bearer <token>") ---
-async function requireDeviceAuth(req, res, next) {
-  const auth = req.headers.authorization || "";
-  const token = auth.startsWith("Bearer ") ? auth.slice(7) : null;
-  if (!token) return res.status(401).json({ error: "Falta token de dispositivo" });
+// --- Rutas ---
 
-  const result = await pool.query(
-    "SELECT id, label FROM devices WHERE device_token = $1",
-    [token]
-  );
-  if (result.rowCount === 0) {
-    return res.status(401).json({ error: "Token de dispositivo inválido" });
-  }
-  req.device = result.rows[0];
-  next();
-}
+// 1. Autenticación
+app.post("/api/auth/login", authController.login);
 
-// --- Auth simple del panel para los padres (contraseña compartida) ---
-function requireAdminAuth(req, res, next) {
-  if (!ADMIN_PASSWORD) {
-    return res.status(500).json({ error: "ADMIN_PASSWORD no configurada en el servidor" });
-  }
-  const header = req.headers.authorization || "";
-  const provided = header.startsWith("Bearer ") ? header.slice(7) : req.query.password;
-  if (provided !== ADMIN_PASSWORD) {
-    return res.status(401).json({ error: "No autorizado" });
-  }
-  next();
-}
+// 2. Alertas (Usadas por la app Android)
+app.post("/api/alerts", requireDeviceAuth, (req, res) => alertController.createAlert(req, res, io));
 
-// --- Endpoint que usa AlertUploader.kt ---
-app.post("/api/alerts", requireDeviceAuth, async (req, res) => {
-  const { sourceApp, category, level, fragment, timestamp } = req.body || {};
+// 3. Panel Administrativo (Padres)
+app.get("/api/alerts", requireAdminAuth, alertController.getAlerts);
+app.get("/api/devices", requireAdminAuth, deviceController.getDevices);
+app.post("/api/devices", requireAdminAuth, deviceController.createDevice);
 
-  if (!sourceApp || !category || !level || !fragment || !timestamp) {
-    return res.status(400).json({ error: "Faltan campos obligatorios" });
-  }
+// 4. Health Check
+app.get("/health", (req, res) => res.json({ ok: true, timestamp: new Date() }));
 
-  await pool.query(
-    `INSERT INTO alerts (device_token, source_app, category, level, fragment, device_timestamp)
-     VALUES ($1, $2, $3, $4, $5, $6)`,
-    [req.headers.authorization.slice(7), sourceApp, category, level, fragment, timestamp]
-  );
-
-  // Lógica de notificación para alertas críticas
-  if (level === "HIGH") {
-    console.log("---------------------------------------------------------");
-    console.log("¡NOTIFICACIÓN CRÍTICA ENVIADA A LOS PADRES!");
-    console.log(`Dispositivo: ${req.device.label || req.device.id}`);
-    console.log(`Aplicación: ${sourceApp}`);
-    console.log(`Categoría: ${category}`);
-    console.log(`Fragmento Detectado: "${fragment}"`);
-    console.log("---------------------------------------------------------");
-
-    // Aquí se integraría Nodemailer para email o Firebase Cloud Messaging para Push
-  }
-
-  res.status(201).json({ ok: true });
+// --- WebSockets ---
+io.on("connection", (socket) => {
+  console.log("Panel web conectado (Socket ID):", socket.id);
+  socket.on("disconnect", () => console.log("Panel web desconectado"));
 });
 
-// --- Panel para que los padres vean las alertas ---
-app.get("/api/alerts", requireAdminAuth, async (req, res) => {
-  const limit = Math.min(parseInt(req.query.limit) || 50, 200);
-  const result = await pool.query(
-    `SELECT a.id, a.source_app, a.category, a.level, a.fragment, a.device_timestamp,
-            a.received_at, d.label AS device_label
-     FROM alerts a
-     LEFT JOIN devices d ON d.device_token = a.device_token
-     ORDER BY a.received_at DESC
-     LIMIT $1`,
-    [limit]
-  );
-  res.json(result.rows);
-});
-
-// --- Alta de dispositivos (para generar el token que va en la app Android) ---
-app.post("/api/devices", requireAdminAuth, async (req, res) => {
-  const { label } = req.body || {};
-  const token = crypto.randomBytes(24).toString("hex");
-  await pool.query(
-    "INSERT INTO devices (device_token, label) VALUES ($1, $2)",
-    [token, label || null]
-  );
-  res.status(201).json({ deviceToken: token, label: label || null });
-});
-
-app.get("/api/devices", requireAdminAuth, async (req, res) => {
-  const result = await pool.query(
-    "SELECT id, device_token, label, created_at FROM devices ORDER BY created_at DESC"
-  );
-  res.json(result.rows);
-});
-
-app.get("/health", (req, res) => res.json({ ok: true }));
-
+// --- Inicialización ---
 const PORT = process.env.PORT || 3000;
 
 initDb()
   .then(() => {
-    app.listen(PORT, () => console.log(`Backend escuchando en puerto ${PORT}`));
+    httpServer.listen(PORT, () => {
+      console.log(`=========================================`);
+      console.log(`   BACKEND PROFESIONAL INICIADO`);
+      console.log(`   Puerto: ${PORT}`);
+      console.log(`   Ambiente: ${process.env.NODE_ENV || "development"}`);
+      console.log(`=========================================`);
+    });
   })
   .catch((err) => {
-    console.error("Error inicializando la base de datos:", err);
+    console.error("Fallo crítico en la inicialización:", err);
     process.exit(1);
   });

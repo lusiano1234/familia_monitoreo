@@ -1,32 +1,37 @@
-# Walkthrough - Expansión de Reglas y Detección de Desconocidos
+# Walkthrough - Backend Profesionalizado
 
-Se han implementado mejoras significativas en el motor de riesgo y en la capacidad de detección de la aplicación, incluyendo la identificación de contactos no registrados y la ampliación de patrones de mensajes peligrosos.
+Se ha transformado el backend de un prototipo simple a una aplicación robusta con arquitectura empresarial, actualizaciones en tiempo real y seguridad avanzada.
 
-## Cambios Realizados
+## Mejoras Implementadas
 
-### Motor de Riesgo (Risk Engine)
-*   **[RiskEngine.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/RiskEngine.kt)**: Se añadieron nuevas categorías de detección:
-    *   **Grooming**: Detección de preguntas sobre ubicación o soledad.
-    *   **Sextorsión**: Patrones de amenazas con material sensible.
-    *   **Citas Sospechosas**: Invitaciones a encuentros privados.
-    *   **Robo de Cuenta**: Solicitudes de códigos de verificación o SMS.
+### Arquitectura Modular
+*   El código se ha separado en **Controladores**, **Middlewares** y **Rutas**. Esto permite que el proyecto sea mantenible y escalable.
+*   `alertController.js`: Maneja la lógica de las alertas y la integración con sockets.
+*   `deviceController.js`: Gestiona el registro de dispositivos Android.
+*   `authController.js`: Gestiona el acceso seguro al panel administrativo.
 
-### Detección de Contactos Desconocidos
-*   **[ContactHelper.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/ContactHelper.kt)**: Nuevo componente que utiliza el `ContentResolver` del sistema para verificar si un remitente (nombre o número) existe en la agenda del teléfono.
-*   **[NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)**:
-    *   Ahora cruza cada notificación con la agenda. Si el remitente es desconocido, se envía una alerta automática de nivel `MEDIUM`.
-    *   Se amplió el monitoreo para incluir las aplicaciones de **Teléfono (Llamadas)**.
+### Actualizaciones en Tiempo Real (WebSockets)
+*   Se integró **Socket.io**. Ahora, cuando llega una alerta desde un teléfono Android, esta aparece **instantáneamente** en el panel web sin necesidad de recargar la página.
+*   Se añadió un indicador visual ("MONITOREO EN VIVO") en el panel para confirmar la conexión.
 
-### Gestión de Permisos
-*   **[AndroidManifest.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/AndroidManifest.xml)**: Se añadió el permiso `READ_CONTACTS`.
-*   **[StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)**: Se añadió una sección de "Permisos adicionales" para solicitar el acceso a contactos de forma transparente.
+### Seguridad y Robustez
+*   **JWT (JSON Web Tokens)**: El acceso al panel ahora usa tokens firmados. Al loguearte, tu sesión queda guardada de forma segura en el navegador.
+*   **Helmet & Morgan**: Se añadieron capas de seguridad para las cabeceras HTTP y un sistema de logs profesional para monitorear el tráfico.
+*   **Rate Limiting**: El endpoint de login está protegido contra ataques de fuerza bruta.
 
-## Verificación Visual
+### Interfaz Renovada
+*   El panel web ahora tiene un diseño más limpio y moderno (Look & Feel profesional).
+*   Las alertas se muestran con colores según su nivel de riesgo (`HIGH` en rojo, `MEDIUM` en amarillo).
 
-![Pantalla de estado con detección de desconocidos activa](/C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/build/tmp/screenshot_status.png)
+### Notificaciones por Email (Activado)
+*   Se habilitó el componente `sendEmailNotification` en `alertController.js`.
+*   El sistema ahora intentará enviar un correo automático cada vez que una alerta sea de nivel `HIGH`.
+*   Se requiere configuración de variables de entorno en Render para que los correos salgan exitosamente.
 
-## Instrucciones para el Usuario
+## Guía de Configuración
+He creado una guía paso a paso para configurar el e-mail: [email_setup_guide.artifact.md](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/email_setup_guide.artifact.md).
 
-1.  **Permitir Contactos**: En la pantalla de estado de la app, presiona el botón **"Permitir detectar desconocidos"**. Esto es vital para que la app sepa quién es un contacto de confianza y quién no.
-2.  **Prueba de Llamada**: Puedes probar llamando desde un número que no tengas guardado; verás que el sistema genera una alerta en el panel web.
-3.  **Seguridad**: Recuerda que la app solo envía al servidor el nombre/número del desconocido y el fragmento del mensaje, manteniendo la privacidad de tus contactos conocidos.
+## Verificación
+
+1.  **Arranque**: El servidor se configuró para arrancar con `npm start` apuntando al nuevo `src/server.js`.
+2.  **Frontend**: El panel ahora solicita contraseña y mantiene la sesión activa.

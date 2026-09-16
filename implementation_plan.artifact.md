@@ -1,50 +1,54 @@
-# Plan de Implementación: Expansión de Reglas y Detección de Desconocidos
+# Plan de Implementación: Profesionalización del Backend (Monitor Familiar)
 
-Este plan expande las capacidades del motor de riesgo y añade la detección de interacciones (mensajes y llamadas) con contactos que no están en la agenda del teléfono.
+Este plan transforma el backend actual de un prototipo básico a una aplicación robusta, segura y escalable, siguiendo las mejores prácticas de la industria.
 
-## User Review Required
+## Mejoras Propuestas
 
-> [!IMPORTANT]
-> **Permisos de Contactos**: Para detectar si un contacto es "desconocido", la aplicación ahora requerirá el permiso de **Leer Contactos** (`READ_CONTACTS`). Esto debe ser aceptado por el usuario en la pantalla de configuración.
+### 1. Arquitectura Modular
+- **Reorganización**: Separar `server.js` en carpetas:
+    - `/routes`: Definición de endpoints.
+    - `/controllers`: Lógica de negocio.
+    - `/middlewares`: Seguridad, validación y errores.
+- **Beneficio**: Facilita el mantenimiento y la expansión futura (ej: añadir usuarios, reportes PDF, etc.).
 
-## Cambios Propuestos
+### 2. Actualizaciones en Tiempo Real (WebSockets)
+- **Tecnología**: Integrar **Socket.io**.
+- **Cambio**: Cuando la app Android envíe una alerta (`POST /api/alerts`), el servidor la emitirá instantáneamente al panel web de los padres.
+- **Beneficio**: Los padres no tendrán que refrescar la página manualmente para ver si hay una alerta nueva.
 
-### 1. Expansión de Palabras Clave
+### 3. Seguridad Avanzada
+- **JWT (JSON Web Tokens)**: Implementar un flujo de login real para el panel. En lugar de mandar la contraseña en cada request, el admin se loguea una vez y recibe un token firmado.
+- **Rate Limiting**: Limitar la cantidad de peticiones desde una misma IP para evitar ataques de fuerza bruta o saturación.
+- **Validación de Datos**: Usar esquemas para asegurar que los datos que vienen de la app Android son válidos antes de procesarlos.
 
-#### [MODIFY] [RiskEngine.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/RiskEngine.kt)
-- Añadir nuevas categorías de riesgo:
-    - **Grooming**: "donde vivis", "estas solo", "pasame tu direccion", "no le cuentes a nadie".
-    - **Sextorsión**: "tengo tus fotos", "voy a publicar el video", "borra el chat".
-    - **Citas Sospechosas**: "encontremonos", "te paso a buscar", "veni a mi casa".
-    - **Robo de Cuenta**: "pasame el codigo", "llego un SMS", "validar cuenta".
+### 4. Notificaciones Externas (E-mail)
+- **Tecnología**: Preparar la integración con **Nodemailer**.
+- **Lógica**: Si una alerta es `HIGH`, el servidor intentará enviar un correo automático a la dirección de los padres configurada.
 
-### 2. Detección de Contactos Desconocidos
+### 5. Observabilidad y Errores
+- **Logging**: Integrar **Morgan** para ver todas las peticiones en los logs de Render de forma clara.
+- **Manejo Global de Errores**: Middleware centralizado para capturar cualquier fallo y responder con un formato JSON profesional en lugar de exponer trazas de código.
 
-#### [MODIFY] [AndroidManifest.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/AndroidManifest.xml)
-- Añadir `<uses-permission android:name="android.permission.READ_CONTACTS" />`.
+## Cambios en Archivos
 
-#### [NEW] [ContactHelper.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/ContactHelper.kt)
-- Implementar función `isContactUnknown(context, nameOrNumber)` que consulta el `ContentResolver` para verificar si el remitente existe en los contactos del sistema.
-
-#### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
-- Extraer el nombre del remitente de los extras de la notificación.
-- Si el remitente es desconocido, generar una alerta automática de nivel `MEDIUM` con la categoría `contacto_desconocido`.
-
-### 3. Monitoreo de Llamadas
-
-#### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
-- Añadir paquetes de telefonía (Dialer) a la lista de monitoreo.
-- Detectar notificaciones de categoría `Notification.CATEGORY_CALL`.
-- Verificar si el número de la llamada entrante es desconocido y avisar.
-
-### 4. Solicitud de Permisos en UI
-
-#### [MODIFY] [StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)
-- Añadir un botón o chequeo para solicitar el permiso de contactos si aún no ha sido otorgado.
+### Backend
+#### [NEW] [authController.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/controllers/authController.js)
+- Manejo de login y generación de JWT.
+#### [NEW] [alertController.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/controllers/alertController.js)
+- Lógica de guardado de alertas y emisión por WebSockets.
+#### [NEW] [middleware.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/middlewares/auth.js)
+- Verificación de JWT y autenticación de dispositivos.
+#### [MODIFY] [server.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/server.js)
+- Configuración de Socket.io y orquestación de rutas.
+#### [MODIFY] [index.html](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/public/index.html)
+- Actualización para soportar WebSockets y manejo de sesión con JWT.
 
 ## Plan de Verificación
+1.  **Prueba de Socket**: Enviar una alerta desde la app y ver cómo aparece en el panel sin refrescar.
+2.  **Prueba de Seguridad**: Intentar acceder al panel sin el token JWT.
+3.  **Prueba de Estructura**: Verificar que el servidor arranca correctamente con la nueva arquitectura.
 
-### Pruebas Manuales
-1.  **Nuevas palabras**: Enviar un WhatsApp con "pasame tu dirección" y verificar la alerta.
-2.  **Contacto desconocido**: Enviar un mensaje desde un número que NO esté en los contactos del teléfono y verificar que llegue el aviso de "Contacto desconocido".
-3.  **Llamada desconocida**: Realizar una llamada desde un número no registrado y verificar el aviso en el backend.
+---
+
+> [!QUESTION]
+> ¿Tienes algún servicio de e-mail preferido (ej: Gmail, SendGrid) o prefieres que deje la lógica genérica lista para que solo pongas las credenciales?

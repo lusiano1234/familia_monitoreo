@@ -1,11 +1,14 @@
-# Tareas de Expansión de Reglas y Detección de Desconocidos
+# Tareas: Profesionalización del Backend
 
-- [x] Expandir reglas en `RiskEngine.kt` (Grooming, Sextorsión, etc.)
-- [x] Añadir permiso `READ_CONTACTS` en `AndroidManifest.xml`
-- [x] Crear `ContactHelper.kt` para verificar contactos en la agenda
-- [x] Actualizar `NotificationCaptureService.kt` para detectar desconocidos y llamadas
-- [x] Añadir solicitud de permiso en `StatusActivity.kt`
+- [x] Actualizar dependencias (`package.json`)
+- [x] Crear estructura modular
+    - [x] `src/middlewares/auth.js`: Protección JWT y Device Auth
+    - [x] `src/controllers/alertController.js`: Lógica de alertas
+    - [x] `src/controllers/deviceController.js`: Gestión de dispositivos
+    - [x] `src/controllers/authController.js`: Login administrativo
+- [x] Refactorizar `src/server.js` (Integración Socket.io y Rutas)
+- [x] Actualizar panel web (`public/index.html`) para soporte Socket.io y JWT
+- [x] Implementar sistema de notificaciones por Email (Skeleton)
 - [x] Verificación
-    - [x] Compilar y desplegar
-    - [x] Probar nuevas palabras clave
-    - [x] Probar detección de remitente desconocido
+    - [x] Validar arranque del servidor
+    - [x] Probar recepción de alertas en tiempo real
