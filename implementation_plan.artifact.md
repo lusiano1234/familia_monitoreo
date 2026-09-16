@@ -1,38 +1,51 @@
-# Plan de Implementación: Gestión de Seguridad y Configuración Avanzada
+# Plan de Mejora: "Seguridad Familiar Total"
 
-Este plan permite a los padres controlar funciones críticas de la aplicación (monitoreo, token y protección anti-borrado) utilizando la misma contraseña del panel administrativo para garantizar que el niño no pueda desactivar la protección.
+Este plan detalla las funcionalidades recomendadas para cubrir todos los escenarios de riesgo posibles, transformando la aplicación en una herramienta de protección integral.
 
-## Objetivos
-1.  **Validación de Contraseña Administrativa**: Sincronizar el acceso a la app con la clave del panel web.
-2.  **Control de Monitoreo**: Añadir un interruptor maestro para pausar/activar la captura de mensajes.
-3.  **Gestión de Token**: Permitir la edición del token de vinculación directamente desde la app.
-4.  **Gestión de Protección Anti-Borrado**: Permitir desactivar el permiso de Administrador de Dispositivo de forma sencilla (pero protegida por clave).
-
-## Cambios Propuestos
-
-### 1. App Android
-
-#### [MODIFY] [PinActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/PinActivity.kt)
-- Reemplazar el PIN fijo `1234` por una validación de contraseña.
-- *Nota*: La contraseña se validará contra el servidor o se guardará de forma segura durante la configuración inicial para permitir acceso offline.
-
-#### [MODIFY] [res/layout/activity_status.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_status.xml)
-- **Interruptor Maestro**: Añadir un `MaterialSwitch` para activar/desactivar el monitoreo.
-- **Campo de Token**: Cambiar el texto estático por un `TextInputLayout` con `TextInputEditText`.
-- **Botón de Protección**: Cambiar el botón de "Activar" por uno dinámico que también permita "Desactivar" si ya está activo.
-
-#### [MODIFY] [StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)
-- **Lógica de Desactivación**: Implementar `dpm.removeActiveAdmin(componentName)` para quitar la protección anti-borrado.
-- **Persistencia**: Guardar el estado `is_monitoring_enabled` en SharedPreferences.
-
-#### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
-- Añadir un chequeo al inicio de `onNotificationPosted`: si el monitoreo está apagado, ignorar el mensaje.
-
-## Plan de Verificación
-1.  **Seguridad**: Intentar desactivar el monitoreo sin poner la clave correcta.
-2.  **Desactivación de Admin**: Activar la protección, confirmar que no se puede borrar la app, luego desactivarla desde el botón protegido y confirmar que ahora sí se puede desinstalar.
-3.  **Edición de Token**: Cambiar el token y verificar que las alertas lleguen al nuevo destino.
+## Escenarios Cubiertos
+1.  **Riesgo Físico**: Saber dónde está el niño cuando ocurre una alerta.
+2.  **Acoso por SMS**: Detectar amenazas fuera de las apps de chat.
+3.  **Emergencia Silenciosa**: Permitir al niño pedir ayuda sin que nadie lo note.
+4.  **Control de Crisis**: Bloquear el dispositivo remotamente desde el panel web.
 
 ---
 
-**¿Deseas que proceda con esta actualización para darte control total sobre la seguridad de la app?**
+## 1. Localización en Tiempo Real (Geolocalización)
+*   **App**: Capturar coordenadas GPS (Latitud/Longitud) cada vez que se dispare una alerta de riesgo.
+*   **Backend**: Almacenar la ubicación vinculada a la alerta.
+*   **Panel Web**: Mostrar un mapa con la ubicación exacta de donde se recibió el mensaje peligroso.
+
+## 2. Monitor de SMS y Llamadas del Sistema
+*   **App**: Implementar un observador para mensajes de texto (SMS). Los estafadores suelen usar SMS cuando son bloqueados en WhatsApp.
+*   **App**: Registrar llamadas perdidas de números desconocidos.
+
+## 3. Comandos Remotos (Socket.io Bidireccional)
+*   **Panel Web**: Botón para **"Hacer sonar alarma"** (incluso si está en silencio) para encontrar el teléfono o asustar a un agresor.
+*   **Panel Web**: Botón para **"Bloquear Pantalla"** si se detecta una situación de grooming extrema.
+
+## 4. Botón de Pánico Discreto
+*   **App**: Un gesto secreto (ej: presionar 5 veces el botón de encendido) que envíe una alerta inmediata al panel con la ubicación actual y una grabación de audio de 15 segundos.
+
+---
+
+## Cambios Técnicos Propuestos
+
+### App Android
+*   **[NEW] `LocationHelper.kt`**: Gestión de permisos GPS y obtención de coordenadas.
+*   **[NEW] `SmsObserver.kt`**: Monitoreo de la base de datos de mensajes entrantes.
+*   **[MODIFY] `NotificationCaptureService.kt`**: Integración con Socket.io para recibir órdenes desde el panel web.
+
+### Backend (Node.js)
+*   **[MODIFY] `db.js`**: Añadir columnas `latitude`, `longitude` y `accuracy`.
+*   **[MODIFY] `server.js`**: Habilitar el envío de mensajes desde el Panel -> App a través de Sockets.
+
+### Frontend (Panel Web)
+*   **[MODIFY] `index.html`**: Integrar la API de **Google Maps** o **Leaflet** para visualizar las ubicaciones.
+*   **[MODIFY] `index.html`**: Panel de "Acciones Rápidas" (Alarma, Bloqueo).
+
+---
+
+> [!IMPORTANT]
+> La localización en segundo plano en Android 14 requiere que el usuario acepte el permiso "Permitir siempre". Esto es fundamental para que el GPS funcione con la pantalla apagada.
+
+**¿Qué opinas de estas recomendaciones? ¿Deseas que empecemos por la Localización GPS o por los Comandos Remotos?**
