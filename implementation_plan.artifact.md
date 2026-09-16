@@ -1,41 +1,55 @@
-# Plan de Implementación: Refuerzo Crítico del Motor de Riesgo (Protección Infantil)
+# Plan de Implementación: Restauración y Profesionalización (Real-Time & Blindaje)
 
-Este plan tiene como objetivo expandir masivamente el motor de reglas local para detectar situaciones de extorsión, grooming y aislamiento, específicamente diseñado para la protección de menores de edad.
+Este plan restaura las funcionalidades profesionales perdidas y asegura que los reportes se actualicen en tiempo real mediante WebSockets, además de blindar el motor de riesgo contra extorsiones.
 
-## User Review Required
-
-> [!CAUTION]
-> **Sensibilidad de los datos**: Estas reglas son más agresivas y podrían generar algunos falsos positivos. Sin embargo, en un contexto de extorsión real, es preferible pecar de precavido. El sistema seguirá operando 100% localmente y solo subirá el fragmento que disparó la alerta.
+## Objetivos
+1.  **Tiempo Real**: Integrar `Socket.io` para que las alertas aparezcan en el panel sin refrescar.
+2.  **Arquitectura Profesional**: Organizar el backend en Controladores, Middlewares y Rutas.
+3.  **Seguridad**: Implementar JWT para el panel administrativo y proteger el login contra ataques.
+4.  **Notificaciones**: Configurar la vía de e-mail mediante SendGrid (inmune a bloqueos de Render).
+5.  **Blindaje de Riesgo**: Reforzar la app Android con reglas neutras contra extorsión y grooming.
 
 ## Cambios Propuestos
 
-### 1. Expansión del Diccionario de Riesgo
+### 1. Backend (Node.js)
+
+#### [MODIFY] [package.json](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/package.json)
+- Añadir dependencias: `jsonwebtoken`, `socket.io`, `express-rate-limit`, `helmet`, `morgan`, `@sendgrid/mail`, `bcryptjs`.
+
+#### [NEW] [auth.js (Middleware)](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/middlewares/auth.js)
+- Validación de JWT para padres y Device Token para la app.
+
+#### [NEW] [alertController.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/controllers/alertController.js)
+- Lógica de alertas: Guardar en DB -> Emitir por Socket -> Notificar por SendGrid.
+
+#### [NEW] [deviceController.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/controllers/deviceController.js)
+- Gestión de tokens de vinculación.
+
+#### [NEW] [authController.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/controllers/authController.js)
+- Login administrativo con generación de tokens JWT.
+
+#### [MODIFY] [server.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/server.js)
+- Reescritura completa para integrar Socket.io y la nueva estructura modular.
+
+### 2. Frontend (Panel Web)
+
+#### [MODIFY] [index.html](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/public/index.html)
+- Integrar cliente de Socket.io (desde CDN para máxima compatibilidad).
+- Sistema de login real con persistencia de sesión en `localStorage`.
+- Interfaz moderna con animaciones para alertas nuevas.
+
+### 3. App Android (Protección)
 
 #### [MODIFY] [RiskEngine.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/RiskEngine.kt)
-Se añadirán y expandirán las siguientes categorías con patrones de lenguaje natural:
-
-- **Aislamiento y Secretismo (Nivel HIGH)**:
-    - Patrones: "tus papas no estan", "borra el chat", "borra los mensajes", "limpia la charla", "nadie tiene que saber", "mentile a tus papas", "que no se enteren".
-- **Amenazas de Difusión/Doxing (Nivel HIGH)**:
-    - Patrones: "se lo mando a tus amigos", "lo subo a tiktok", "lo subo a instagram", "toda la escuela lo va a ver", "se a que escuela vas", "tengo tu cara en el video".
-- **Insinuaciones de "Juegos" Peligrosos (Nivel HIGH)**:
-    - Patrones: "jugamos a un reto", "verdad o consecuencia", "sacate la remera", "mostrame un poquito", "estamos solos vos y yo".
-- **Control Físico/Presencia (Nivel HIGH)**:
-    - Patrones: "estas en tu cuarto", "que ropa tenes puesta", "estoy afuera", "veni a la esquina", "quedamos en vernos".
-- **Extorsión Económica Específica (Nivel HIGH)**:
-    - Patrones: "paga o subo", "quiero tarjetas de regalo", "mandame codigos", "comprame diamantes", "si no pagas ya sabes".
-
-### 2. Mejora en la Normalización
-- Se ajustarán las expresiones regulares para ser más flexibles ante variaciones comunes en el chat (uso de "k" por "que", omisión de espacios, etc.).
+- Expandir categorías (Extorsión Digital, Aislamiento, Difusión).
+- Implementar normalización de texto (ignora acentos y mayúsculas).
+- Neutralizar idioma (español neutro).
 
 ## Plan de Verificación
-
-### Pruebas Manuales (Simulacros)
-1.  **Aislamiento**: Enviar "borra el chat que es secreto" -> Verificar alerta `aislamiento_secretismo`.
-2.  **Difusión**: Enviar "lo voy a subir a tiktok" -> Verificar alerta `amenaza_difusion`.
-3.  **Extorsión**: Enviar "mandame codigos de roblox o publico" -> Verificar alerta `extorsion_infantil`.
-4.  **Presencia**: Enviar "estas sola en tu pieza" -> Verificar alerta `grooming_avanzado`.
+1.  **Conectividad**: Verificar que el panel muestra "MONITOREO EN VIVO".
+2.  **Tiempo Real**: Enviar una alerta desde la app y confirmar su aparición instantánea.
+3.  **Seguridad**: Validar que los endpoints administrativos requieren el token JWT.
 
 ---
 
-**¿Deseas que aplique este refuerzo masivo de seguridad ahora mismo?**
+**¿Deseas que proceda con la restauración masiva para arreglar el tiempo real?**

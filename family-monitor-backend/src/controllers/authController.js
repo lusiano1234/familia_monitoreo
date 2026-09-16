@@ -13,8 +13,6 @@ async function login(req, res) {
     return res.status(400).json({ error: "Contraseña requerida" });
   }
 
-  // En un sistema real usaríamos bcrypt para comparar hashes,
-  // pero mantendremos la compatibilidad con tu ADMIN_PASSWORD actual.
   if (password !== ADMIN_PASSWORD) {
     return res.status(401).json({ error: "Contraseña incorrecta" });
   }

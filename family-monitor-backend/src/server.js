@@ -20,56 +20,37 @@ const io = new Server(httpServer, {
   cors: { origin: "*" }
 });
 
-// --- Middleware de Seguridad y Logs ---
-app.use(helmet({ contentSecurityPolicy: false })); // Permitir scripts inline para el panel simple
+app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
 
-// --- Limitador de peticiones ---
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100 // Máximo 100 peticiones por IP
+  windowMs: 15 * 60 * 1000,
+  max: 100
 });
 app.use("/api/auth/login", limiter);
 
-// --- Rutas ---
-
-// 1. Autenticación
+// Rutas
 app.post("/api/auth/login", authController.login);
-
-// 2. Alertas (Usadas por la app Android)
 app.post("/api/alerts", requireDeviceAuth, (req, res) => alertController.createAlert(req, res, io));
-
-// 3. Panel Administrativo (Padres)
 app.get("/api/alerts", requireAdminAuth, alertController.getAlerts);
 app.get("/api/devices", requireAdminAuth, deviceController.getDevices);
 app.post("/api/devices", requireAdminAuth, deviceController.createDevice);
+app.get("/health", (req, res) => res.json({ ok: true }));
 
-// 4. Health Check
-app.get("/health", (req, res) => res.json({ ok: true, timestamp: new Date() }));
-
-// --- WebSockets ---
 io.on("connection", (socket) => {
-  console.log("Panel web conectado (Socket ID):", socket.id);
-  socket.on("disconnect", () => console.log("Panel web desconectado"));
+  console.log("Panel conectado:", socket.id);
 });
 
-// --- Inicialización ---
 const PORT = process.env.PORT || 3000;
 
 initDb()
   .then(() => {
-    httpServer.listen(PORT, () => {
-      console.log(`=========================================`);
-      console.log(`   BACKEND PROFESIONAL INICIADO`);
-      console.log(`   Puerto: ${PORT}`);
-      console.log(`   Ambiente: ${process.env.NODE_ENV || "development"}`);
-      console.log(`=========================================`);
-    });
+    httpServer.listen(PORT, () => console.log(`Servidor PRO en puerto ${PORT}`));
   })
   .catch((err) => {
-    console.error("Fallo crítico en la inicialización:", err);
+    console.error("Error inicializando:", err);
     process.exit(1);
   });

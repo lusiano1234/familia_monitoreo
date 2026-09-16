@@ -8,17 +8,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-// Paquetes de apps de mensajería y telefonía que nos interesan.
+// Paquetes de mensajería y telefonía.
 private val MONITORED_PACKAGES = setOf(
     "com.whatsapp",
     "com.instagram.android",
     "org.telegram.messenger",
-    "com.facebook.orca", // Messenger
+    "com.facebook.orca",
     "com.snapchat.android",
     "com.google.android.dialer",
     "com.samsung.android.dialer",
-    "com.android.dialer",
-    "com.android.server.telecom"
+    "com.android.dialer"
 )
 
 class NotificationCaptureService : NotificationListenerService() {
@@ -39,12 +38,6 @@ class NotificationCaptureService : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val packageName = sbn.packageName
-        
-        // Log para ver qué notificaciones llegan (útil para debug)
-        if (packageName in MONITORED_PACKAGES) {
-            Log.d(TAG, "Notificación recibida de app monitoreada: $packageName")
-        }
-
         if (packageName !in MONITORED_PACKAGES) return
 
         val extras = sbn.notification.extras
@@ -52,47 +45,21 @@ class NotificationCaptureService : NotificationListenerService() {
         val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
         val fullText = "$title: $text"
 
-        Log.d(TAG, "Evaluando texto: $fullText")
-
-        // 1. Verificar si el remitente es un contacto desconocido
-        // En la mayoría de las apps de mensajería, el título es el nombre del contacto.
+        // 1. Detectar si el remitente es desconocido (Llamada o mensaje)
         val isUnknown = ContactHelper.isContactUnknown(applicationContext, title)
         if (isUnknown && title.isNotEmpty()) {
-            Log.i(TAG, "Interacción con CONTACTO DESCONOCIDO detectada: $title")
-            val category = if (sbn.notification.category == Notification.CATEGORY_CALL) {
-                "llamada_desconocida"
-            } else {
-                "mensaje_desconocido"
-            }
-            
+            val category = if (sbn.notification.category == Notification.CATEGORY_CALL) "llamada_desconocida" else "mensaje_desconocido"
             scope.launch {
-                AlertUploader.sendAlert(
-                    context = applicationContext,
-                    sourceApp = packageName,
-                    category = category,
-                    level = RiskEngine.RiskLevel.MEDIUM.name,
-                    fragment = "Interacción con: $title. Mensaje: $text",
-                    timestamp = sbn.postTime
-                )
+                AlertUploader.sendAlert(applicationContext, packageName, category, RiskEngine.RiskLevel.MEDIUM.name, "Interacción con: $title. Texto: $text", sbn.postTime)
             }
         }
 
-        // 2. Evaluar el contenido del mensaje con el motor de riesgo
+        // 2. Evaluar reglas de riesgo
         val match = RiskEngine.evaluate(fullText)
         if (match != null) {
-            Log.i(TAG, "¡RIESGO DETECTADO! Categoría: ${match.category}. Iniciando subida...")
             scope.launch {
-                AlertUploader.sendAlert(
-                    context = applicationContext,
-                    sourceApp = packageName,
-                    category = match.category,
-                    level = match.level.name,
-                    fragment = match.matchedFragment,
-                    timestamp = sbn.postTime
-                )
+                AlertUploader.sendAlert(applicationContext, packageName, match.category, match.level.name, match.matchedFragment, sbn.postTime)
             }
-        } else {
-            Log.d(TAG, "No se detectaron riesgos en el contenido de la notificación.")
         }
     }
 }

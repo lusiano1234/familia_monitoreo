@@ -89,7 +89,6 @@ object RiskEngine {
 
     /**
      * Remueve acentos y diacríticos del texto para facilitar la detección.
-     * Ejemplo: "Pásame tu dirección" -> "Pasame tu direccion"
      */
     private fun normalize(s: String): String {
         val temp = java.text.Normalizer.normalize(s, java.text.Normalizer.Form.NFD)

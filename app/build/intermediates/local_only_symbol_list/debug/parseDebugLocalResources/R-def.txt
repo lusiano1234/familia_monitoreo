@@ -6,7 +6,6 @@ id btn_disable
 id btn_request_contacts
 id cb_consent
 id et_token
-id tv_contacts_status
 id tv_explanation
 id tv_status
 id tv_token

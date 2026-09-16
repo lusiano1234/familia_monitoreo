@@ -1,9 +1,10 @@
 const { pool } = require("../db");
-const nodemailer = require("nodemailer");
+const sgMail = require("@sendgrid/mail");
 
-/**
- * Recibe alerta de la app Android
- */
+if (process.env.SENDGRID_API_KEY) {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+}
+
 async function createAlert(req, res, io) {
   const { sourceApp, category, level, fragment, timestamp } = req.body || {};
 
@@ -29,14 +30,11 @@ async function createAlert(req, res, io) {
       device_label: req.device.label || "Sin nombre"
     };
 
-    // 1. Emitir por WebSockets en tiempo real al panel
     if (io) {
       io.emit("new_alert", newAlert);
     }
 
-    // 2. Notificación proactiva
     if (level === "HIGH") {
-      console.log(`[ALERT] CRITICAL: ${category} detectado en ${sourceApp}`);
       sendEmailNotification(newAlert);
     }
 
@@ -47,9 +45,6 @@ async function createAlert(req, res, io) {
   }
 }
 
-/**
- * Lista alertas para el panel web
- */
 async function getAlerts(req, res) {
   const limit = Math.min(parseInt(req.query.limit) || 50, 200);
   try {
@@ -68,69 +63,28 @@ async function getAlerts(req, res) {
   }
 }
 
-/**
- * Skeleton para notificaciones por email
- */
 async function sendEmailNotification(alert) {
-  console.log("[EMAIL] Iniciando proceso de envío (Puerto 465 - SSL Seguro)...");
+  const { SENDGRID_API_KEY, FROM_EMAIL, PARENT_EMAIL } = process.env;
+  if (!SENDGRID_API_KEY || !FROM_EMAIL || !PARENT_EMAIL) return;
 
-  const { SMTP_USER, SMTP_PASS, PARENT_EMAIL } = process.env;
-
-  if (!SMTP_USER || !SMTP_PASS || !PARENT_EMAIL) {
-    console.log("[EMAIL] ERROR: Variables de entorno incompletas.");
-    return;
-  }
-
-  // Configuración directa y robusta para Gmail en la nube
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true, // Forzamos SSL directo
-    auth: {
-      user: SMTP_USER,
-      pass: SMTP_PASS
-    },
-    tls: {
-      // No fallar por certificados auto-firmados o problemas de red local
-      rejectUnauthorized: false
-    },
-    debug: true,
-    logger: true
-  });
+  const msg = {
+    to: PARENT_EMAIL,
+    from: FROM_EMAIL,
+    subject: `🚨 ALERTA CRÍTICA: ${alert.category.replace('_', ' ').toUpperCase()}`,
+    html: `
+      <div style="font-family: sans-serif; border: 2px solid #ef4444; padding: 20px; border-radius: 12px; max-width: 600px;">
+        <h2 style="color: #ef4444;">Riesgo Crítico Detectado</h2>
+        <p>Dispositivo: <strong>${alert.device_label}</strong></p>
+        <p>Mensaje: <em>"${alert.fragment}"</em></p>
+        <a href="https://familia-monitoreo.onrender.com" style="background:#4f46e5;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;">Ver Panel</a>
+      </div>
+    `
+  };
 
   try {
-    console.log("[EMAIL] Enviando mensaje a:", PARENT_EMAIL);
-
-    const mailOptions = {
-      from: `"Protección Familiar" <${SMTP_USER}>`,
-      to: PARENT_EMAIL,
-      subject: `🚨 ALERTA CRÍTICA: ${alert.category.replace('_', ' ').toUpperCase()}`,
-      html: `
-        <div style="font-family: sans-serif; border: 2px solid #ef4444; padding: 20px; border-radius: 10px; max-width: 600px; background-color: #ffffff;">
-          <h2 style="color: #ef4444; margin-top: 0;">Detección de Riesgo Crítico</h2>
-          <p style="font-size: 16px; color: #111827;">Se ha detectado una situación de peligro en el dispositivo de monitoreo.</p>
-          <div style="background: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
-            <p><strong>Categoría:</strong> ${alert.category}</p>
-            <p><strong>Aplicación:</strong> ${alert.source_app}</p>
-            <p style="font-style: italic; color: #374151; font-size: 18px; border-left: 4px solid #ef4444; padding-left: 10px;">
-              "${alert.fragment}"
-            </p>
-          </div>
-          <p style="color: #6b7280; font-size: 12px;">Detectado el: ${new Date(alert.received_at).toLocaleString()}</p>
-          <div style="margin-top: 25px; text-align: center;">
-            <a href="https://familia-monitoreo.onrender.com" style="background: #4f46e5; color: white; padding: 12px 25px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
-              IR AL PANEL DE CONTROL
-            </a>
-          </div>
-        </div>
-      `
-    };
-
-    const info = await transporter.sendMail(mailOptions);
-    console.log("[EMAIL] ÉXITO TOTAL: Correo enviado. ID:", info.messageId);
-  } catch (err) {
-    console.error("[EMAIL] FALLO EN EL ENVÍO:", err.message);
-    console.error("[EMAIL] DETALLE TÉCNICO:", err.code || "Sin código");
+    await sgMail.send(msg);
+  } catch (error) {
+    console.error("[SENDGRID] Error:", error.message);
   }
 }
 
