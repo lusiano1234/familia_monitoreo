@@ -1,4 +1,4 @@
-#Tue Sep 15 16:25:56 GMT-03:00 2026
+#Wed Sep 16 18:07:34 GMT-03:00 2026
 base.0=C\:\\Users\\LENOVO SERIES PRO\\Desktop\\android\\android\\app\\build\\intermediates\\dex\\debugAndroidTest\\mergeProjectDexDebugAndroidTest\\0\\classes.dex
 path.0=0/classes.dex
 renamed.0=classes.dex

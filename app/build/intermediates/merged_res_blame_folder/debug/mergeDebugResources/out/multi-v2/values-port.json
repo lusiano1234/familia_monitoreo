@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.familia.monitor.app-mergeDebugResources-29:/values-port/values-port.xml",
+            "outputFile": "com.familia.monitor.app-mergeDebugResources-36:/values-port/values-port.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\caches\\9.3.0\\transforms\\c2e4ba7fa86fb8af0bc722c3c4b388f8\\workspace\\transformed\\appcompat-1.7.0\\res\\values-port\\values-port.xml",
+                    "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\caches\\9.3.0\\transforms\\fb8a0599b0458b7c0e3e8db18220f148\\workspace\\transformed\\appcompat-1.7.0\\res\\values-port\\values-port.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

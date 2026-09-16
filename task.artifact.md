@@ -1,6 +1,13 @@
-# Tareas: Reparación Crítica del Panel Web
-
-- [x] Eliminar código JavaScript duplicado y roto en `public/index.html`
-- [x] Asegurar cierre correcto de etiquetas y funciones en el panel
-- [x] Verificar lógica de login y persistencia de sesión
-- [ ] Verificación final (Usuario accede al panel correctamente)
+- [x] Optimize memory settings in `gradle.properties`
+- [x] Configure Kotlin JVM Toolchain in `app/build.gradle`
+- [x] Downgrade Gradle to stable 8.8 (Fixed the Daemon crash)
+- [x] Implement Chat Content Capture and In-App View
+    - [x] Create `MessageLogHelper.kt` for local persistence
+    - [x] Enhance `BackupCaptureService.kt` with screen scraping logic
+    - [x] Create `activity_chat_log.xml` layout
+    - [x] Create `ChatLogActivity.kt` and its Adapter
+    - [x] Update `activity_status.xml` to add the "View Messages" button
+    - [x] Update `StatusActivity.kt` to handle the new button click
+    - [x] Register `ChatLogActivity` in `AndroidManifest.xml`
+- [x] Verify build and basic functionality
+- [ ] Propose further improvements (Jetifier, Kotlin 2.0, Lint)

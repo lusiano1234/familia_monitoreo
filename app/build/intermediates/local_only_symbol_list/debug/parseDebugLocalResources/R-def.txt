@@ -1,9 +1,11 @@
 R_DEF: Internal format may change without notice
 local
+id btn_accessibility
 id btn_admin
 id btn_app_info
 id btn_battery
 id btn_brand_settings
+id btn_contacts
 id btn_continue
 id btn_disable
 id btn_help_permission
@@ -11,6 +13,7 @@ id btn_refresh_service
 id btn_save_token
 id btn_test
 id btn_unlock
+id btn_view_logs
 id card_brand_optimization
 id card_permission_warning
 id cb_consent
@@ -18,13 +21,21 @@ id et_admin_password
 id et_pin
 id et_token
 id et_token_edit
+id rv_chat_logs
 id sw_monitoring
+id sw_total_supervision
+id toolbar
 id tv_brand_guide
 id tv_brand_title
 id tv_explanation
+id tv_last_activity
 id tv_status
+layout activity_chat_log
 layout activity_consent
 layout activity_pin
 layout activity_status
+string accessibility_description
+string app_name
 style Theme.FamiliaMonitor
+xml accessibility_service_config
 xml device_admin

@@ -12,10 +12,7 @@ import java.io.IOException
 object AlertUploader {
 
     private const val TAG = "AlertUploader"
-
-    // Reemplazar por la URL real del backend (HTTPS obligatorio en producción).
     private const val BASE_URL = "https://familia-monitoreo.onrender.com/api/alerts"
-
     private val client = OkHttpClient()
 
     fun sendAlert(
@@ -31,10 +28,8 @@ object AlertUploader {
         val deviceToken = context.getSharedPreferences("device", Context.MODE_PRIVATE)
             .getString("device_token", null)
 
-        Log.d(TAG, "Enviando reporte ($category) a $BASE_URL")
-
         if (deviceToken == null) {
-            Log.e(TAG, "ERROR: No hay token de dispositivo configurado. Abortando.")
+            Log.e(TAG, "ERROR: No hay token de dispositivo configurado.")
             return
         }
 
@@ -46,19 +41,18 @@ object AlertUploader {
             put("timestamp", timestamp)
             put("batteryLevel", battery)
             put("connectionType", connection)
-        }.toString()
+        }
         
-        val body = bodyJson.toRequestBody("application/json".toMediaType())
+        val body = bodyJson.toString().toRequestBody("application/json".toMediaType())
         val request = Request.Builder()
             .url(BASE_URL)
             .addHeader("Authorization", "Bearer $deviceToken")
             .post(body)
             .build()
 
-        // Lógica de reintento simple para asegurar el envío
         var success = false
         var attempts = 0
-        val maxAttempts = 3
+        val maxAttempts = 2
 
         while (!success && attempts < maxAttempts) {
             attempts++
@@ -66,18 +60,23 @@ object AlertUploader {
             try {
                 client.newCall(request).execute().use { response ->
                     if (response.isSuccessful) {
-                        Log.d(TAG, "ÉXITO: Reporte enviado correctamente (Intento $attempts)")
+                        Log.d(TAG, "ÉXITO: Reporte enviado correctamente.")
                         success = true
                     } else {
-                        Log.e(TAG, "ERROR SERVIDOR: Código ${response.code} (Intento $attempts)")
+                        Log.e(TAG, "ERROR SERVIDOR: Código ${response.code}")
                         if (response.code == 401) shouldBreak = true
                     }
                 }
             } catch (e: IOException) {
-                Log.e(TAG, "ERROR RED: ${e.message} (Reintentando en 2s...)")
-                if (attempts < maxAttempts) Thread.sleep(2000)
+                Log.e(TAG, "ERROR RED: ${e.message} (Intento $attempts)")
+                if (attempts < maxAttempts) Thread.sleep(1000)
             }
             if (shouldBreak) break
+        }
+
+        if (!success) {
+            Log.d(TAG, "Guardando en buffer offline...")
+            OfflineBufferHelper.saveAlert(context, bodyJson)
         }
     }
 }

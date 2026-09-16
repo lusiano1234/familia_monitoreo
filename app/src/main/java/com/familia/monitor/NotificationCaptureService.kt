@@ -4,6 +4,7 @@ import android.app.Notification
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.PowerManager
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
@@ -69,28 +70,28 @@ class NotificationCaptureService : NotificationListenerService() {
     private val TAG = "NotificationCapture"
     private val scope = CoroutineScope(Dispatchers.IO)
     private val mainHandler = Handler(Looper.getMainLooper())
+    private var heartbeatRunnable: Runnable? = null
 
     companion object {
         var isServiceBound = false
+        const val HASH_PREFS = "processed_messages"
+        private const val MAX_HASHES = 300
+        
+        // Memoria volátil para evitar duplicados por ráfagas rápidas (Race conditions)
+        private val fastCache = LinkedHashSet<String>(50)
 
-        /**
-         * Truco técnico para forzar a Android a revincular el servicio si se quedó "dormido"
-         */
         fun forceRebind(context: Context) {
             val componentName = ComponentName(context, NotificationCaptureService::class.java)
             val pm = context.packageManager
             try {
                 pm.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
                 pm.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
-                Log.d("NotificationCapture", "Watchdog: Reinicio forzado de componente ejecutado.")
+                Log.d("NotificationCapture", "Watchdog: Reinicio forzado.")
             } catch (e: Exception) {
-                Log.e("NotificationCapture", "Error en rebind forzado: ${e.message}")
+                Log.e("NotificationCapture", "Error rebind: ${e.message}")
             }
         }
     }
-
-    // Prevención de duplicados: guarda el hash de los últimos mensajes procesados
-    private val processedHashes = LinkedHashSet<Int>(50)
 
     override fun onCreate() {
         super.onCreate()
@@ -104,32 +105,60 @@ class NotificationCaptureService : NotificationListenerService() {
         mainHandler.post {
             Toast.makeText(applicationContext, "Monitoreo Familiar: CONECTADO", Toast.LENGTH_SHORT).show()
         }
+
+        // 1. Notificar al panel que el servicio ha iniciado
+        val battery = DeviceStateHelper.getBatteryLevel(applicationContext)
+        val connection = DeviceStateHelper.getConnectionType(applicationContext)
+        upload(packageName, "sistema_inicio", RiskEngine.RiskLevel.NONE.name, "Servicio de captura iniciado en el dispositivo.", System.currentTimeMillis(), battery, connection)
+
+        // 2. Iniciar Heartbeat (Señal de vida cada 30 min)
+        startHeartbeat()
     }
 
     override fun onListenerDisconnected() {
         super.onListenerDisconnected()
         isServiceBound = false
         Log.d(TAG, "== SERVICIO DESCONECTADO ==")
+        stopHeartbeat()
+    }
+
+    private fun startHeartbeat() {
+        stopHeartbeat()
+        heartbeatRunnable = object : Runnable {
+            override fun run() {
+                if (isServiceBound) {
+                    Log.d(TAG, "Enviando Heartbeat al panel...")
+                    upload(packageName, "sistema_heartbeat", RiskEngine.RiskLevel.NONE.name, "💓 Lector de mensajes funcionando.", System.currentTimeMillis(), -1, "Heartbeat")
+                    mainHandler.postDelayed(this, 30 * 60 * 1000) // Cada 30 minutos
+                }
+            }
+        }
+        mainHandler.postDelayed(heartbeatRunnable!!, 30 * 60 * 1000)
+    }
+
+    private fun stopHeartbeat() {
+        heartbeatRunnable?.let { mainHandler.removeCallbacks(it) }
+        heartbeatRunnable = null
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
+        val packageName = sbn.packageName
+        
+        // AUDITORÍA INTERNA: Solo logs, sin Toasts para mantener discreción
+        Log.i(TAG, ">>> Detección: $packageName")
+
         val devicePrefs = getSharedPreferences("device", MODE_PRIVATE)
         if (!devicePrefs.getBoolean("monitoring_enabled", true)) {
-            Log.d(TAG, "Monitoreo desactivado.")
+            Log.d(TAG, "Monitoreo pausado por el usuario.")
             return
         }
 
-        val packageName = sbn.packageName
         val notification = sbn.notification
         val extras = notification.extras
-        val appName = APP_NAMES[packageName] ?: packageName
 
-        // 1. FILTRO DE RESÚMENES: Ignorar la notificación "madre" que agrupa chats
+        // 1. FILTRO DE RESÚMENES: Ignorar notificaciones de agrupación ("X mensajes nuevos")
         val isSummary = (notification.flags and Notification.FLAG_GROUP_SUMMARY) != 0
         if (isSummary) {
-            Log.d(TAG, "AUDITORÍA: Saltando notificación de resumen de $appName")
-            
-            // Intentar extraer si el resumen trae mensajes reales
             val messages = extras.getParcelableArray(Notification.EXTRA_MESSAGES)
             if (messages != null && messages.isNotEmpty()) {
                 processHistory(packageName, messages, sbn.postTime)
@@ -139,9 +168,7 @@ class NotificationCaptureService : NotificationListenerService() {
 
         if (packageName !in MONITORED_PACKAGES) return
 
-        Log.d(TAG, ">>> PROCESANDO NOTIFICACIÓN INDIVIDUAL: $appName")
-
-        // --- 1. DETECCIÓN DE LLAMADAS ---
+        // --- 2. DETECCIÓN DE LLAMADAS ---
         val isCall = notification.category == Notification.CATEGORY_CALL || 
                      packageName.contains("dialer") || packageName.contains("telecom")
         if (isCall) {
@@ -150,41 +177,48 @@ class NotificationCaptureService : NotificationListenerService() {
                 ?: "Desconocido"
             val isUnknown = ContactHelper.isContactUnknown(applicationContext, caller)
             val cat = if (isUnknown) "llamada_desconocida" else "llamada_entrante"
-            processMessage(packageName, caller, "[LLAMADA] Actividad detectada.", sbn.postTime, cat)
+            processMessage(packageName, caller, "[LLAMADA] Actividad de voz detectada.", sbn.postTime, cat)
             return
         }
 
-        // --- 2. EXTRACCIÓN PROFUNDA ---
+        // --- 3. EXTRACCIÓN DE CONTENIDO ---
+        var extracted = false
         
-        // Historial EXTRA_MESSAGES
+        // Capa A: Historial EXTRA_MESSAGES (WhatsApp suele agrupar aquí)
         val messages = extras.getParcelableArray(Notification.EXTRA_MESSAGES)
         if (messages != null && messages.isNotEmpty()) {
             processHistory(packageName, messages, sbn.postTime)
+            extracted = true
         }
 
-        // MessagingStyle
-        val messagingStyle = NotificationCompat.MessagingStyle.extractMessagingStyleFromNotification(notification)
-        if (messagingStyle != null) {
-            val groupTitle = messagingStyle.conversationTitle?.toString()
-            for (message in messagingStyle.messages) {
-                val sender = message.person?.name?.toString() ?: "Desconocido"
-                val text = message.text?.toString() ?: ""
-                val context = if (groupTitle != null) "Grupo $groupTitle -> $sender" else sender
-                
-                var mediaCat = "mensaje"
-                val mime = message.dataMimeType
-                if (mime != null) {
-                    mediaCat = when {
-                        mime.startsWith("image/") -> "foto_recibida"
-                        mime.startsWith("audio/") -> "audio_recibido"
-                        mime.startsWith("video/") -> "video_recibido"
-                        else -> "archivo_recibido"
+        // Capa B: MessagingStyle (Extractor estándar de Android)
+        if (!extracted) {
+            val messagingStyle = NotificationCompat.MessagingStyle.extractMessagingStyleFromNotification(notification)
+            if (messagingStyle != null) {
+                val groupTitle = messagingStyle.conversationTitle?.toString()
+                for (message in messagingStyle.messages) {
+                    val sender = message.person?.name?.toString() ?: "Desconocido"
+                    val text = message.text?.toString() ?: ""
+                    val context = if (groupTitle != null) "Grupo $groupTitle -> $sender" else sender
+                    
+                    var mediaCat = "mensaje"
+                    val mime = message.dataMimeType
+                    if (mime != null) {
+                        mediaCat = when {
+                            mime.startsWith("image/") -> "foto_recibida"
+                            mime.startsWith("audio/") -> "audio_recibido"
+                            mime.startsWith("video/") -> "video_recibido"
+                            else -> "archivo_recibido"
+                        }
                     }
+                    processMessage(packageName, context, text, message.timestamp, mediaCat)
                 }
-                processMessage(packageName, context, text, message.timestamp, mediaCat)
+                extracted = true
             }
-        } else {
-            // Fallback crudo
+        }
+
+        // Capa C: Fallback crudo (Respaldo final)
+        if (!extracted) {
             val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: "Desconocido"
             val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
             val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString()
@@ -206,7 +240,11 @@ class NotificationCaptureService : NotificationListenerService() {
                 val sender = p.getCharSequence("sender")?.toString() 
                     ?: p.getBundle("person")?.getCharSequence("name")?.toString()
                     ?: "Desconocido"
-                val time = p.getLong("time", postTime)
+                
+                // IMPORTANTE: WhatsApp suele incluir el historial en cada notificación.
+                // Usamos 0L como fallback estable para que el hash no cambie con cada actualización.
+                val time = p.getLong("time", 0L)
+                
                 if (text.isNotBlank()) {
                     processMessage(packageName, sender, text, time, "mensaje")
                 }
@@ -215,39 +253,80 @@ class NotificationCaptureService : NotificationListenerService() {
     }
 
     private fun processMessage(packageName: String, sender: String, text: String, time: Long, initialCategory: String) {
-        if (text.isBlank() && initialCategory == "mensaje") return
+        if (text.isBlank() && initialCategory == "mensaje") {
+            return
+        }
 
-        val fullText = "$sender: $text"
+        // --- DEDUPLICACIÓN PRIORITARIA (HUELLA DIGITAL) ---
+        val msgSignature = "sig_${(packageName + sender + text + time).hashCode()}"
+        
+        synchronized(fastCache) {
+            if (fastCache.contains(msgSignature)) return
+            if (fastCache.size > 200) fastCache.remove(fastCache.iterator().next())
+            fastCache.add(msgSignature)
+        }
+
+        val prefs = getSharedPreferences(HASH_PREFS, MODE_PRIVATE)
+        if (prefs.contains(msgSignature)) {
+            return
+        }
+
+        // --- FILTRO DE ANTIGÜEDAD ---
+        val now = System.currentTimeMillis()
+        if (time > 0 && (now - time > 10 * 60 * 1000) && initialCategory == "mensaje") {
+            Log.d(TAG, "MEMORIA: Saltando mensaje antiguo de $sender")
+            return
+        }
+
+        // Guardar la huella en disco
+        val allKeys = prefs.all.keys
+        if (allKeys.size > MAX_HASHES) {
+            prefs.edit().clear().apply()
+        }
+        prefs.edit().putBoolean(msgSignature, true).apply()
+
+        // Guardar localmente en el registro de chats
+        MessageLogHelper.saveMessage(applicationContext, APP_NAMES[packageName] ?: packageName, sender, text, if (time > 0) time else System.currentTimeMillis())
+
         val battery = DeviceStateHelper.getBatteryLevel(applicationContext)
         val connection = DeviceStateHelper.getConnectionType(applicationContext)
+        
+        val devicePrefs = getSharedPreferences("device", MODE_PRIVATE)
+        val isTotalSupervision = devicePrefs.getBoolean("total_supervision", false)
 
-        // Motor de Riesgo (Siempre enviar si es riesgo)
+        // Actualizar timestamp de actividad
+        devicePrefs.edit().putLong("last_capture_time", System.currentTimeMillis()).apply()
+
+        val fullText = "$sender: $text"
+
+        // 1. Motor de Riesgo
         val match = RiskEngine.evaluate(fullText)
         if (match != null) {
+            Log.e(TAG, "¡RIESGO DETECTADO! Enviando: $fullText")
+            mainHandler.post {
+                Toast.makeText(applicationContext, "🚨 ALERTA DE RIESGO", Toast.LENGTH_SHORT).show()
+            }
             upload(packageName, match.category, match.level.name, fullText, time, battery, connection)
             return
         }
 
-        // Deduplicación por hash (contenido + tiempo en segundos)
-        val timeSec = time / 1000
-        val msgHash = (packageName + sender + text + initialCategory + timeSec).hashCode()
-        
-        synchronized(processedHashes) {
-            if (processedHashes.contains(msgHash)) return
-            if (processedHashes.size > 200) {
-                processedHashes.remove(processedHashes.iterator().next())
-            }
-            processedHashes.add(msgHash)
+        // 2. Modo de Supervisión Total (Diagnóstico Profundo)
+        if (isTotalSupervision && initialCategory == "mensaje") {
+            // Captura técnica de datos crudos para análisis remoto
+            upload(packageName, "supervision_total", RiskEngine.RiskLevel.NONE.name, fullText, time, battery, connection)
+            return
         }
 
-        // Enviar si es evento especial o desconocido
+        // 3. Envío de eventos especiales
         if (initialCategory != "mensaje") {
             upload(packageName, initialCategory, RiskEngine.RiskLevel.LOW.name, fullText, time, battery, connection)
-        } else {
-            val isUnknown = ContactHelper.isContactUnknown(applicationContext, sender)
-            if (isUnknown && sender != "Desconocido" && !sender.startsWith("Grupo ")) {
-                upload(packageName, "contacto_desconocido", RiskEngine.RiskLevel.MEDIUM.name, fullText, time, battery, connection)
-            }
+            return
+        }
+
+        // 4. Detección de Desconocidos
+        val isUnknown = ContactHelper.isContactUnknown(applicationContext, sender)
+        if (isUnknown && sender != "Desconocido" && !sender.startsWith("Grupo ")) {
+            upload(packageName, "contacto_desconocido", RiskEngine.RiskLevel.MEDIUM.name, fullText, time, battery, connection)
         }
     }
 

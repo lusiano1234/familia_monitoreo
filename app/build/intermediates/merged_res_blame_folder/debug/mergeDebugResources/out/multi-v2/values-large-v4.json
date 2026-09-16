@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.familia.monitor.app-mergeDebugResources-29:/values-large-v4/values-large-v4.xml",
+            "outputFile": "com.familia.monitor.app-mergeDebugResources-36:/values-large-v4/values-large-v4.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\caches\\9.3.0\\transforms\\a830005bea064a70f9c1c680ed75d01c\\workspace\\transformed\\material-1.12.0\\res\\values-large-v4\\values-large-v4.xml",
+                    "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\caches\\9.3.0\\transforms\\7f0c808141c960695bc31f281b6d14fa\\workspace\\transformed\\material-1.12.0\\res\\values-large-v4\\values-large-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\caches\\9.3.0\\transforms\\c2e4ba7fa86fb8af0bc722c3c4b388f8\\workspace\\transformed\\appcompat-1.7.0\\res\\values-large-v4\\values-large-v4.xml",
+                    "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\caches\\9.3.0\\transforms\\fb8a0599b0458b7c0e3e8db18220f148\\workspace\\transformed\\appcompat-1.7.0\\res\\values-large-v4\\values-large-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10",
                         "startColumns": "4,4,4,4,4,4,4,4,4",

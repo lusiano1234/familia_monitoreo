@@ -1,53 +1,49 @@
-# Plan de Implementación: Compatibilidad Universal (Motorola, Xiaomi, Samsung, Vivo)
+# Implementation Plan: Chat Content Capture and In-App View
 
-Este plan introduce un sistema de asistencia inteligente que detecta la marca del teléfono y guía al usuario para configurar los ajustes específicos que impiden que el sistema "mate" la aplicación en segundo plano.
+The user wants the application to capture and display messages from within chat applications (like WhatsApp or Instagram), rather than just relying on notification snippets. This requires enhancing the Accessibility Service to perform screen scraping and creating a new UI to view the captured logs.
 
-## Objetivos
-1.  **Detección de Marca**: Identificar automáticamente el fabricante del dispositivo.
-2.  **Asistente Multi-Marca**: Mostrar guías personalizadas para los menús críticos de cada fabricante.
-3.  **Persistencia Robusta**: Implementar técnicas de "revinculación" forzada para despertar el servicio si el sistema lo duerme.
-4.  **Avisos de "Ajustes Restringidos"**: Facilitar el desbloqueo de los 3 puntos (⋮) en Android 13/14 para todas las marcas.
+## User Review Required
 
----
+> [!IMPORTANT]
+> **Privacy & Ethics**: Capturing full chat content is a high-permission task. Ensure that this is used within the legal framework of parental supervision or device monitoring. The app already requires Accessibility permissions, which will be used for this feature.
 
-## 1. Guías Específicas por Fabricante
+## Proposed Changes
 
-### Motorola (Edge/Moto G)
-*   **Ajuste Crítico**: Rendimiento -> Gestión de aplicaciones -> **Permitir siempre**.
-*   **Batería**: Desactivar "Mejorar batería mientras está inactivo".
+### 1. Enhanced Message Capture (Screen Scraping)
 
-### Xiaomi (MIUI / HyperOS)
-*   **Ajuste Crítico**: Activar **Inicio automático**.
-*   **Batería**: Ahorro de batería -> **Sin restricciones**.
-*   **Otros**: Permitir "Mostrar ventanas emergentes en segundo plano".
+#### [MODIFY] [BackupCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/BackupCaptureService.kt)
+- Update `onAccessibilityEvent` to listen for `TYPE_WINDOW_CONTENT_CHANGED` and `TYPE_WINDOW_STATE_CHANGED`.
+- Implement a screen crawler that identifies chat windows from monitored packages (WhatsApp, Telegram, etc.).
+- Extract text from message nodes using `AccessibilityNodeInfo` traversal.
+- Add deduplication logic to avoid capturing the same screen state multiple times.
 
-### Samsung (One UI)
-*   **Ajuste Crítico**: Límites de uso de fondo -> **Aplicaciones nunca inactivas**.
-*   **Batería**: Optimizar uso de batería -> **No optimizar**.
+### 2. Local Data Persistence
 
-### Vivo (Funtouch OS)
-*   **Ajuste Crítico**: Batería -> Gestión de consumo de energía en segundo plano -> **No restringir**.
-*   **Inicio**: Activar "Inicio automático".
+#### [NEW] [MessageLogHelper.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/MessageLogHelper.kt)
+- A utility to save captured messages to a local file or SharedPreferences (initially a simple JSON list for easier implementation) so they can be displayed in the app.
 
----
+### 3. Chat Log UI
 
-## 2. Cambios Propuestos en la App
+#### [NEW] [ChatLogActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/ChatLogActivity.kt)
+- A new activity to display a list of captured messages, including source app, sender, text, and timestamp.
 
-### [MODIFY] [StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)
-*   Implementar `detectBrand()` para mostrar el logo y el botón de ayuda correspondiente.
-*   Crear un sistema de diálogos dinámicos que cambien según el fabricante detectado.
+#### [NEW] [activity_chat_log.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_chat_log.xml)
+- Layout for the message log using a `RecyclerView`.
 
-### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
-*   **Watchdog (Perro guardián)**: Implementar una técnica de auto-reinicio si el servicio es desconectado por el sistema (vía `requestRebind`).
+#### [MODIFY] [StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)
+- Add a button to open the `ChatLogActivity`.
 
-### [MODIFY] [res/layout/activity_status.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_status.xml)
-*   Diseñar un área de "Configuración de Marca" que llame la atención del usuario con un diseño intuitivo.
+#### [MODIFY] [activity_status.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_status.xml)
+- Add a new button "VER MENSAJES CAPTURADOS" in the UI.
 
----
+#### [MODIFY] [AndroidManifest.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/AndroidManifest.xml)
+- Register the new `ChatLogActivity`.
 
-## 3. Plan de Verificación
-1.  **Validación de Marca**: Abrir la app en los 4 modelos y confirmar que muestra la guía correcta.
-2.  **Prueba de "Sueño Profundo"**: Bloquear cada teléfono por 30 minutos y verificar que los mensajes siguen llegando al panel.
-3.  **Facilidad de Uso**: Confirmar que los botones llevan a las pantallas de ajustes correctas de cada marca.
+## Verification Plan
 
-**¿Deseas que proceda con la implementación de esta compatibilidad universal para cubrir Motorola, Xiaomi, Samsung y Vivo?**
+### Manual Verification
+1.  Deploy the app and enable Accessibility Service (Lector de Respaldo).
+2.  Open WhatsApp and enter a chat.
+3.  Scroll through some messages.
+4.  Return to the Family Monitor app and open "VER MENSAJES CAPTURADOS".
+5.  Verify that the messages seen on the WhatsApp screen are listed in the log.

@@ -135,6 +135,35 @@
             android:textColor="#6B7280"
             android:text="Cargando estado..." />
 
+        <TextView
+            android:id="@+id/tv_last_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="11sp"
+            android:textColor="#9CA3AF"
+            android:text="Última actividad: Sin registros" />
+
+        <!-- Modo de Supervisión Total -->
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/sw_total_supervision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Modo Supervisión Total (Enviar Todo)"
+            android:textSize="15sp"
+            android:padding="12dp"
+            android:background="@android:color/white"
+            app:useMaterialThemeColors="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Use este modo solo para pruebas. Enviará todos los mensajes al panel, ignorando filtros."
+            android:textColor="#6B7280"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp" />
+
         <!-- Token Editable -->
         <TextView
             android:layout_width="wrap_content"
@@ -169,10 +198,19 @@
 
         <!-- Pruebas y Seguridad -->
         <Button
-            android:id="@+id/btn_test"
+            android:id="@+id/btn_view_logs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:text="VER MENSAJES CAPTURADOS"
+            android:backgroundTint="#10B981"
+            app:icon="@android:drawable/ic_menu_agenda" />
+
+        <Button
+            android:id="@+id/btn_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="ENVIAR SEÑAL DE PRUEBA"
             android:backgroundTint="#4F46E5" />
 
@@ -190,6 +228,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="AJUSTES DE NOTIFICACIONES"
+            style="?attr/materialButtonOutlinedStyle" />
+
+        <Button
+            android:id="@+id/btn_accessibility"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="ACTIVAR LECTOR DE RESPALDO"
             style="?attr/materialButtonOutlinedStyle" />
 
         <Button
@@ -214,6 +260,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="OPTIMIZACIÓN DE BATERÍA"
+            style="?attr/materialButtonOutlinedStyle" />
+
+        <Button
+            android:id="@+id/btn_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="PERMISO DE CONTACTOS (PRIVACIDAD)"
             style="?attr/materialButtonOutlinedStyle" />
 
     </LinearLayout>

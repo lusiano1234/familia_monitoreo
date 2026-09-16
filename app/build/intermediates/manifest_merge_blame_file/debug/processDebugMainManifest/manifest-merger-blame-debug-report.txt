@@ -29,186 +29,442 @@
 17    <uses-permission android:name="android.permission.READ_CONTACTS" />
 17-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:11:5-72
 17-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:11:22-69
-18
-19    <permission
-19-->[androidx.core:core:1.13.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eebb6c66365b3b9b003428b74df8a932\workspace\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
-20        android:name="com.familia.monitor.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-20-->[androidx.core:core:1.13.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eebb6c66365b3b9b003428b74df8a932\workspace\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
-21        android:protectionLevel="signature" />
-21-->[androidx.core:core:1.13.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eebb6c66365b3b9b003428b74df8a932\workspace\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
-22
-23    <uses-permission android:name="com.familia.monitor.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-23-->[androidx.core:core:1.13.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eebb6c66365b3b9b003428b74df8a932\workspace\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
-23-->[androidx.core:core:1.13.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eebb6c66365b3b9b003428b74df8a932\workspace\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+18    <uses-permission android:name="android.permission.WAKE_LOCK" />
+18-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:12:5-68
+18-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:12:22-65
+19    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+19-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:13:5-81
+19-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:13:22-78
+20
+21    <permission
+21-->[androidx.core:core:1.13.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\d045ecc5e4c578e5e4fc88b617fd7f04\workspace\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+22        android:name="com.familia.monitor.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+22-->[androidx.core:core:1.13.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\d045ecc5e4c578e5e4fc88b617fd7f04\workspace\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+23        android:protectionLevel="signature" />
+23-->[androidx.core:core:1.13.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\d045ecc5e4c578e5e4fc88b617fd7f04\workspace\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
 24
-25    <application
-25-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:13:5-69:19
-26        android:allowBackup="false"
-26-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:15:9-36
-27        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-27-->[androidx.core:core:1.13.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eebb6c66365b3b9b003428b74df8a932\workspace\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
-28        android:debuggable="true"
-29        android:extractNativeLibs="false"
-30        android:label="Servicio de Sincronización"
-30-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:14:9-51
-31        android:theme="@style/Theme.FamiliaMonitor" >
-31-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:16:9-52
-32
-33        <!-- Nueva entrada discreta con PIN -->
-34        <activity
-34-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:19:9-27:20
-35            android:name="com.familia.monitor.PinActivity"
-35-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:20:13-40
-36            android:exported="true"
-36-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:21:13-36
-37            android:label="Ajustes de Sincronización" >
-37-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:22:13-54
-38            <intent-filter>
-38-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:23:13-26:29
-39                <action android:name="android.intent.action.MAIN" />
-39-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:24:17-69
-39-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:24:25-66
-40
-41                <category android:name="android.intent.category.LAUNCHER" />
-41-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:25:17-77
-41-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:25:27-74
-42            </intent-filter>
-43        </activity>
-44        <activity
-44-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:29:9-32:57
-45            android:name="com.familia.monitor.ConsentActivity"
-45-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:30:13-44
-46            android:exported="false"
-46-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:31:13-37
-47            android:label="Configuración de Servicio" />
-47-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:32:13-54
-48        <activity
-48-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:34:9-37:56
-49            android:name="com.familia.monitor.StatusActivity"
-49-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:35:13-43
-50            android:exported="false"
-50-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:36:13-37
-51            android:label="Estado de Sincronización" />
-51-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:37:13-53
-52
-53        <!-- Receptor de Administrador para bloqueo de desinstalación -->
-54        <receiver
-54-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:40:9-50:20
-55            android:name="com.familia.monitor.AdminReceiver"
-55-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:41:13-42
-56            android:exported="true"
-56-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:43:13-36
-57            android:permission="android.permission.BIND_DEVICE_ADMIN" >
-57-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:42:13-70
-58            <meta-data
-58-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:44:13-46:56
-59                android:name="android.app.device_admin"
-59-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:45:17-56
-60                android:resource="@xml/device_admin" />
-60-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:46:17-53
-61
-62            <intent-filter>
-62-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:47:13-49:29
-63                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-63-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:48:17-82
-63-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:48:25-79
-64            </intent-filter>
-65        </receiver>
-66
-67        <!-- Requiere que el usuario active manualmente el acceso a notificaciones -->
-68        <service
-68-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:53:9-61:19
-69            android:name="com.familia.monitor.NotificationCaptureService"
-69-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:54:13-55
-70            android:exported="true"
-70-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:55:13-36
-71            android:label="Servicio de Sincronización"
-71-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:57:13-55
-72            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
-72-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:56:13-87
-73            <intent-filter>
-73-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:58:13-60:29
-74                <action android:name="android.service.notification.NotificationListenerService" />
-74-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:59:17-99
-74-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:59:25-96
-75            </intent-filter>
-76        </service>
-77        <service
-77-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:63:9-67:56
-78            android:name="com.familia.monitor.ForegroundStatusService"
-78-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:64:13-52
-79            android:exported="false"
-79-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:65:13-37
-80            android:foregroundServiceType="dataSync"
-80-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:67:13-53
-81            android:label="Servicio de Sincronización" />
-81-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:66:13-55
-82
-83        <provider
-83-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
-84            android:name="androidx.startup.InitializationProvider"
-84-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:25:13-67
-85            android:authorities="com.familia.monitor.androidx-startup"
-85-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:26:13-68
-86            android:exported="false" >
-86-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:27:13-37
-87            <meta-data
-87-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
-88                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-88-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:30:17-75
-89                android:value="androidx.startup" />
-89-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:31:17-49
-90            <meta-data
-90-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f22adc6a849847874e7b149232fae2b3\workspace\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
-91                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-91-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f22adc6a849847874e7b149232fae2b3\workspace\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
-92                android:value="androidx.startup" />
-92-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f22adc6a849847874e7b149232fae2b3\workspace\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
-93            <meta-data
-93-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
-94                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-94-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
-95                android:value="androidx.startup" />
-95-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
-96        </provider>
-97
-98        <receiver
-98-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
-99            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-99-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
-100            android:directBootAware="false"
-100-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
-101            android:enabled="true"
-101-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
-102            android:exported="true"
-102-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
-103            android:permission="android.permission.DUMP" >
-103-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
-104            <intent-filter>
-104-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
-105                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-105-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
-105-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
-106            </intent-filter>
-107            <intent-filter>
-107-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
-108                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-108-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
-108-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
-109            </intent-filter>
-110            <intent-filter>
-110-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
-111                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-111-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
-111-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
-112            </intent-filter>
-113            <intent-filter>
-113-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
-114                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-114-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
-114-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
-115            </intent-filter>
-116        </receiver>
-117    </application>
-118
-119</manifest>
+25    <uses-permission android:name="com.familia.monitor.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+25-->[androidx.core:core:1.13.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\d045ecc5e4c578e5e4fc88b617fd7f04\workspace\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+25-->[androidx.core:core:1.13.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\d045ecc5e4c578e5e4fc88b617fd7f04\workspace\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+26
+27    <application
+27-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:15:5-100:19
+28        android:allowBackup="false"
+28-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:17:9-36
+29        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+29-->[androidx.core:core:1.13.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\d045ecc5e4c578e5e4fc88b617fd7f04\workspace\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+30        android:debuggable="true"
+31        android:extractNativeLibs="false"
+32        android:label="Servicio de Sincronización"
+32-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:16:9-51
+33        android:testOnly="true"
+34        android:theme="@style/Theme.FamiliaMonitor" >
+34-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:18:9-52
+35
+36        <!-- Nueva entrada discreta con PIN -->
+37        <activity
+37-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:21:9-29:20
+38            android:name="com.familia.monitor.PinActivity"
+38-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:22:13-40
+39            android:exported="true"
+39-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:23:13-36
+40            android:label="Ajustes de Sincronización" >
+40-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:24:13-54
+41            <intent-filter>
+41-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:25:13-28:29
+42                <action android:name="android.intent.action.MAIN" />
+42-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:26:17-69
+42-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:26:25-66
+43
+44                <category android:name="android.intent.category.LAUNCHER" />
+44-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:27:17-77
+44-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:27:27-74
+45            </intent-filter>
+46        </activity>
+47        <activity
+47-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:31:9-34:57
+48            android:name="com.familia.monitor.ConsentActivity"
+48-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:32:13-44
+49            android:exported="false"
+49-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:33:13-37
+50            android:label="Configuración de Servicio" />
+50-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:34:13-54
+51        <activity
+51-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:36:9-39:56
+52            android:name="com.familia.monitor.StatusActivity"
+52-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:37:13-43
+53            android:exported="false"
+53-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:38:13-37
+54            android:label="Estado de Sincronización" />
+54-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:39:13-53
+55        <activity
+55-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:41:9-44:51
+56            android:name="com.familia.monitor.ChatLogActivity"
+56-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:42:13-44
+57            android:exported="false"
+57-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:43:13-37
+58            android:label="Mensajes Capturados" />
+58-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:44:13-48
+59
+60        <!-- Receptor de Administrador para bloqueo de desinstalación -->
+61        <receiver
+61-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:47:9-57:20
+62            android:name="com.familia.monitor.AdminReceiver"
+62-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:48:13-42
+63            android:exported="true"
+63-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:50:13-36
+64            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+64-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:49:13-70
+65            <meta-data
+65-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:51:13-53:56
+66                android:name="android.app.device_admin"
+66-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:52:17-56
+67                android:resource="@xml/device_admin" />
+67-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:53:17-53
+68
+69            <intent-filter>
+69-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:54:13-56:29
+70                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+70-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:55:17-82
+70-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:55:25-79
+71            </intent-filter>
+72        </receiver>
+73
+74        <!-- Requiere que el usuario active manualmente el acceso a notificaciones -->
+75        <service
+75-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:60:9-68:19
+76            android:name="com.familia.monitor.NotificationCaptureService"
+76-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:61:13-55
+77            android:exported="true"
+77-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:62:13-36
+78            android:label="Servicio de Sincronización"
+78-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:64:13-55
+79            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
+79-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:63:13-87
+80            <intent-filter>
+80-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:65:13-67:29
+81                <action android:name="android.service.notification.NotificationListenerService" />
+81-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:66:17-99
+81-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:66:25-96
+82            </intent-filter>
+83        </service>
+84        <service
+84-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:70:9-74:56
+85            android:name="com.familia.monitor.ForegroundStatusService"
+85-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:71:13-52
+86            android:exported="false"
+86-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:72:13-37
+87            android:foregroundServiceType="dataSync"
+87-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:74:13-53
+88            android:label="Servicio de Sincronización" />
+88-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:73:13-55
+89
+90        <receiver
+90-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:76:9-84:20
+91            android:name="com.familia.monitor.SystemReceiver"
+91-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:77:13-43
+92            android:exported="true" >
+92-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:78:13-36
+93            <intent-filter>
+93-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:79:13-83:29
+94                <action android:name="android.intent.action.BOOT_COMPLETED" />
+94-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:80:17-79
+94-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:80:25-76
+95                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+95-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:81:17-86
+95-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:81:25-83
+96                <action android:name="android.intent.action.POWER_CONNECTED" />
+96-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:82:17-80
+96-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:82:25-77
+97            </intent-filter>
+98        </receiver>
+99
+100        <!-- Lector de Respaldo vía Accesibilidad -->
+101        <service
+101-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:87:9-98:19
+102            android:name="com.familia.monitor.BackupCaptureService"
+102-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:88:13-49
+103            android:exported="true"
+103-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:91:13-36
+104            android:label="Servicio de Sincronización (Respaldo)"
+104-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:90:13-66
+105            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
+105-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:89:13-79
+106            <intent-filter>
+106-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:92:13-94:29
+107                <action android:name="android.accessibilityservice.AccessibilityService" />
+107-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:93:17-92
+107-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:93:25-89
+108            </intent-filter>
+109
+110            <meta-data
+110-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:95:13-97:72
+111                android:name="android.accessibilityservice"
+111-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:96:17-60
+112                android:resource="@xml/accessibility_service_config" />
+112-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:97:17-69
+113        </service>
+114
+115        <provider
+115-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\ec3f5d6104025808986952a6ef5ab54e\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+116            android:name="androidx.startup.InitializationProvider"
+116-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\ec3f5d6104025808986952a6ef5ab54e\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:25:13-67
+117            android:authorities="com.familia.monitor.androidx-startup"
+117-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\ec3f5d6104025808986952a6ef5ab54e\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:26:13-68
+118            android:exported="false" >
+118-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\ec3f5d6104025808986952a6ef5ab54e\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:27:13-37
+119            <meta-data
+119-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\ec3f5d6104025808986952a6ef5ab54e\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+120                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+120-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\ec3f5d6104025808986952a6ef5ab54e\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:30:17-75
+121                android:value="androidx.startup" />
+121-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\ec3f5d6104025808986952a6ef5ab54e\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:31:17-49
+122            <meta-data
+122-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:34:13-36:52
+123                android:name="androidx.work.WorkManagerInitializer"
+123-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:35:17-68
+124                android:value="androidx.startup" />
+124-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:36:17-49
+125            <meta-data
+125-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\3eb25445a331deee6a83a75a68e231c1\workspace\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
+126                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+126-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\3eb25445a331deee6a83a75a68e231c1\workspace\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
+127                android:value="androidx.startup" />
+127-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\3eb25445a331deee6a83a75a68e231c1\workspace\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
+128            <meta-data
+128-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+129                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+129-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+130                android:value="androidx.startup" />
+130-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+131        </provider>
+132
+133        <service
+133-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:39:9-45:35
+134            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+134-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:40:13-88
+135            android:directBootAware="false"
+135-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:41:13-44
+136            android:enabled="@bool/enable_system_alarm_service_default"
+136-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:42:13-72
+137            android:exported="false" />
+137-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:43:13-37
+138        <service
+138-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:46:9-52:35
+139            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+139-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:47:13-84
+140            android:directBootAware="false"
+140-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:48:13-44
+141            android:enabled="@bool/enable_system_job_service_default"
+141-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:49:13-70
+142            android:exported="true"
+142-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:50:13-36
+143            android:permission="android.permission.BIND_JOB_SERVICE" />
+143-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:51:13-69
+144        <service
+144-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:53:9-59:35
+145            android:name="androidx.work.impl.foreground.SystemForegroundService"
+145-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:54:13-81
+146            android:directBootAware="false"
+146-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:55:13-44
+147            android:enabled="@bool/enable_system_foreground_service_default"
+147-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:56:13-77
+148            android:exported="false" />
+148-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:57:13-37
+149
+150        <receiver
+150-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:61:9-66:35
+151            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+151-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:62:13-88
+152            android:directBootAware="false"
+152-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:63:13-44
+153            android:enabled="true"
+153-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:64:13-35
+154            android:exported="false" />
+154-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:65:13-37
+155        <receiver
+155-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:67:9-77:20
+156            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
+156-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:68:13-106
+157            android:directBootAware="false"
+157-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:69:13-44
+158            android:enabled="false"
+158-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:70:13-36
+159            android:exported="false" >
+159-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:71:13-37
+160            <intent-filter>
+160-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:73:13-76:29
+161                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+161-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:74:17-87
+161-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:74:25-84
+162                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+162-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:75:17-90
+162-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:75:25-87
+163            </intent-filter>
+164        </receiver>
+165        <receiver
+165-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:78:9-88:20
+166            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
+166-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:79:13-104
+167            android:directBootAware="false"
+167-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:80:13-44
+168            android:enabled="false"
+168-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:81:13-36
+169            android:exported="false" >
+169-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:82:13-37
+170            <intent-filter>
+170-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:84:13-87:29
+171                <action android:name="android.intent.action.BATTERY_OKAY" />
+171-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:85:17-77
+171-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:85:25-74
+172                <action android:name="android.intent.action.BATTERY_LOW" />
+172-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:86:17-76
+172-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:86:25-73
+173            </intent-filter>
+174        </receiver>
+175        <receiver
+175-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:89:9-99:20
+176            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
+176-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:90:13-104
+177            android:directBootAware="false"
+177-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:91:13-44
+178            android:enabled="false"
+178-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:92:13-36
+179            android:exported="false" >
+179-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:93:13-37
+180            <intent-filter>
+180-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:95:13-98:29
+181                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+181-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:96:17-83
+181-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:96:25-80
+182                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+182-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:97:17-82
+182-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:97:25-79
+183            </intent-filter>
+184        </receiver>
+185        <receiver
+185-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:100:9-109:20
+186            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
+186-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:101:13-103
+187            android:directBootAware="false"
+187-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:102:13-44
+188            android:enabled="false"
+188-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:103:13-36
+189            android:exported="false" >
+189-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:104:13-37
+190            <intent-filter>
+190-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:106:13-108:29
+191                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+191-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:107:17-79
+191-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:107:25-76
+192            </intent-filter>
+193        </receiver>
+194        <receiver
+194-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:110:9-121:20
+195            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+195-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:111:13-88
+196            android:directBootAware="false"
+196-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:112:13-44
+197            android:enabled="false"
+197-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:113:13-36
+198            android:exported="false" >
+198-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:114:13-37
+199            <intent-filter>
+199-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:116:13-120:29
+200                <action android:name="android.intent.action.BOOT_COMPLETED" />
+200-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:80:17-79
+200-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:80:25-76
+201                <action android:name="android.intent.action.TIME_SET" />
+201-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:118:17-73
+201-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:118:25-70
+202                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+202-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:119:17-81
+202-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:119:25-78
+203            </intent-filter>
+204        </receiver>
+205        <receiver
+205-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:122:9-131:20
+206            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+206-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:123:13-99
+207            android:directBootAware="false"
+207-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:124:13-44
+208            android:enabled="@bool/enable_system_alarm_service_default"
+208-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:125:13-72
+209            android:exported="false" >
+209-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:126:13-37
+210            <intent-filter>
+210-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:128:13-130:29
+211                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
+211-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:129:17-98
+211-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:129:25-95
+212            </intent-filter>
+213        </receiver>
+214        <receiver
+214-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:132:9-142:20
+215            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+215-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:133:13-78
+216            android:directBootAware="false"
+216-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:134:13-44
+217            android:enabled="true"
+217-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:135:13-35
+218            android:exported="true"
+218-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:136:13-36
+219            android:permission="android.permission.DUMP" >
+219-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:137:13-57
+220            <intent-filter>
+220-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:139:13-141:29
+221                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+221-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:140:17-88
+221-->[androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eb1c1851069a70b29e541ff4231d422b\workspace\transformed\work-runtime-2.9.0\AndroidManifest.xml:140:25-85
+222            </intent-filter>
+223        </receiver>
+224
+225        <service
+225-->[androidx.room:room-runtime:2.5.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\5ccd221da49eb6daabe0bc43173a9444\workspace\transformed\room-runtime-2.5.0\AndroidManifest.xml:24:9-28:63
+226            android:name="androidx.room.MultiInstanceInvalidationService"
+226-->[androidx.room:room-runtime:2.5.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\5ccd221da49eb6daabe0bc43173a9444\workspace\transformed\room-runtime-2.5.0\AndroidManifest.xml:25:13-74
+227            android:directBootAware="true"
+227-->[androidx.room:room-runtime:2.5.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\5ccd221da49eb6daabe0bc43173a9444\workspace\transformed\room-runtime-2.5.0\AndroidManifest.xml:26:13-43
+228            android:exported="false" />
+228-->[androidx.room:room-runtime:2.5.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\5ccd221da49eb6daabe0bc43173a9444\workspace\transformed\room-runtime-2.5.0\AndroidManifest.xml:27:13-37
+229
+230        <receiver
+230-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+231            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+231-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+232            android:directBootAware="false"
+232-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+233            android:enabled="true"
+233-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+234            android:exported="true"
+234-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+235            android:permission="android.permission.DUMP" >
+235-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+236            <intent-filter>
+236-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+237                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+237-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+237-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+238            </intent-filter>
+239            <intent-filter>
+239-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+240                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+240-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+240-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+241            </intent-filter>
+242            <intent-filter>
+242-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+243                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+243-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+243-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+244            </intent-filter>
+245            <intent-filter>
+245-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+246                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+246-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+246-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\2612a33da1d5d6564736dfa83668a5a6\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+247            </intent-filter>
+248        </receiver>
+249    </application>
+250
+251</manifest>

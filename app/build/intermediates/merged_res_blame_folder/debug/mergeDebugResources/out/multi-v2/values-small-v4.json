@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.familia.monitor.app-mergeDebugResources-29:/values-small-v4/values-small-v4.xml",
+            "outputFile": "com.familia.monitor.app-mergeDebugResources-36:/values-small-v4/values-small-v4.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\caches\\9.3.0\\transforms\\a830005bea064a70f9c1c680ed75d01c\\workspace\\transformed\\material-1.12.0\\res\\values-small-v4\\values-small-v4.xml",
+                    "source": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\caches\\9.3.0\\transforms\\7f0c808141c960695bc31f281b6d14fa\\workspace\\transformed\\material-1.12.0\\res\\values-small-v4\\values-small-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",

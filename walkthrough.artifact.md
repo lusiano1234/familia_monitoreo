@@ -1,27 +1,37 @@
-# Walkthrough - Captura Detallada y Seguridad Persistente
+# Walkthrough: Enhanced Chat Capture and In-App View
 
-Se han aplicado mejoras de ingeniería para garantizar que cada mensaje sea capturado individualmente y para blindar el acceso físico a la aplicación.
+I have successfully implemented the requested features to capture chat content directly from the screen and provide an in-app viewer for those messages.
 
-## Mejoras Realizadas
+## Changes Made
 
-### Captura Detallada (Anti-Resúmenes)
-*   **Filtro de Resúmenes**: La aplicación ahora identifica y descarta las notificaciones genéricas de Android como "2 mensajes nuevos". Solo se procesan las notificaciones que contienen el contenido real del mensaje.
-*   **Desglose de Historial**: Si una notificación trae varios mensajes acumulados (común en WhatsApp), el sistema los "abre" y procesa cada uno de forma independiente.
-*   **Deduplicación por Segundos**: Se implementó un sistema que compara el contenido y la hora exacta del mensaje. Esto permite recibir mensajes idénticos si se enviaron en momentos distintos, pero evita duplicados por actualizaciones de la propia aplicación de chat.
+### 1. Screen Scraping Logic
+Modified [BackupCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/BackupCaptureService.kt) to use Android's Accessibility Services for capturing on-screen text.
+- Listens for `TYPE_WINDOW_CONTENT_CHANGED` and `TYPE_VIEW_SCROLLED` events.
+- Traverses the view hierarchy of monitored apps (WhatsApp, Instagram, etc.).
+- Captures text nodes that appear to be messages and stores them locally.
 
-### Seguridad de Sesión Inmediata
-*   **Bloqueo al Salir**: Se ha reforzado el sistema de seguridad. En cuanto sales de la pantalla de la app (ir al inicio, bloquear el teléfono o cambiar de app), la sesión se cierra automáticamente.
-*   **Re-validación Obligatoria**: Al regresar al "Servicio de Sincronización", siempre se te solicitará la contraseña administrativa para ver el estado o el token.
+### 2. Local Persistence
+Created [MessageLogHelper.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/MessageLogHelper.kt) to manage captured data.
+- Stores messages in a local `SharedPreferences` database using a `JSONArray`.
+- Implements a limit of 500 messages (LRU) to prevent excessive storage usage.
 
-### Soporte Multidispositivo
-*   Se refinó la búsqueda de texto en campos ocultos del sistema para asegurar que teléfonos de distintas marcas (Samsung, Xiaomi, Motorola, etc.) reporten con la misma fidelidad.
+### 3. Captured Messages UI
+Added a new activity to view the logs directly in the app.
+- **Activity**: [ChatLogActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/ChatLogActivity.kt)
+- **Layout**: [activity_chat_log.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_chat_log.xml)
+- **Entry Point**: A new green button "VER MENSAJES CAPTURADOS" in [StatusActivity](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt).
 
-## Instrucciones para la Verificación
+## Verification Results
 
-1.  **Seguridad**: Abre la app, ingresa tu clave, sal al escritorio y vuelve a entrar. Confirma que se ha bloqueado de nuevo.
-2.  **Prueba de Mensajes**: Envía 2 o 3 mensajes seguidos de WhatsApp al teléfono monitoreado.
-    *   Verifica que en el panel web aparezcan los mensajes **individuales** con su texto completo.
-    *   Confirma que ya no aparece la frase "2 mensajes nuevos".
+### Build Status
+- The project builds successfully with `./gradlew assembleDebug`.
+- The `Daemon compilation failed` issue was resolved by stabilizing the Gradle version to 8.8 and adjusting JVM memory arguments.
 
-> [!TIP]
-> Si el teléfono monitoreado es un modelo antiguo, asegúrate de que el interruptor de "Monitoreo" esté encendido en la nueva pantalla de control.
+### Functional Test Plan
+1.  **Enable Accessibility**: Go to Settings -> Accessibility -> "Servicio de Sincronización (Respaldo)" and turn it ON.
+2.  **Capture**: Open WhatsApp and view a conversation.
+3.  **View Logs**: Open the Family Monitor app, go to the status screen, and click "VER MENSAJES CAPTURADOS".
+4.  **Confirm**: You should see the text from the WhatsApp screen listed in the app.
+
+> [!NOTE]
+> Screen scraping is a powerful tool. The app now captures what the user *sees* on their screen in the monitored apps, which is much more comprehensive than just capturing notification snippets.

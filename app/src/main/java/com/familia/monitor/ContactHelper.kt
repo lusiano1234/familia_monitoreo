@@ -1,8 +1,10 @@
 package com.familia.monitor
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.provider.ContactsContract
 import android.util.Log
+import androidx.core.content.ContextCompat
 
 object ContactHelper {
     private const val TAG = "ContactHelper"
@@ -12,6 +14,12 @@ object ContactHelper {
      */
     fun isContactUnknown(context: Context, nameOrNumber: String?): Boolean {
         if (nameOrNumber.isNullOrBlank()) return false
+
+        // Verificar si tenemos el permiso antes de consultar la base de datos
+        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            Log.w(TAG, "Permiso de lectura de contactos no otorgado. Asumiendo desconocido.")
+            return true
+        }
 
         try {
             val uri = ContactsContract.Contacts.CONTENT_URI

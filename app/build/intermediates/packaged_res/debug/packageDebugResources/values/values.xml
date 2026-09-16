@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="accessibility_description">Este servicio permite al Servicio de Sincronización detectar alertas de seguridad en tiempo real para proteger a su familia.</string>
+    <string name="app_name">Servicio de Sincronización</string>
     <style name="Theme.FamiliaMonitor" parent="Theme.Material3.DayNight.NoActionBar"/>
 </resources>
