@@ -1,21 +1,27 @@
-# Walkthrough - Corrección de Base de Datos y Panel Web
+# Walkthrough - Monitoreo Multimedia y Llamadas
 
-Se ha solucionado el problema que impedía cargar los reportes en el panel web debido a una incompatibilidad entre la base de datos antigua y los nuevos campos de Batería y Red.
+Se ha completado la expansión del sistema para capturar no solo texto, sino también llamadas y eventos multimedia, proporcionando una visión completa de la actividad del dispositivo.
 
-## Cambios Realizados
+## Mejoras Realizadas
 
-### Reparación de la Base de Datos (Backend)
-*   **[db.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/db.js)**: Se implementó una lógica de **migración forzada**. Ahora, el servidor asegura que las columnas `battery_level` y `connection_type` existan en la tabla `alerts` cada vez que arranca, sin importar si la tabla ya existía.
+### Detección de Llamadas y Multimedia
+*   **Llamadas en Tiempo Real**: La app ahora identifica llamadas entrantes (WhatsApp y Teléfono). Si el número no está en la agenda, se categoriza automáticamente como **"LLAMADA DESCONOCIDA"**.
+*   **Archivos Multimedia**: Se implementó la detección de recepción de **Fotos (📷)**, **Audios (🎤)** y **Videos (🎥)**. Aunque no se envía el archivo físico para proteger la privacidad y el ancho de banda, los padres sabrán exactamente qué tipo de archivo recibió el niño y de quién.
+*   **Nombres Amigables**: Se reemplazaron los nombres técnicos de los paquetes por nombres legibles. Ahora verás "WhatsApp", "Telegram" o "Instagram" en lugar de `com.whatsapp`.
 
-### Mejora de Visualización (Frontend)
-*   **[index.html](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/public/index.html)**: Se ajustó la lógica para manejar reportes antiguos.
-    *   Si un reporte no tiene datos de batería o red (porque se creó antes de la actualización), los íconos se ocultarán automáticamente para no mostrar información vacía o errónea.
+### Inteligencia en el Panel
+*   **Categorización Visual**: El panel web ahora usa colores e iconos específicos:
+    *   **Rojo**: Riesgos críticos (amenazas, extorsión).
+    *   **Azul**: Llamadas.
+    *   **Púrpura**: Fotos y videos.
+    *   **Naranja**: Audios.
 
-## Instrucciones para Restaurar el Panel
+## Cómo realizar la prueba final
 
-1.  **Sube los cambios a Render**: Al desplegar, el servidor ejecutará la migración y añadirá las piezas que faltaban en la base de datos.
-2.  **Refresca tu Navegador**: Una vez que Render termine de cargar ("Deploy Live"), abre el panel.
-3.  **Los reportes deberían aparecer de inmediato**.
+1.  **Sube los cambios a Render**: Para habilitar los nuevos estilos visuales del panel.
+2.  **Prueba de Llamada**: Haz una llamada de WhatsApp al teléfono del niño. Verás aparecer una tarjeta azul en el panel con el icono 📞.
+3.  **Prueba de Foto**: Envía una imagen por WhatsApp. Verás una tarjeta púrpura con el icono 📷.
+4.  **Prueba de Audio**: Envía una nota de voz. Verás una tarjeta naranja con el icono 🎤.
 
-> [!TIP]
-> Los reportes nuevos (los que envíes después de esta actualización) mostrarán los iconos de 🔋 y de Red. Los reportes viejos se verán limpios, solo con el mensaje.
+> [!NOTE]
+> Esta actualización asegura que ninguna interacción importante pase desapercibida, permitiendo a los padres actuar ante llamadas de desconocidos o intercambio excesivo de multimedia.

@@ -124,14 +124,32 @@ function renderAlert(a, isNew = false) {
   const sender = parts.length > 1 ? parts[0] : 'Sistema';
   const message = parts.length > 1 ? parts.slice(1).join(': ') : a.fragment;
 
-  // Estilo de batería (Solo mostrar si existe)
+  // Estilo dinámico por categoría
+  let cardClass = (a.level || 'low').toLowerCase();
+  let categoryLabel = a.category.replace('_', ' ').toUpperCase();
+  let categoryStyle = 'color: #4f46e5;'; // Default azul/indigo
+
+  if (a.category.includes('riesgo') || a.category.includes('extorsion') || a.category.includes('amenaza')) {
+      categoryStyle = 'color: #ef4444; font-weight: 800;';
+  } else if (a.category.includes('llamada')) {
+      categoryStyle = 'color: #3b82f6;';
+      categoryLabel = '📞 ' + categoryLabel;
+  } else if (a.category.includes('foto')) {
+      categoryStyle = 'color: #8b5cf6;';
+      categoryLabel = '📷 ' + categoryLabel;
+  } else if (a.category.includes('audio')) {
+      categoryStyle = 'color: #f59e0b;';
+      categoryLabel = '🎤 ' + categoryLabel;
+  }
+
+  // Estilo de batería
   let batteryHtml = '';
   if (a.battery_level !== null && a.battery_level !== undefined) {
-    const battColor = (a.battery_level <= 15) ? '#ef4444' : '#10b981';
+    const battColor = (a.battery_level <= 15) ? '#ef4444' : (a.battery_level <= 30 ? '#f59e0b' : '#10b981');
     batteryHtml = `<span title="Batería" style="color: ${battColor}; font-weight: bold; font-size: 0.8rem;">🔋${a.battery_level}%</span>`;
   }
 
-  // Estilo de Red (Solo mostrar si existe)
+  // Estilo de Red
   let netHtml = '';
   if (a.connection_type) {
     const netIcon = (a.connection_type === 'WiFi') ? '📶' : '📡';
@@ -139,15 +157,28 @@ function renderAlert(a, isNew = false) {
   }
 
   return `
-    <div class="card level-${(a.level || 'low').toLowerCase()} ${isNew ? 'new-item' : ''}">
+    <div class="card level-${cardClass} ${isNew ? 'new-item' : ''}">
       <div style="display:flex; justify-content: space-between; margin-bottom: 8px;">
-        <span style="font-weight: bold; color: #4f46e5;">${a.category.replace('_', ' ').toUpperCase()}</span>
+        <span style="${categoryStyle}">${categoryLabel}</span>
         <div style="display:flex; gap: 10px; align-items: center;">
           ${batteryHtml}
           ${netHtml}
           <small style="background:#f3f4f6; padding: 2px 8px; border-radius: 6px; color: #6b7280;">${a.source_app}</small>
         </div>
       </div>
+
+      <div class="msg-container">
+        <div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 4px;">Origen: <strong>${sender}</strong></div>
+        <div style="font-size: 1.15rem; color: #111827; line-height: 1.5; white-space: pre-wrap;">${escapeHtml(message)}</div>
+      </div>
+
+      <div style="font-size:0.8rem; color: #9ca3af; display:flex; justify-content: space-between; margin-top: 12px;">
+        <span>📱 ${a.device_label || 'Dispositivo'}</span>
+        <span>${new Date(a.received_at).toLocaleString()}</span>
+      </div>
+    </div>
+  `;
+}
 
       <div class="msg-container">
         <div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 4px;">Enviado por: <strong>${sender}</strong></div>

@@ -25,6 +25,18 @@ private val MONITORED_PACKAGES = setOf(
     "com.android.dialer"
 )
 
+private val APP_NAMES = mapOf(
+    "com.whatsapp" to "WhatsApp",
+    "com.whatsapp.w4b" to "WhatsApp Business",
+    "com.instagram.android" to "Instagram",
+    "org.telegram.messenger" to "Telegram",
+    "com.facebook.orca" to "Messenger",
+    "com.snapchat.android" to "Snapchat",
+    "com.google.android.dialer" to "Teléfono",
+    "com.samsung.android.dialer" to "Teléfono",
+    "com.android.dialer" to "Teléfono"
+)
+
 class NotificationCaptureService : NotificationListenerService() {
 
     private val TAG = "NotificationCapture"
@@ -53,8 +65,19 @@ class NotificationCaptureService : NotificationListenerService() {
 
         val notification = sbn.notification
         val extras = notification.extras
+        val appName = APP_NAMES[packageName] ?: packageName
 
-        // Intentar extraer usando MessagingStyle (el estándar más completo)
+        // --- 1. DETECCIÓN DE LLAMADAS ---
+        if (notification.category == Notification.CATEGORY_CALL) {
+            val caller = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: "Desconocido"
+            val isUnknown = ContactHelper.isContactUnknown(applicationContext, caller)
+            val category = if (isUnknown) "llamada_desconocida" else "llamada_entrante"
+            
+            processMessage(appName, caller, "[LLAMADA] El usuario está recibiendo una llamada.", sbn.postTime, category)
+            return
+        }
+
+        // --- 2. DETECCIÓN DE MENSAJES (MESSAGING STYLE) ---
         val messagingStyle = NotificationCompat.MessagingStyle.extractMessagingStyleFromNotification(notification)
 
         if (messagingStyle != null) {
@@ -64,92 +87,88 @@ class NotificationCaptureService : NotificationListenerService() {
                 val text = message.text?.toString() ?: ""
                 val context = if (groupTitle != null) "Grupo $groupTitle -> $sender" else sender
                 
-                processMessage(packageName, context, text, message.timestamp)
+                // Detectar si el mensaje es un adjunto multimedia
+                var category = "mensaje"
+                val mime = message.dataMimeType
+                if (mime != null) {
+                    category = when {
+                        mime.startsWith("image/") -> "foto_recibida"
+                        mime.startsWith("audio/") -> "audio_recibido"
+                        mime.startsWith("video/") -> "video_recibido"
+                        else -> "archivo_recibido"
+                    }
+                } else if (text.contains("📷 Foto") || text.contains("🎤 Audio") || text.contains("🎥 Video")) {
+                    // Fallback para etiquetas de texto
+                    if (text.contains("Foto")) category = "foto_recibida"
+                    if (text.contains("Audio")) category = "audio_recibido"
+                    if (text.contains("Video")) category = "video_recibido"
+                }
+
+                processMessage(appName, context, text, message.timestamp, category)
             }
         } else {
-            // Fallback para notificaciones simples o antiguas
+            // --- 3. FALLBACK (InboxStyle / Simple) ---
             val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: "Desconocido"
             val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
             val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString()
             
             val finalBody = if (!bigText.isNullOrBlank() && bigText.length > text.length) bigText else text
             
-            // Si tiene líneas múltiples (InboxStyle, común en Telegram o resúmenes)
             val lines = extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES)
             if (lines != null && lines.isNotEmpty()) {
                 for (line in lines) {
-                    processMessage(packageName, title, line.toString(), sbn.postTime)
+                    processMessage(appName, title, line.toString(), sbn.postTime, "mensaje")
                 }
             } else {
-                processMessage(packageName, title, finalBody, sbn.postTime)
+                processMessage(appName, title, finalBody, sbn.postTime, "mensaje")
             }
         }
     }
 
-    private fun processMessage(packageName: String, sender: String, text: String, time: Long) {
-        if (text.isBlank()) return
+    private fun processMessage(appName: String, sender: String, text: String, time: Long, initialCategory: String) {
+        if (text.isBlank() && initialCategory == "mensaje") return
 
-        // Generar un identificador único para este mensaje
-        val msgHash = (packageName + sender + text).hashCode()
+        // Generar un identificador único para este mensaje/evento
+        val msgHash = (appName + sender + text + initialCategory).hashCode()
         
         synchronized(processedHashes) {
             if (processedHashes.contains(msgHash)) return // Ya procesado
-            
-            // Mantener solo los últimos 20 hashes para no consumir memoria infinita
-            if (processedHashes.size > 20) {
+            if (processedHashes.size > 30) {
                 processedHashes.remove(processedHashes.iterator().next())
             }
             processedHashes.add(msgHash)
         }
 
         val fullText = "$sender: $text"
-        Log.d(TAG, "Evaluando: $fullText")
-
-        // Obtener estado del dispositivo para adjuntar a la alerta
         val battery = DeviceStateHelper.getBatteryLevel(applicationContext)
         val connection = DeviceStateHelper.getConnectionType(applicationContext)
 
-        // 1. Detección de desconocidos
-        try {
+        // 1. Detección de desconocidos (Prioridad alta si es mensaje normal)
+        if (initialCategory == "mensaje" || initialCategory.startsWith("llamada")) {
             val isUnknown = ContactHelper.isContactUnknown(applicationContext, sender)
-            if (isUnknown && sender.isNotEmpty() && sender != "Desconocido") {
-                Log.w(TAG, "¡CONTACTO DESCONOCIDO! -> $sender")
-                scope.launch {
-                    AlertUploader.sendAlert(
-                        context = applicationContext, 
-                        sourceApp = packageName, 
-                        category = "contacto_desconocido", 
-                        level = RiskEngine.RiskLevel.MEDIUM.name, 
-                        fragment = "Remitente no en agenda: $sender. Mensaje: $text", 
-                        timestamp = time,
-                        battery = battery,
-                        connection = connection
-                    )
-                }
+            if (isUnknown && sender != "Desconocido" && !sender.startsWith("Grupo ")) {
+                val cat = if (initialCategory.startsWith("llamada")) "llamada_desconocida" else "contacto_desconocido"
+                upload(appName, cat, RiskEngine.RiskLevel.MEDIUM.name, fullText, time, battery, connection)
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "Error ContactHelper: ${e.message}")
         }
 
-        // 2. Motor de Riesgo
+        // 2. Motor de Riesgo (Analizar el texto)
         val match = RiskEngine.evaluate(fullText)
         if (match != null) {
-            Log.e(TAG, "¡RIESGO DETECTADO! [$packageName] -> $fullText")
-            mainHandler.post {
-                Toast.makeText(applicationContext, "🚨 ALERTA DE RIESGO", Toast.LENGTH_SHORT).show()
-            }
-            scope.launch {
-                AlertUploader.sendAlert(
-                    context = applicationContext,
-                    sourceApp = packageName, 
-                    category = match.category, 
-                    level = match.level.name, 
-                    fragment = fullText, 
-                    timestamp = time,
-                    battery = battery,
-                    connection = connection
-                )
-            }
+            upload(appName, match.category, match.level.name, fullText, time, battery, connection)
+            mainHandler.post { Toast.makeText(applicationContext, "🚨 RIESGO: ${match.category}", Toast.LENGTH_SHORT).show() }
+            return // Si es riesgo, ya lo subimos con su categoría específica
+        }
+
+        // 3. Si no es riesgo pero es un evento especial (foto, audio, etc), subirlo
+        if (initialCategory != "mensaje") {
+            upload(appName, initialCategory, RiskEngine.RiskLevel.LOW.name, fullText, time, battery, connection)
+        }
+    }
+
+    private fun upload(appName: String, category: String, level: String, text: String, time: Long, battery: Int, connection: String) {
+        scope.launch {
+            AlertUploader.sendAlert(applicationContext, appName, category, level, text, time, battery, connection)
         }
     }
 }
