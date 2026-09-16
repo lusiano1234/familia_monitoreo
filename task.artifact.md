@@ -1,14 +1,9 @@
-# Tareas: Profesionalización del Backend
+# Tareas: Refuerzo Crítico y Neutralización del Motor de Riesgo
 
-- [x] Actualizar dependencias (`package.json`)
-- [x] Crear estructura modular
-    - [x] `src/middlewares/auth.js`: Protección JWT y Device Auth
-    - [x] `src/controllers/alertController.js`: Lógica de alertas
-    - [x] `src/controllers/deviceController.js`: Gestión de dispositivos
-    - [x] `src/controllers/authController.js`: Login administrativo
-- [x] Refactorizar `src/server.js` (Integración Socket.io y Rutas)
-- [x] Actualizar panel web (`public/index.html`) para soporte Socket.io y JWT
-- [x] Implementar sistema de notificaciones por Email (Skeleton)
-- [x] Verificación
-    - [x] Validar arranque del servidor
-    - [x] Probar recepción de alertas en tiempo real
+- [ ] Actualizar `RiskEngine.kt` con nuevas categorías en español neutro
+- [ ] Ampliar patrones de manipulación, extorsión y aislamiento
+- [ ] Optimizar normalización de texto (quitar acentos y caracteres especiales)
+- [ ] Verificación
+    - [ ] Desplegar app actualizada
+    - [ ] Simular mensaje de extorsión neutro ("borra los mensajes")
+    - [ ] Verificar alerta en el panel web

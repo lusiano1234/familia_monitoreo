@@ -1,37 +1,29 @@
-# Walkthrough - Backend Profesionalizado
+# Walkthrough - Blindaje Crítico en Español Neutro
 
-Se ha transformado el backend de un prototipo simple a una aplicación robusta con arquitectura empresarial, actualizaciones en tiempo real y seguridad avanzada.
+Se ha reforzado masivamente el motor de reglas de riesgo para proteger a menores contra extorsión, grooming y manipulación, utilizando un lenguaje neutro para maximizar la efectividad en diferentes países.
 
-## Mejoras Implementadas
+## Categorías de Protección Añadidas
 
-### Arquitectura Modular
-*   El código se ha separado en **Controladores**, **Middlewares** y **Rutas**. Esto permite que el proyecto sea mantenible y escalable.
-*   `alertController.js`: Maneja la lógica de las alertas y la integración con sockets.
-*   `deviceController.js`: Gestiona el registro de dispositivos Android.
-*   `authController.js`: Gestiona el acceso seguro al panel administrativo.
+### Aislamiento y Manipulación (CRÍTICO)
+*   Detecta órdenes para ocultar información: `"borra los mensajes"`, `"no le digas a nadie"`, `"que no se enteren"`, `"mientele a tus padres"`.
 
-### Actualizaciones en Tiempo Real (WebSockets)
-*   Se integró **Socket.io**. Ahora, cuando llega una alerta desde un teléfono Android, esta aparece **instantáneamente** en el panel web sin necesidad de recargar la página.
-*   Se añadió un indicador visual ("MONITOREO EN VIVO") en el panel para confirmar la conexión.
+### Amenaza de Difusión (CRÍTICO)
+*   Detecta extorsión basada en miedo social: `"lo subo a tiktok"`, `"tus amigos lo verán"`, `"lo verán en la escuela"`, `"tengo tu video"`.
 
-### Seguridad y Robustez
-*   **JWT (JSON Web Tokens)**: El acceso al panel ahora usa tokens firmados. Al loguearte, tu sesión queda guardada de forma segura en el navegador.
-*   **Helmet & Morgan**: Se añadieron capas de seguridad para las cabeceras HTTP y un sistema de logs profesional para monitorear el tráfico.
-*   **Rate Limiting**: El endpoint de login está protegido contra ataques de fuerza bruta.
+### Grooming y Control Físico (CRÍTICO)
+*   Detecta intrusiones a la privacidad y pedidos de contenido sensible: `"donde vives"`, `"estas sola"`, `"quítate la ropa"`, `"enséñame un poquito"`.
 
-### Interfaz Renovada
-*   El panel web ahora tiene un diseño más limpio y moderno (Look & Feel profesional).
-*   Las alertas se muestran con colores según su nivel de riesgo (`HIGH` en rojo, `MEDIUM` en amarillo).
+### Extorsión Digital (CRÍTICO)
+*   Detecta el pedido de monedas de juegos populares: `"robux"`, `"diamantes"`, `"tarjetas de regalo"`, `"free fire"`.
 
-### Notificaciones por Email (Activado)
-*   Se habilitó el componente `sendEmailNotification` en `alertController.js`.
-*   El sistema ahora intentará enviar un correo automático cada vez que una alerta sea de nivel `HIGH`.
-*   Se requiere configuración de variables de entorno en Render para que los correos salgan exitosamente.
-
-## Guía de Configuración
-He creado una guía paso a paso para configurar el e-mail: [email_setup_guide.artifact.md](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/email_setup_guide.artifact.md).
+## Mejoras Técnicas
+*   **Neutralización de Idioma**: Se cambiaron regionalismos (como "mentile" o "tenes") por términos neutros ("mientele", "tienes") y se añadieron variantes para cubrir todas las posibilidades.
+*   **Reglas Sin Acentos**: El motor ahora normaliza el texto (ej: "Pásame" -> "Pasame") antes de comparar, haciendo imposible que un atacante evada el filtro usando tildes.
 
 ## Verificación
 
-1.  **Arranque**: El servidor se configuró para arrancar con `npm start` apuntando al nuevo `src/server.js`.
-2.  **Frontend**: El panel ahora solicita contraseña y mantiene la sesión activa.
+1.  **Estado**: La aplicación actualizada ya se encuentra activa en el dispositivo.
+2.  **Prueba Recomendada**: Envía un mensaje con la frase `"borra los mensajes es un secreto"`. El sistema lo clasificará como `aislamiento_manipulacion` de nivel **HIGH** y activará el aviso inmediato.
+
+> [!IMPORTANT]
+> **Acción Inmediata**: Ante cualquier alerta nivel HIGH recibida por estas nuevas categorías, se recomienda intervenir físicamente y asegurar el dispositivo del menor.

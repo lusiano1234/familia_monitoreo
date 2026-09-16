@@ -18,51 +18,54 @@ object RiskEngine {
     // Patrones agrupados por categoría. Ajustables sin tocar el resto del código.
     // IMPORTANTE: Definir los patrones sin acentos ya que el texto se normaliza.
     private val patterns: Map<String, Pair<RiskLevel, List<Regex>>> = mapOf(
-        "dinero_urgente" to (RiskLevel.HIGH to listOf(
+        "extorsion_dinero" to (RiskLevel.HIGH to listOf(
             Regex("(?i)transfer[i]\\s?(me|dinero|plata)"),
-            Regex("(?i)mand[a]\\s?(me\\s)?(dinero|plata|efectivo)"),
-            Regex("(?i)pag[a]\\s?(me\\s)?(ahora|urgente|ya)")
+            Regex("(?i)envi[a]\\s?(me\\s)?(dinero|plata|efectivo)"),
+            Regex("(?i)pag[a]\\s?(me\\s)?(ahora|urgente|ya)"),
+            Regex("(?i)si no pagas"),
+            Regex("(?i)quiero (dinero|plata|efectivo)")
         )),
-        "amenaza" to (RiskLevel.HIGH to listOf(
-            Regex("(?i)si no .* (le cuento|aviso|mando|publico)"),
-            Regex("(?i)voy a (publicar|mandar|compartir) (tus|esas|las) fotos"),
-            Regex("(?i)te vas a arrepentir")
+        "amenaza_difusion" to (RiskLevel.HIGH to listOf(
+            Regex("(?i)(ense[n]ar|mandar|subir|compartir) (tus|esas|las) (fotos|videos)"),
+            Regex("(?i)lo (subo|pongo) a (tiktok|instagram|facebook|internet)"),
+            Regex("(?i)tus amigos lo (veran|van a ver)"),
+            Regex("(?i)en la escuela lo (saber|veran)"),
+            Regex("(?i)te vas a arrepentir"),
+            Regex("(?i)tengo tu (cara|video)")
         )),
-        "secreto_forzado" to (RiskLevel.MEDIUM to listOf(
-            Regex("(?i)no le digas a nadie"),
-            Regex("(?i)es (nuestro|nuestro) secreto"),
-            Regex("(?i)no se lo cuentes a tus padres")
+        "aislamiento_manipulacion" to (RiskLevel.HIGH to listOf(
+            Regex("(?i)borra (el chat|los mensajes|la conversacion)"),
+            Regex("(?i)no le (digas|cuentes) a nadie"),
+            Regex("(?i)es (nuestro|un) secreto"),
+            Regex("(?i)(mientele|no le digas) a tus (padres|papas|papas)"),
+            Regex("(?i)que no se enteren"),
+            Regex("(?i)limpia el historial")
         )),
-        "pedido_de_foto" to (RiskLevel.MEDIUM to listOf(
-            Regex("(?i)mandame\\s?(una)?\\s?foto"),
-            Regex("(?i)mostrame\\s?(una)?\\s?foto"),
-            Regex("(?i)prend[e]\\s?(la)?\\s?c[a]mara")
+        "grooming_contacto" to (RiskLevel.HIGH to listOf(
+            Regex("(?i)donde (vives|estas)"),
+            Regex("(?i)estas (solo|sola)"),
+            Regex("(?i)pasame tu (direccion|ubicacion|casa)"),
+            Regex("(?i)sacate (la ropa|la playera|la camisa|la remera)"),
+            Regex("(?i)quitate (la ropa|la playera|la camisa|la remera)"),
+            Regex("(?i)mostrame algo"),
+            Regex("(?i)ensename un poquito")
         )),
-        "contacto_desconocido_persistente" to (RiskLevel.LOW to listOf(
-            Regex("(?i)agregame\\s?(a)?\\s?otra\\s?red"),
-            Regex("(?i)habl(emos|amos)\\s?por\\s?otro\\s?lado")
+        "citas_sospechosas" to (RiskLevel.HIGH to listOf(
+            Regex("(?i)(encontremonos|veamonos)"),
+            Regex("(?i)te (paso a buscar|recojo)"),
+            Regex("(?i)veni a mi casa"),
+            Regex("(?i)vamos a un lugar")
         )),
-        "grooming" to (RiskLevel.HIGH to listOf(
-            Regex("(?i)donde vivis"),
-            Regex("(?i)estas solo"),
-            Regex("(?i)pasame tu direccion"),
-            Regex("(?i)no le cuentes a nadie")
-        )),
-        "sextorsion" to (RiskLevel.HIGH to listOf(
-            Regex("(?i)tengo tus fotos"),
-            Regex("(?i)voy a publicar el video"),
-            Regex("(?i)borra el chat"),
-            Regex("(?i)si no haces lo que digo")
-        )),
-        "citas_sospechosas" to (RiskLevel.MEDIUM to listOf(
-            Regex("(?i)encontremonos"),
-            Regex("(?i)te paso a buscar"),
-            Regex("(?i)veni a mi casa")
+        "extorsion_digital" to (RiskLevel.HIGH to listOf(
+            Regex("(?i)(robux|diamantes|free fire|fortnite)"),
+            Regex("(?i)(codigos|tarjetas) de regalo"),
+            Regex("(?i)gift\\s?card"),
+            Regex("(?i)comprame (diamantes|monedas)")
         )),
         "robo_de_cuenta" to (RiskLevel.HIGH to listOf(
             Regex("(?i)pasame el codigo"),
-            Regex("(?i)llego un SMS"),
-            Regex("(?i)validar cuenta")
+            Regex("(?i)llego un (SMS|mensaje)"),
+            Regex("(?i)validar (cuenta|perfil)")
         ))
     )
 

@@ -26,6 +26,7 @@
         android:debuggable="true"
         android:extractNativeLibs="false"
         android:label="Monitoreo Familiar"
+        android:testOnly="true"
         android:theme="@style/Theme.FamiliaMonitor" >
 
         <!-- Pantalla de consentimiento: es la primera y única entrada visible -->
