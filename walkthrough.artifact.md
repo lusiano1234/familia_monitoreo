@@ -1,32 +1,27 @@
-# Walkthrough - Entrada Manual de Token del Sitio Web
+# Walkthrough - Visibilidad y Persistencia Total
 
-Se ha modificado el flujo de la aplicación para que el usuario ingrese manualmente el token proporcionado por el sitio web.
+Se han aplicado cambios críticos para asegurar que el sistema Android no detenga la aplicación y para confirmar que las notificaciones están siendo procesadas.
 
 ## Cambios Realizados
 
-### Configuración y Dependencias
-*   **[app/build.gradle](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/build.gradle)**: Se añadió la dependencia de Material Components para mejorar la interfaz de usuario.
-*   **[themes.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/values/themes.xml)**: Se actualizó el tema base a `Theme.MaterialComponents` para evitar cierres inesperados al usar componentes Material.
+### Persistencia del Sistema
+*   Se activó el **Servicio en Primer Plano (`ForegroundStatusService`)**.
+*   Ahora aparecerá una **notificación permanente** que dice "Monitoreo Familiar activo". Esto indica a Android que la aplicación es importante y no debe ser cerrada para ahorrar batería.
 
-### Pantalla de Consentimiento (Entrada de Token)
-*   **[activity_consent.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_consent.xml)**: Se incorporó un campo de texto (`TextInputLayout` + `TextInputEditText`) para que el usuario ingrese el token del sitio web.
-*   **[ConsentActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/ConsentActivity.kt)**:
-    *   Se implementó validación en tiempo real: el botón "Continuar" solo se habilita si el campo del token no está vacío y el checkbox de consentimiento está marcado.
-    *   La app ahora guarda el token ingresado por el usuario en lugar de generar uno aleatorio.
+### Visibilidad Total (Modo Verboso)
+*   Se modificó el `NotificationCaptureService` para mostrar un **mensaje negro (Toast)** por cada notificación que llegue al teléfono, sin importar de qué aplicación sea.
+*   Esto nos permite verificar en tiempo real si el sistema Android le está entregando los mensajes a nuestra app.
 
-### Pantalla de Estado
-*   **[StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)**: Continúa mostrando el token guardado para verificación del usuario.
+### Soporte de Aplicaciones
+*   Se añadió soporte explícito para **WhatsApp Business (`com.whatsapp.w4b`)**.
 
-## Verificación Visual
+## Cómo realizar la prueba final
 
-> [!NOTE]
-> La interfaz ahora requiere el token antes de permitir la activación del servicio.
+1.  **Verifica la Notificación**: Al abrir la app, deberías ver un icono de información en la barra de notificaciones del teléfono.
+2.  **Prueba de "Cualquier App"**: Pide a alguien que te envíe un correo (Gmail) o que te llegue una notificación de YouTube. El teléfono **DEBE** mostrar un mensaje negro abajo que diga `Captura: com.google.android.gm` (o el nombre de la app).
+3.  **Prueba de WhatsApp**:
+    *   Si al recibir un WhatsApp NO aparece el mensaje negro de `Captura: com.whatsapp`, el permiso de Android sigue bloqueado.
+    *   **Solución**: Ve a ajustes, apaga y vuelve a encender el interruptor de "Monitoreo Familiar" en Acceso a Notificaciones.
 
-![Nueva pantalla de consentimiento con campo de token](/C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/build/tmp/screenshot_consent.png)
-
-## Instrucciones para el Usuario
-
-1.  Abre la aplicación "Monitoreo Familiar".
-2.  Escribe o pega el **token que te dio el sitio web** en el campo indicado.
-3.  Marca la casilla de consentimiento.
-4.  Presiona el botón para continuar y activar los permisos necesarios.
+> [!IMPORTANT]
+> Si logras ver el mensaje negro de `Captura: com.whatsapp`, el sistema ya está leyendo los mensajes y las alertas deberían aparecer en el panel web de inmediato.

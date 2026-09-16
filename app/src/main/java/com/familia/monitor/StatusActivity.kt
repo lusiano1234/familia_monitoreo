@@ -28,6 +28,15 @@ class StatusActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("consent", MODE_PRIVATE)
         val given = prefs.getBoolean("consent_given", false)
 
+        if (given) {
+            val serviceIntent = Intent(this, ForegroundStatusService::class.java)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                startForegroundService(serviceIntent)
+            } else {
+                startService(serviceIntent)
+            }
+        }
+
         findViewById<TextView>(R.id.tv_status).text = if (given) {
             "Monitoreo ACTIVO."
         } else {

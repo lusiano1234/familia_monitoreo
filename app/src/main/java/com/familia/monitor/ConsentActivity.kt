@@ -73,6 +73,14 @@ class ConsentActivity : AppCompatActivity() {
                 .putLong("consent_timestamp", System.currentTimeMillis())
                 .apply()
 
+            // Activar el servicio de estado (Notificación permanente)
+            val serviceIntent = Intent(this, ForegroundStatusService::class.java)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                startForegroundService(serviceIntent)
+            } else {
+                startService(serviceIntent)
+            }
+
             // Lleva al usuario al ajuste del sistema donde debe habilitar
             // manualmente el acceso a notificaciones (Android no permite
             // hacerlo automáticamente, por diseño).

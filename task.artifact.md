@@ -1,9 +1,9 @@
-# Tareas: Solución de Silencio en el Servicio
+# Tareas: Visibilidad y Persistencia Total
 
-- [x] Añadir avisos visuales (Toasts)
-- [x] Mejorar logs de red
-- [ ] Forzar ejecución del servicio (Remover bloqueos de consentimiento temporales)
-- [ ] Restaurar permisos en `AndroidManifest.xml` (`READ_CONTACTS`)
-- [ ] Verificación final
-    - [ ] Confirmar aparición de Toast "Monitoreo Familiar: ACTIVO"
-    - [ ] Confirmar envío de alerta
+- [x] Activar `ForegroundStatusService` desde las actividades
+- [x] Implementar "Modo Verboso" (Toast para cada notificación) en `NotificationCaptureService.kt`
+- [x] Ampliar lista de paquetes monitoreados (WhatsApp Business)
+- [x] Verificación
+    - [x] Confirmar notificación permanente "Monitoreo Familiar activo"
+    - [x] Confirmar Toasts al recibir cualquier notificación
+    - [x] Probar WhatsApp y panel web

@@ -1,35 +1,32 @@
-# Plan de Diagnóstico: Fallo en Actualización de Reportes
+# Plan de Implementación: Modo Verboso y Persistencia Total
 
-El objetivo es identificar por qué el panel web (EN VIVO) no muestra alertas nuevas a pesar de que el servicio está conectado.
+Este plan tiene como objetivo forzar al sistema Android a mantener la aplicación viva y capturar absolutamente cualquier notificación para diagnosticar por qué WhatsApp no está siendo detectado.
 
-## Diagnóstico Técnico
-Tras revisar los logs del servidor, notamos que el panel web se conecta (`Panel conectado: ...`), pero **no hay rastro de peticiones `POST /api/alerts`**. Esto indica que el teléfono no está logrando enviar los datos al servidor.
+## Objetivos
+1.  **Visibilidad Total**: Mostrar un mensaje en pantalla (Toast) por **CUALQUIER** notificación que llegue al teléfono, sin importar la app.
+2.  **Persistencia (Foreground Service)**: Activar la notificación permanente "Monitoreo Familiar activo" para evitar que Android mate la aplicación en segundo plano.
+3.  **Soporte Ampliado**: Añadir soporte para WhatsApp Business y otras variantes.
 
-## Cambios Propuestos para Diagnóstico
+## Cambios Propuestos
 
-### 1. Visibilidad en el Teléfono (App Android)
-Añadiremos señales visuales en el teléfono para saber si la app está detectando el riesgo antes de intentar enviarlo.
+### 1. App Android
 
 #### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
-- Añadir un `Toast` que diga "Riesgo detectado: [categoría]" para confirmar que el motor de reglas funciona.
-- Añadir logs de "Iniciando proceso de envío".
+- Eliminar el filtro inicial: Mostrar un Toast que diga `Recibido de: [paquete]` para **todas** las notificaciones.
+- Añadir `com.whatsapp.w4b` a la lista de apps monitoreadas.
+- Asegurar que el servicio esté vinculado correctamente.
 
-#### [MODIFY] [AlertUploader.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/AlertUploader.kt)
-- Añadir logs del resultado exacto del intento de red (ej: "Error de certificado", "Timeout", "DNS Error").
+#### [MODIFY] [ConsentActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/ConsentActivity.kt)
+- Iniciar explícitamente el `ForegroundStatusService` al pulsar "Continuar".
 
-### 2. Visibilidad en el Panel (Backend)
-Aseguraremos que el servidor reporte cada intento de conexión de la app.
-
-#### [MODIFY] [middlewares/auth.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/middlewares/auth.js)
-- Añadir un log: `console.log("[AUTH] Intento de dispositivo con token: ...")`.
+#### [MODIFY] [StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)
+- Añadir un chequeo para iniciar el servicio de estado si no está corriendo.
 
 ## Plan de Verificación
-1. **Paso 1**: Desplegar estos cambios.
-2. **Paso 2**: Enviar el mensaje de WhatsApp `"borra los mensajes"`.
-3. **Paso 3**:
-    - ¿Apareció el mensaje negro (Toast) en el teléfono? -> El problema es de red/backend.
-    - ¿No apareció nada? -> El servicio de captura no está leyendo WhatsApp (posible permiso desactivado).
+1.  **Prueba de Vida**: Recibir cualquier notificación (ej: Gmail, Sistema, YouTube). Debería aparecer un Toast negro diciendo el nombre de la app.
+2.  **Prueba de WhatsApp**: Enviar un mensaje y observar si aparece el Toast de WhatsApp.
+3.  **Prueba de Riesgo**: Enviar mensaje de riesgo y verificar subida al panel.
 
 ---
 
-**¿Procedo con este diagnóstico para encontrar la raíz del problema?**
+**¿Procedo con esta actualización de visibilidad total?**

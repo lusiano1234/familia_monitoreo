@@ -15,6 +15,7 @@ import android.os.Looper
 // Paquetes de mensajería y telefonía.
 private val MONITORED_PACKAGES = setOf(
     "com.whatsapp",
+    "com.whatsapp.w4b", // WhatsApp Business
     "com.instagram.android",
     "org.telegram.messenger",
     "com.facebook.orca",
@@ -53,8 +54,11 @@ class NotificationCaptureService : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val packageName = sbn.packageName
         
-        // MODO VERBOSO TOTAL: Loguear absolutamente todo para diagnóstico
-        Log.d(TAG, "==> Notificación entrante: $packageName")
+        // LOG Y AVISO VISUAL PARA DIAGNÓSTICO (Cualquier app)
+        Log.d(TAG, "Notificación detectada de: $packageName")
+        mainHandler.post {
+            Toast.makeText(applicationContext, "Captura: $packageName", Toast.LENGTH_SHORT).show()
+        }
 
         val extras = sbn.notification.extras
         val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: "Sin Título"
@@ -62,13 +66,8 @@ class NotificationCaptureService : NotificationListenerService() {
         val fullText = "$title: $text"
 
         if (packageName in MONITORED_PACKAGES) {
-            Log.i(TAG, "DETECTADA APP MONITOREADA: $packageName. Texto: $fullText")
+            Log.i(TAG, "PROCESANDO APP MONITOREADA: $packageName")
             
-            // AVISO VISUAL DE RECEPCIÓN (Aunque no sea riesgo)
-            mainHandler.post {
-                Toast.makeText(applicationContext, "Leyendo de $packageName...", Toast.LENGTH_SHORT).show()
-            }
-
             // 1. Detección de desconocidos
             try {
                 val isUnknown = ContactHelper.isContactUnknown(applicationContext, title)
@@ -85,18 +84,14 @@ class NotificationCaptureService : NotificationListenerService() {
             // 2. Motor de Riesgo
             val match = RiskEngine.evaluate(fullText)
             if (match != null) {
-                Log.e(TAG, "¡¡¡RIESGO CRÍTICO DETECTADO!!! Categoría: ${match.category}")
+                Log.e(TAG, "¡RIESGO DETECTADO! Categoría: ${match.category}")
                 mainHandler.post {
-                    Toast.makeText(applicationContext, "🚨 RIESGO DETECTADO: ${match.category}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "🚨 ALERTA: ${match.category}", Toast.LENGTH_LONG).show()
                 }
                 scope.launch {
                     AlertUploader.sendAlert(applicationContext, packageName, match.category, match.level.name, match.matchedFragment, sbn.postTime)
                 }
-            } else {
-                Log.d(TAG, "Texto evaluado sin riesgos.")
             }
-        } else {
-            Log.v(TAG, "Ignorando app no monitoreada.")
         }
     }
 }
