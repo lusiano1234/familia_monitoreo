@@ -25,14 +25,12 @@
 
     <EditText
         android:id="@+id/et_pin"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="PIN"
-        android:inputType="numberPassword"
-        android:maxLength="4"
+        android:hint="Ingrese Contraseña"
+        android:inputType="textPassword"
         android:gravity="center"
-        android:textSize="24sp"
-        android:letterSpacing="0.5"
+        android:textSize="18sp"
         android:background="@android:drawable/edit_text"
         android:padding="12dp"/>
 

@@ -1,51 +1,35 @@
-# Plan de Mejora: "Seguridad Familiar Total"
+# Plan de Implementación: Extracción Profunda y Captura Multidispositivo
 
-Este plan detalla las funcionalidades recomendadas para cubrir todos los escenarios de riesgo posibles, transformando la aplicación en una herramienta de protección integral.
+Este plan mejora la extracción de datos de las notificaciones para asegurar que ningún mensaje (individual, de grupo o acumulado) se pierda, especialmente en diferentes modelos de teléfonos.
 
-## Escenarios Cubiertos
-1.  **Riesgo Físico**: Saber dónde está el niño cuando ocurre una alerta.
-2.  **Acoso por SMS**: Detectar amenazas fuera de las apps de chat.
-3.  **Emergencia Silenciosa**: Permitir al niño pedir ayuda sin que nadie lo note.
-4.  **Control de Crisis**: Bloquear el dispositivo remotamente desde el panel web.
+## Objetivos
+1.  **Extracción de Mensajes "Hijos"**: Asegurar que cuando Android agrupa notificaciones, capturemos el detalle de cada mensaje individual y no solo el resumen del grupo.
+2.  **Análisis de Paquetes Ocultos**: Inspeccionar manualmente `EXTRA_MESSAGES` si el extractor automático de `MessagingStyle` falla.
+3.  **Soporte para Mensajes Borrados/Editados**: Capturar el estado inicial de la notificación antes de que la app de mensajería la actualice o elimine.
+4.  **Mayor Visibilidad de Error**: Loguear el contenido exacto de los "Extras" de la notificación en el Logcat para identificar por qué un teléfono específico no está reportando.
 
----
+## Cambios Propuestos
 
-## 1. Localización en Tiempo Real (Geolocalización)
-*   **App**: Capturar coordenadas GPS (Latitud/Longitud) cada vez que se dispare una alerta de riesgo.
-*   **Backend**: Almacenar la ubicación vinculada a la alerta.
-*   **Panel Web**: Mostrar un mapa con la ubicación exacta de donde se recibió el mensaje peligroso.
+### 1. App Android
 
-## 2. Monitor de SMS y Llamadas del Sistema
-*   **App**: Implementar un observador para mensajes de texto (SMS). Los estafadores suelen usar SMS cuando son bloqueados en WhatsApp.
-*   **App**: Registrar llamadas perdidas de números desconocidos.
+#### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
+- **Mejora de `onNotificationPosted`**:
+    - No ignorar las notificaciones marcadas como `FLAG_GROUP_SUMMARY` si contienen texto útil.
+    - Implementar un iterador manual sobre `EXTRA_MESSAGES` (Bundle array) para capturar el historial completo enviado por WhatsApp.
+    - Buscar en `EXTRA_TITLE` (Remitente) y `EXTRA_TEXT` (Contenido) de forma recursiva.
+- **Normalización de Texto**: Asegurar que el filtro de duplicados no sea demasiado sensible a cambios de milisegundos en el timestamp.
 
-## 3. Comandos Remotos (Socket.io Bidireccional)
-*   **Panel Web**: Botón para **"Hacer sonar alarma"** (incluso si está en silencio) para encontrar el teléfono o asustar a un agresor.
-*   **Panel Web**: Botón para **"Bloquear Pantalla"** si se detecta una situación de grooming extrema.
+#### [MODIFY] [AlertUploader.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/AlertUploader.kt)
+- Añadir un pequeño reintento (Retry) en caso de que la red falle momentáneamente al enviar el reporte.
 
-## 4. Botón de Pánico Discreto
-*   **App**: Un gesto secreto (ej: presionar 5 veces el botón de encendido) que envíe una alerta inmediata al panel con la ubicación actual y una grabación de audio de 15 segundos.
+### 2. Panel Web (Visualización)
+- No requiere cambios inmediatos, se centrará en la calidad de los datos recibidos.
 
----
-
-## Cambios Técnicos Propuestos
-
-### App Android
-*   **[NEW] `LocationHelper.kt`**: Gestión de permisos GPS y obtención de coordenadas.
-*   **[NEW] `SmsObserver.kt`**: Monitoreo de la base de datos de mensajes entrantes.
-*   **[MODIFY] `NotificationCaptureService.kt`**: Integración con Socket.io para recibir órdenes desde el panel web.
-
-### Backend (Node.js)
-*   **[MODIFY] `db.js`**: Añadir columnas `latitude`, `longitude` y `accuracy`.
-*   **[MODIFY] `server.js`**: Habilitar el envío de mensajes desde el Panel -> App a través de Sockets.
-
-### Frontend (Panel Web)
-*   **[MODIFY] `index.html`**: Integrar la API de **Google Maps** o **Leaflet** para visualizar las ubicaciones.
-*   **[MODIFY] `index.html`**: Panel de "Acciones Rápidas" (Alarma, Bloqueo).
+## Plan de Verificación
+1.  **Prueba de Mensajes Rápidos**: Enviar 5 mensajes de WhatsApp en menos de 2 segundos. Verificar que los 5 lleguen al panel.
+2.  **Prueba de "Mensajes Nuevos"**: Dejar que se acumulen mensajes de diferentes personas y verificar que al llegar la notificación de "X mensajes de Y chats", la app desglose el contenido.
+3.  **Prueba en Segundo Teléfono**: Confirmar que los mensajes que antes se perdían ahora se registran.
 
 ---
 
-> [!IMPORTANT]
-> La localización en segundo plano en Android 14 requiere que el usuario acepte el permiso "Permitir siempre". Esto es fundamental para que el GPS funcione con la pantalla apagada.
-
-**¿Qué opinas de estas recomendaciones? ¿Deseas que empecemos por la Localización GPS o por los Comandos Remotos?**
+**¿Deseas que proceda con la extracción profunda de mensajes para que no se escape nada?**

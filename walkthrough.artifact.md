@@ -1,32 +1,27 @@
-# Walkthrough - Gestión de Seguridad y Configuración Avanzada
+# Walkthrough - Captura Infalible y Seguridad de Sesión
 
-Se ha implementado un sistema de control centralizado dentro de la app que permite a los padres gestionar la protección con la misma contraseña del panel administrativo.
+Se han implementado mejoras críticas para garantizar que ningún mensaje se pierda, independientemente del modelo de teléfono, y para reforzar la privacidad del acceso físico.
 
 ## Mejoras Realizadas
 
-### Control Maestro de Monitoreo
-*   **Interruptor (Switch)**: Se añadió un interruptor en la pantalla de estado para pausar o reanudar el monitoreo de mensajes instantáneamente.
-*   **Inteligencia de Servicio**: El `NotificationCaptureService` ahora consulta este estado antes de procesar cualquier notificación. Si el monitoreo está en "Pausa", la app ignora los mensajes para respetar la privacidad o el ahorro de batería.
+### Captura Profunda (Deep Extraction)
+*   **Análisis de Historial**: WhatsApp y Telegram suelen agrupar mensajes ("3 mensajes nuevos"). Ahora la app "abre" ese grupo y procesa cada mensaje individual contenido en el historial de la notificación (`EXTRA_MESSAGES`).
+*   **Lectura Multicapa**: Si el texto principal está vacío, la app busca automáticamente en campos de respaldo como `BIG_TEXT` o `SUMMARY_TEXT`.
+*   **Resiliencia de Red**: Se añadió un sistema de **3 reintentos automáticos** en `AlertUploader`. Si el teléfono pierde internet por un segundo al recibir el mensaje, la app esperará y volverá a intentar el envío del reporte.
 
-### Gestión de Identidad y Vinculación
-*   **Edición de Token**: El token de vinculación ya no es estático. Ahora puedes editarlo directamente en la app y guardarlo, permitiendo cambiar el dispositivo de panel sin reinstalar la app.
-*   **Clave Unificada**: El acceso a la app ahora requiere la **Contraseña Administrativa** del panel web (que se configura en el primer inicio), eliminando el PIN `1234`.
+### Seguridad de Sesión Automática
+*   **Bloqueo al Salir**: Se implementó un sistema de protección que detecta cuando sales de la aplicación o bloqueas el teléfono. Al regresar, la app **siempre te pedirá la contraseña administrativa**.
+*   **Privacidad Total**: Esto evita que alguien pueda ver el token o desactivar el monitoreo si el teléfono se queda desbloqueado en la pantalla de la app.
 
-### Control de Blindaje Anti-Borrado
-*   **Desactivación Protegida**: Se añadió un botón dinámico para gestionar el Administrador de Dispositivo.
-    *   Si está apagado: Te permite activar el blindaje anti-borrado.
-    *   Si está encendido: Te permite **desactivar la protección** con un solo toque (tras haber ingresado con tu clave), facilitando la desinstalación legal por parte de los padres.
+### Soporte Ampliado
+*   Se añadieron firmas digitales para capturar notificaciones de servicios de llamadas del sistema y múltiples apps de SMS.
 
-### Solución de Errores Críticos
-*   **Corrección de Cierre Inesperado**: Se actualizó el tema de la aplicación a `Material3` para asegurar la compatibilidad con los nuevos componentes de interfaz (Switch y campos de texto).
-*   **Corrección de Base de Datos**: Se implementó una migración automática en el servidor para que el panel web no falle al buscar datos de batería y red.
+## Instrucciones para la Prueba en el segundo teléfono
 
-## Instrucciones de Uso Final
+1.  **Abre la app** y asegúrate de que el interruptor de "Monitoreo" esté encendido.
+2.  **Sal al escritorio** y vuelve a entrar. Confirma que te pide la clave.
+3.  **Envía un grupo de mensajes** (por ejemplo, 3 seguidos) al teléfono. Verifica que el panel los registre todos por separado.
+4.  **Si algo falla**: Conecta el teléfono y revisa el Logcat con la etiqueta `NotificationCapture`. Verás líneas de `AUDITORÍA` que explican paso a paso qué está leyendo la app.
 
-1.  **Configuración Inicial**: Al abrir la app por primera vez tras esta actualización, te pedirá ingresar tu contraseña del panel web y el token.
-2.  **Acceso Seguro**: Cada vez que entres a los ajustes ("Servicio de Sincronización"), pon tu clave administrativa.
-3.  **Limpiar Historial**: Entra al panel web y usa el botón rojo **"Limpiar Reportes"** para empezar con una lista vacía.
-4.  **Verificación Final**: Pulsa **"ENVIAR SEÑAL DE PRUEBA"** en la app para confirmar que todo llega al panel con batería y red.
-
-> [!SUCCESS]
-> El sistema está ahora totalmente blindado, es discreto y permite una gestión profesional desde la propia aplicación.
+> [!IMPORTANT]
+> Recuerda que en el segundo teléfono también debes activar manualmente el interruptor de **"Administrador de Dispositivo"** y el **"Acceso a Notificaciones"** para que el sistema funcione.

@@ -1,18 +1,12 @@
-# Tareas: Gestión de Seguridad y Configuración Avanzada
+# Tareas: Certeza de Captura y Seguridad de Sesión
 
-- [x] Modificar `activity_consent.xml` para incluir campo de "Contraseña Administrativa"
-- [x] Actualizar `ConsentActivity.kt` para guardar la contraseña administrativa
-- [x] Actualizar `PinActivity.kt` para validar contra la contraseña guardada
-- [x] Rediseñar `activity_status.xml`
-    - [x] Añadir interruptor (Switch) para activar/desactivar monitoreo
-    - [x] Hacer el campo de Token editable
-    - [x] Añadir botón para desactivar protección anti-borrado
-- [x] Actualizar `StatusActivity.kt`
-    - [x] Lógica para activar/desactivar monitoreo
-    - [x] Lógica para guardar cambios de Token
-    - [x] Lógica para remover Administrador de Dispositivo
-- [x] Modificar `NotificationCaptureService.kt` para respetar el interruptor de monitoreo
-- [x] Verificación
-    - [x] Probar bloqueo/desbloqueo de monitoreo
-    - [x] Probar cambio de token
-    - [x] Probar desactivación de protección anti-borrado
+- [x] Implementar Flag de Sesión Global en `PinActivity`
+- [x] Implementar Bloqueo Automático en `StatusActivity` (onStop)
+- [x] Expandir Apps Monitoreadas (Telecom y SMS) en `NotificationCaptureService`
+- [x] Refactorizar `onNotificationPosted` para iteración manual de `EXTRA_MESSAGES` (Captura Profunda)
+- [x] Implementar sistema de reintentos (Retry) en `AlertUploader`
+- [x] Añadir Logs de Auditoría detallados
+- [/] Verificación
+    - [ ] Validar re-bloqueo al salir de la app
+    - [ ] Validar captura de mensajes agrupados (WhatsApp)
+    - [ ] Analizar logs en teléfonos que no reportan

@@ -118,6 +118,21 @@ class StatusActivity : AppCompatActivity() {
         btnAdmin.setBackgroundColor(if (isAdminActive) 0xFF6B7280.toInt() else 0xFFEF4444.toInt())
     }
 
+    override fun onStart() {
+        super.onStart()
+        // Si la sesión no está marcada como desbloqueada, regresamos al PIN
+        if (!PinActivity.isSessionUnlocked) {
+            startActivity(Intent(this, PinActivity::class.java))
+            finish()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Bloqueamos la sesión en cuanto la app sale de pantalla
+        PinActivity.isSessionUnlocked = false
+    }
+
     override fun onResume() {
         super.onResume()
         updateUi()

@@ -2,6 +2,7 @@ package com.familia.monitor
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -9,9 +10,15 @@ import androidx.appcompat.app.AppCompatActivity
 
 /**
  * Pantalla de seguridad para evitar que el niño cambie los ajustes.
- * Por defecto el PIN es 1234 (puedes cambiarlo aquí o hacerlo dinámico luego).
+ * Valida contra la contraseña administrativa configurada en el inicio.
  */
 class PinActivity : AppCompatActivity() {
+
+    private val TAG = "PinActivity"
+
+    companion object {
+        var isSessionUnlocked: Boolean = false
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +26,6 @@ class PinActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("consent", MODE_PRIVATE)
         val given = prefs.getBoolean("consent_given", false)
 
-        // Si no se ha configurado la app aún, vamos directo al consentimiento
         if (!given) {
             startActivity(Intent(this, ConsentActivity::class.java))
             finish()
@@ -31,17 +37,21 @@ class PinActivity : AppCompatActivity() {
         val etPin = findViewById<EditText>(R.id.et_pin)
         val btnUnlock = findViewById<Button>(R.id.btn_unlock)
 
-        // Cambiar el PIN genérico por la contraseña guardada en el dispositivo
-        val adminPassword = getSharedPreferences("device", MODE_PRIVATE)
-            .getString("admin_password", "1234") // Fallback a 1234 si falla algo
+        val devicePrefs = getSharedPreferences("device", MODE_PRIVATE)
+        val adminPassword = devicePrefs.getString("admin_password", "1234") ?: "1234"
+
+        // LOG DE SEGURIDAD (Solo para el desarrollador en Android Studio)
+        Log.d(TAG, "DEBUG: La contraseña esperada es: $adminPassword")
 
         btnUnlock.setOnClickListener {
             val input = etPin.text.toString().trim()
             if (input == adminPassword) {
+                isSessionUnlocked = true
                 startActivity(Intent(this, StatusActivity::class.java))
                 finish()
             } else {
                 Toast.makeText(this, "Contraseña Incorrecta", Toast.LENGTH_SHORT).show()
+                Log.w(TAG, "Intento fallido. Ingresado: '$input', Esperado: '$adminPassword'")
                 etPin.text.clear()
             }
         }
