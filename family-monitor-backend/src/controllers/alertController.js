@@ -72,30 +72,60 @@ async function getAlerts(req, res) {
  * Skeleton para notificaciones por email
  */
 async function sendEmailNotification(alert) {
-  console.log("[EMAIL] Intentando enviar notificación de correo...");
+  console.log("[EMAIL] Iniciando proceso de envío...");
 
-  if (!process.env.SMTP_USER || !process.env.SMTP_PASS || !process.env.PARENT_EMAIL) {
-    console.log("[EMAIL] OMITIDO: Faltan variables de entorno (SMTP_USER, SMTP_PASS o PARENT_EMAIL)");
+  const { SMTP_USER, SMTP_PASS, PARENT_EMAIL } = process.env;
+
+  if (!SMTP_USER || !SMTP_PASS || !PARENT_EMAIL) {
+    console.log("[EMAIL] ERROR: Variables de entorno incompletas en Render.");
     return;
   }
 
+  // Configuración explícita para Gmail
   const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // SSL
+    auth: {
+      user: SMTP_USER,
+      pass: SMTP_PASS
+    }
   });
 
-  const mailOptions = {
-    from: `"Monitor Familiar" <${process.env.SMTP_USER}>`,
-    to: process.env.PARENT_EMAIL,
-    subject: `⚠️ ALERTA CRÍTICA: ${alert.category.replace('_', ' ').toUpperCase()}`,
-    text: `Se ha detectado un riesgo nivel ${alert.level} en el dispositivo ${alert.device_label}.\n\nApp: ${alert.source_app}\nFragmento: "${alert.fragment}"\n\nRevisa el panel: https://familia-monitoreo.onrender.com`
-  };
-
   try {
+    // Verificar conexión antes de enviar
+    console.log("[EMAIL] Verificando conexión con servidor SMTP...");
+    await transporter.verify();
+    console.log("[EMAIL] Conexión SMTP verificada. Enviando...");
+
+    const mailOptions = {
+      from: `"Protección Familiar" <${SMTP_USER}>`,
+      to: PARENT_EMAIL,
+      subject: `🚨 ALERTA CRÍTICA: ${alert.category.replace('_', ' ').toUpperCase()}`,
+      html: `
+        <div style="font-family: sans-serif; border: 2px solid #ef4444; padding: 20px; border-radius: 10px;">
+          <h2 style="color: #ef4444;">Detección de Riesgo Crítico</h2>
+          <p>Se ha detectado una situación de peligro en el dispositivo: <strong>${alert.device_label}</strong></p>
+          <hr>
+          <p><strong>Categoría:</strong> ${alert.category}</p>
+          <p><strong>Aplicación:</strong> ${alert.source_app}</p>
+          <div style="background: #f3f4f6; padding: 15px; border-radius: 5px; font-style: italic;">
+            "${alert.fragment}"
+          </div>
+          <p style="margin-top: 20px;">
+            <a href="https://familia-monitoreo.onrender.com" style="background: #4f46e5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Ver Panel de Control</a>
+          </p>
+        </div>
+      `
+    };
+
     const info = await transporter.sendMail(mailOptions);
-    console.log("[EMAIL] ÉXITO: Correo enviado correctamente:", info.messageId);
+    console.log("[EMAIL] ÉXITO: Correo enviado correctamente. ID:", info.messageId);
   } catch (err) {
-    console.error("[EMAIL] ERROR al enviar el correo:", err.message);
+    console.error("[EMAIL] ERROR DETALLADO:", err.message);
+    if (err.message.includes("Invalid login")) {
+      console.error("[EMAIL] Sugerencia: Revisa que la Contraseña de Aplicación sea correcta y no tenga espacios.");
+    }
   }
 }
 
