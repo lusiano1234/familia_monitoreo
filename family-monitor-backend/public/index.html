@@ -60,17 +60,22 @@ if (token) showDashboard();
 
 async function login() {
   const password = document.getElementById('password').value;
+  if (!password) return alert('Ingrese la contraseña');
+
   const res = await fetch('/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ password })
   });
+
   if (res.ok) {
     const data = await res.json();
     token = data.token;
     localStorage.setItem('fm_token', token);
     showDashboard();
-  } else alert('Contraseña incorrecta');
+  } else {
+    alert('Contraseña incorrecta');
+  }
 }
 
 function logout() {
@@ -127,7 +132,7 @@ function renderAlert(a, isNew = false) {
   // Estilo dinámico por categoría
   let cardClass = (a.level || 'low').toLowerCase();
   let categoryLabel = a.category.replace('_', ' ').toUpperCase();
-  let categoryStyle = 'color: #4f46e5;'; // Default azul/indigo
+  let categoryStyle = 'color: #4f46e5;';
 
   if (a.category.includes('riesgo') || a.category.includes('extorsion') || a.category.includes('amenaza')) {
       categoryStyle = 'color: #ef4444; font-weight: 800;';
@@ -169,19 +174,6 @@ function renderAlert(a, isNew = false) {
 
       <div class="msg-container">
         <div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 4px;">Origen: <strong>${sender}</strong></div>
-        <div style="font-size: 1.15rem; color: #111827; line-height: 1.5; white-space: pre-wrap;">${escapeHtml(message)}</div>
-      </div>
-
-      <div style="font-size:0.8rem; color: #9ca3af; display:flex; justify-content: space-between; margin-top: 12px;">
-        <span>📱 ${a.device_label || 'Dispositivo'}</span>
-        <span>${new Date(a.received_at).toLocaleString()}</span>
-      </div>
-    </div>
-  `;
-}
-
-      <div class="msg-container">
-        <div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 4px;">Enviado por: <strong>${sender}</strong></div>
         <div style="font-size: 1.15rem; color: #111827; line-height: 1.5; white-space: pre-wrap;">${escapeHtml(message)}</div>
       </div>
 
