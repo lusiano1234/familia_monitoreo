@@ -1,27 +1,27 @@
-# Walkthrough - Captura Infalible y Seguridad de Sesión
+# Walkthrough - Captura Detallada y Seguridad Persistente
 
-Se han implementado mejoras críticas para garantizar que ningún mensaje se pierda, independientemente del modelo de teléfono, y para reforzar la privacidad del acceso físico.
+Se han aplicado mejoras de ingeniería para garantizar que cada mensaje sea capturado individualmente y para blindar el acceso físico a la aplicación.
 
 ## Mejoras Realizadas
 
-### Captura Profunda (Deep Extraction)
-*   **Análisis de Historial**: WhatsApp y Telegram suelen agrupar mensajes ("3 mensajes nuevos"). Ahora la app "abre" ese grupo y procesa cada mensaje individual contenido en el historial de la notificación (`EXTRA_MESSAGES`).
-*   **Lectura Multicapa**: Si el texto principal está vacío, la app busca automáticamente en campos de respaldo como `BIG_TEXT` o `SUMMARY_TEXT`.
-*   **Resiliencia de Red**: Se añadió un sistema de **3 reintentos automáticos** en `AlertUploader`. Si el teléfono pierde internet por un segundo al recibir el mensaje, la app esperará y volverá a intentar el envío del reporte.
+### Captura Detallada (Anti-Resúmenes)
+*   **Filtro de Resúmenes**: La aplicación ahora identifica y descarta las notificaciones genéricas de Android como "2 mensajes nuevos". Solo se procesan las notificaciones que contienen el contenido real del mensaje.
+*   **Desglose de Historial**: Si una notificación trae varios mensajes acumulados (común en WhatsApp), el sistema los "abre" y procesa cada uno de forma independiente.
+*   **Deduplicación por Segundos**: Se implementó un sistema que compara el contenido y la hora exacta del mensaje. Esto permite recibir mensajes idénticos si se enviaron en momentos distintos, pero evita duplicados por actualizaciones de la propia aplicación de chat.
 
-### Seguridad de Sesión Automática
-*   **Bloqueo al Salir**: Se implementó un sistema de protección que detecta cuando sales de la aplicación o bloqueas el teléfono. Al regresar, la app **siempre te pedirá la contraseña administrativa**.
-*   **Privacidad Total**: Esto evita que alguien pueda ver el token o desactivar el monitoreo si el teléfono se queda desbloqueado en la pantalla de la app.
+### Seguridad de Sesión Inmediata
+*   **Bloqueo al Salir**: Se ha reforzado el sistema de seguridad. En cuanto sales de la pantalla de la app (ir al inicio, bloquear el teléfono o cambiar de app), la sesión se cierra automáticamente.
+*   **Re-validación Obligatoria**: Al regresar al "Servicio de Sincronización", siempre se te solicitará la contraseña administrativa para ver el estado o el token.
 
-### Soporte Ampliado
-*   Se añadieron firmas digitales para capturar notificaciones de servicios de llamadas del sistema y múltiples apps de SMS.
+### Soporte Multidispositivo
+*   Se refinó la búsqueda de texto en campos ocultos del sistema para asegurar que teléfonos de distintas marcas (Samsung, Xiaomi, Motorola, etc.) reporten con la misma fidelidad.
 
-## Instrucciones para la Prueba en el segundo teléfono
+## Instrucciones para la Verificación
 
-1.  **Abre la app** y asegúrate de que el interruptor de "Monitoreo" esté encendido.
-2.  **Sal al escritorio** y vuelve a entrar. Confirma que te pide la clave.
-3.  **Envía un grupo de mensajes** (por ejemplo, 3 seguidos) al teléfono. Verifica que el panel los registre todos por separado.
-4.  **Si algo falla**: Conecta el teléfono y revisa el Logcat con la etiqueta `NotificationCapture`. Verás líneas de `AUDITORÍA` que explican paso a paso qué está leyendo la app.
+1.  **Seguridad**: Abre la app, ingresa tu clave, sal al escritorio y vuelve a entrar. Confirma que se ha bloqueado de nuevo.
+2.  **Prueba de Mensajes**: Envía 2 o 3 mensajes seguidos de WhatsApp al teléfono monitoreado.
+    *   Verifica que en el panel web aparezcan los mensajes **individuales** con su texto completo.
+    *   Confirma que ya no aparece la frase "2 mensajes nuevos".
 
-> [!IMPORTANT]
-> Recuerda que en el segundo teléfono también debes activar manualmente el interruptor de **"Administrador de Dispositivo"** y el **"Acceso a Notificaciones"** para que el sistema funcione.
+> [!TIP]
+> Si el teléfono monitoreado es un modelo antiguo, asegúrate de que el interruptor de "Monitoreo" esté encendido en la nueva pantalla de control.

@@ -52,7 +52,7 @@ class NotificationCaptureService : NotificationListenerService() {
     private val mainHandler = Handler(Looper.getMainLooper())
 
     // Prevención de duplicados: guarda el hash de los últimos mensajes procesados
-    private val processedHashes = LinkedHashSet<Int>(25)
+    private val processedHashes = LinkedHashSet<Int>(50)
 
     override fun onCreate() {
         super.onCreate()
@@ -79,54 +79,45 @@ class NotificationCaptureService : NotificationListenerService() {
         val extras = notification.extras
         val appName = APP_NAMES[packageName] ?: packageName
 
-        // AUDITORÍA: Registrar cada notificación que llega de apps monitoreadas
-        if (packageName in MONITORED_PACKAGES) {
-            Log.d(TAG, ">>> LLEGÓ NOTIFICACIÓN DE: $appName ($packageName)")
-        } else {
+        // 1. FILTRO DE RESÚMENES: Ignorar la notificación "madre" que agrupa chats
+        val isSummary = (notification.flags and Notification.FLAG_GROUP_SUMMARY) != 0
+        if (isSummary) {
+            Log.d(TAG, "AUDITORÍA: Saltando notificación de resumen de $appName")
+            
+            // Intentar extraer si el resumen trae mensajes reales
+            val messages = extras.getParcelableArray(Notification.EXTRA_MESSAGES)
+            if (messages != null && messages.isNotEmpty()) {
+                processHistory(packageName, messages, sbn.postTime)
+            }
             return
         }
 
-        // --- 1. DETECCIÓN DE LLAMADAS (Prioridad Alta) ---
-        val categoryCall = notification.category == Notification.CATEGORY_CALL
-        val isDialer = packageName.contains("dialer") || packageName.contains("telecom")
-        if (categoryCall || isDialer) {
+        if (packageName !in MONITORED_PACKAGES) return
+
+        Log.d(TAG, ">>> PROCESANDO NOTIFICACIÓN INDIVIDUAL: $appName")
+
+        // --- 1. DETECCIÓN DE LLAMADAS ---
+        val isCall = notification.category == Notification.CATEGORY_CALL || 
+                     packageName.contains("dialer") || packageName.contains("telecom")
+        if (isCall) {
             val caller = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() 
                 ?: extras.getCharSequence(Notification.EXTRA_TITLE_BIG)?.toString()
                 ?: "Desconocido"
             val isUnknown = ContactHelper.isContactUnknown(applicationContext, caller)
             val cat = if (isUnknown) "llamada_desconocida" else "llamada_entrante"
-            processMessage(packageName, caller, "[LLAMADA] Actividad de voz detectada.", sbn.postTime, cat)
+            processMessage(packageName, caller, "[LLAMADA] Actividad detectada.", sbn.postTime, cat)
             return
         }
 
-        // --- 2. EXTRACCIÓN PROFUNDA DE MENSAJES ---
+        // --- 2. EXTRACCIÓN PROFUNDA ---
         
-        // Intentar extraer historial de mensajes (útil para WhatsApp/Telegram cuando se acumulan)
+        // Historial EXTRA_MESSAGES
         val messages = extras.getParcelableArray(Notification.EXTRA_MESSAGES)
         if (messages != null && messages.isNotEmpty()) {
-            Log.d(TAG, "AUDITORÍA: Procesando ${messages.size} mensajes internos en EXTRA_MESSAGES")
-            for (p in messages) {
-                if (p is android.os.Bundle) {
-                    val text = p.getCharSequence("text")?.toString() ?: ""
-                    
-                    // Intentar obtener el remitente de varias formas
-                    val sender = p.getCharSequence("sender")?.toString() 
-                        ?: p.getBundle("person")?.getCharSequence("name")?.toString()
-                        ?: extras.getCharSequence(Notification.EXTRA_TITLE)?.toString()
-                        ?: "Desconocido"
-                        
-                    val time = p.getLong("time", sbn.postTime)
-                    
-                    if (text.isNotBlank()) {
-                        processMessage(packageName, sender, text, time, "mensaje")
-                    }
-                }
-            }
-            // NO HACER RETURN AQUÍ: A veces el mensaje más nuevo NO está en el historial 
-            // pero sí en el texto principal de la notificación. El filtro de duplicados se encargará.
+            processHistory(packageName, messages, sbn.postTime)
         }
 
-        // Si no hay EXTRA_MESSAGES o para complementar, probar con el extractor estándar
+        // MessagingStyle
         val messagingStyle = NotificationCompat.MessagingStyle.extractMessagingStyleFromNotification(notification)
         if (messagingStyle != null) {
             val groupTitle = messagingStyle.conversationTitle?.toString()
@@ -147,30 +138,34 @@ class NotificationCaptureService : NotificationListenerService() {
                 }
                 processMessage(packageName, context, text, message.timestamp, mediaCat)
             }
+        } else {
+            // Fallback crudo
+            val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: "Desconocido"
+            val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
+            val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString()
+            val subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT)?.toString()
+            
+            val possibleTexts = listOf(bigText, text, subText).filter { !it.isNullOrBlank() }.distinct()
+            for (t in possibleTexts) {
+                val lower = t!!.lowercase()
+                if (lower.contains("nuevos mensajes") || lower.contains("chats")) continue
+                processMessage(packageName, title, t, sbn.postTime, "mensaje")
+            }
         }
+    }
 
-        // FALLBACK / REFUERZO: Lectura de campos de texto crudos
-        val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() 
-            ?: extras.getCharSequence(Notification.EXTRA_CONVERSATION_TITLE)?.toString()
-            ?: "Desconocido"
-        
-        val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
-        val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString()
-        val summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString()
-        val infoText = extras.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString()
-        val subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT)?.toString()
-        
-        // Log para depuración profunda
-        Log.v(TAG, "AUDITORÍA TEXTOS: title=$title, text=$text, bigText=$bigText, summary=$summaryText, sub=$subText")
-        
-        val possibleTexts = listOf(bigText, text, summaryText, infoText, subText)
-            .filter { !it.isNullOrBlank() }
-            .distinct()
-
-        for (t in possibleTexts) {
-            // Si el texto es algo como "3 nuevos mensajes", lo ignoramos para no ensuciar
-            if (t!!.contains("nuevos mensajes") || t.contains("mensajes de")) continue
-            processMessage(packageName, title, t, sbn.postTime, "mensaje")
+    private fun processHistory(packageName: String, messages: Array<android.os.Parcelable>, postTime: Long) {
+        for (p in messages) {
+            if (p is android.os.Bundle) {
+                val text = p.getCharSequence("text")?.toString() ?: ""
+                val sender = p.getCharSequence("sender")?.toString() 
+                    ?: p.getBundle("person")?.getCharSequence("name")?.toString()
+                    ?: "Desconocido"
+                val time = p.getLong("time", postTime)
+                if (text.isNotBlank()) {
+                    processMessage(packageName, sender, text, time, "mensaje")
+                }
+            }
         }
     }
 
@@ -181,49 +176,38 @@ class NotificationCaptureService : NotificationListenerService() {
         val battery = DeviceStateHelper.getBatteryLevel(applicationContext)
         val connection = DeviceStateHelper.getConnectionType(applicationContext)
 
-        // 1. Motor de Riesgo (Analizar el texto PRIMERO)
-        // Si hay riesgo, ignoramos el filtro de duplicados: QUEREMOS recibirlo siempre.
+        // Motor de Riesgo (Siempre enviar si es riesgo)
         val match = RiskEngine.evaluate(fullText)
         if (match != null) {
-            Log.e(TAG, "¡RIESGO DETECTADO! [$packageName] -> $fullText")
-            mainHandler.post { Toast.makeText(applicationContext, "🚨 ALERTA DE RIESGO", Toast.LENGTH_SHORT).show() }
             upload(packageName, match.category, match.level.name, fullText, time, battery, connection)
             return
         }
 
-        // 2. Filtro de duplicados solo para mensajes normales o informativos
-        val msgHash = (packageName + sender + text.take(50) + initialCategory).hashCode()
+        // Deduplicación por hash (contenido + tiempo en segundos)
+        val timeSec = time / 1000
+        val msgHash = (packageName + sender + text + initialCategory + timeSec).hashCode()
+        
         synchronized(processedHashes) {
-            if (processedHashes.contains(msgHash)) {
-                Log.v(TAG, "AUDITORÍA: Ignorando duplicado de $sender: $text")
-                return
-            }
-            if (processedHashes.size > 100) {
-                processedHashes.remove(processedHashes.iterator().next())
-            }
+            if (processedHashes.contains(msgHash)) return
+            if (processedHashes.size > 200) processedHashes.remove(processedHashes.iterator().next())
             processedHashes.add(msgHash)
         }
 
-        Log.d(TAG, "Evaluando para envío normal: $fullText")
-
-        // 3. Detección de desconocidos
-        if (initialCategory == "mensaje" || initialCategory.startsWith("llamada")) {
-            val isUnknown = ContactHelper.isContactUnknown(applicationContext, sender)
-            if (isUnknown && sender != "Desconocido" && !sender.startsWith("Grupo ")) {
-                val cat = if (initialCategory.startsWith("llamada")) "llamada_desconocida" else "contacto_desconocido"
-                upload(packageName, cat, RiskEngine.RiskLevel.MEDIUM.name, fullText, time, battery, connection)
-            }
-        }
-
-        // 4. Si es un evento especial (foto, audio, etc), subirlo
+        // Enviar si es evento especial o desconocido
         if (initialCategory != "mensaje") {
             upload(packageName, initialCategory, RiskEngine.RiskLevel.LOW.name, fullText, time, battery, connection)
+        } else {
+            val isUnknown = ContactHelper.isContactUnknown(applicationContext, sender)
+            if (isUnknown && sender != "Desconocido" && !sender.startsWith("Grupo ")) {
+                upload(packageName, "contacto_desconocido", RiskEngine.RiskLevel.MEDIUM.name, fullText, time, battery, connection)
+            }
         }
     }
 
     private fun upload(appName: String, category: String, level: String, text: String, time: Long, battery: Int, connection: String) {
+        val finalAppName = APP_NAMES[appName] ?: appName
         scope.launch {
-            AlertUploader.sendAlert(applicationContext, appName, category, level, text, time, battery, connection)
+            AlertUploader.sendAlert(applicationContext, finalAppName, category, level, text, time, battery, connection)
         }
     }
 }
