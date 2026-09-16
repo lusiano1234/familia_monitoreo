@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -108,11 +109,34 @@ class StatusActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        findViewById<Button>(R.id.btn_refresh_service).setOnClickListener {
+            Toast.makeText(this, "Reiniciando lector de mensajes...", Toast.LENGTH_SHORT).show()
+            NotificationCaptureService.forceRebind(this)
+            updateUi()
+        }
+
         findViewById<Button>(R.id.btn_help_permission).setOnClickListener {
             showRestrictedSettingsGuide()
         }
 
+        // 6. Configuración por Marca (Samsung, Xiaomi, Motorola, Vivo)
+        setupBrandOptimization()
+
         updateUi()
+    }
+
+    private fun setupBrandOptimization() {
+        val brand = ManufacturerHelper.getDeviceBrand()
+        val tvBrandTitle = findViewById<TextView>(R.id.tv_brand_title)
+        val tvBrandGuide = findViewById<TextView>(R.id.tv_brand_guide)
+        val btnBrandSettings = findViewById<Button>(R.id.btn_brand_settings)
+
+        tvBrandTitle.text = "Optimización para su ${brand.name.lowercase().replaceFirstChar { it.uppercase() }}"
+        tvBrandGuide.text = ManufacturerHelper.getBrandGuide(brand)
+        
+        btnBrandSettings.setOnClickListener {
+            ManufacturerHelper.openManufacturerSettings(this, brand)
+        }
     }
 
     private fun isNotificationServiceEnabled(): Boolean {
@@ -128,6 +152,7 @@ class StatusActivity : AppCompatActivity() {
         val componentName = ComponentName(this, AdminReceiver::class.java)
         val isAdminActive = dpm.isAdminActive(componentName)
         val isServiceRunning = isNotificationServiceEnabled()
+        val isServiceBound = NotificationCaptureService.isServiceBound
 
         // Banner de advertencia si no hay permiso
         val cardWarning = findViewById<MaterialCardView>(R.id.card_permission_warning)
@@ -136,10 +161,19 @@ class StatusActivity : AppCompatActivity() {
         val tvStatus = findViewById<TextView>(R.id.tv_status)
         tvStatus.text = when {
             !isServiceRunning -> "❌ Permiso de lectura bloqueado por Android"
+            !isServiceBound -> "⚠️ Permiso OK, pero el sistema aún no activa el servicio"
             isMonitoring -> "● El sistema está capturando actividad"
             else -> "○ El sistema está en pausa"
         }
-        tvStatus.setTextColor(if (isMonitoring && isServiceRunning) 0xFF10B981.toInt() else 0xFFEF4444.toInt())
+        
+        // Color dinámico según el estado
+        val statusColor = when {
+            !isServiceRunning -> 0xFFEF4444.toInt()
+            !isServiceBound -> 0xFFF59E0B.toInt()
+            isMonitoring -> 0xFF10B981.toInt()
+            else -> 0xFF6B7280.toInt()
+        }
+        tvStatus.setTextColor(statusColor)
 
         val btnAdmin = findViewById<Button>(R.id.btn_admin)
         btnAdmin.text = if (isAdminActive) "DESACTIVAR PROTECCIÓN ANTI-BORRADO" else "ACTIVAR PROTECCIÓN ANTI-BORRADO"
@@ -171,6 +205,12 @@ class StatusActivity : AppCompatActivity() {
         if (!PinActivity.isSessionUnlocked) {
             startActivity(Intent(this, PinActivity::class.java))
             finish()
+            return
+        }
+
+        // Watchdog automático al abrir la app: si el permiso está pero no está vinculado, forzar rebind
+        if (isNotificationServiceEnabled() && !NotificationCaptureService.isServiceBound) {
+            NotificationCaptureService.forceRebind(this)
         }
     }
 

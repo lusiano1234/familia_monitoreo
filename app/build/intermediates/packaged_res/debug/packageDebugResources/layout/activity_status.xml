@@ -67,6 +67,54 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Sección de Optimización por Marca (Detección Automática) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_brand_optimization"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#DBEAFE"
+            app:cardBackgroundColor="#EFF6FF">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tv_brand_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Optimización para su dispositivo"
+                    android:textColor="#1E40AF"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_brand_guide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Siga los pasos para evitar que el sistema detenga el monitoreo."
+                    android:textColor="#1E3A8A"
+                    android:textSize="13sp"
+                    android:layout_marginTop="4dp" />
+
+                <Button
+                    android:id="@+id/btn_brand_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="ABRIR AJUSTES ESPECIALES"
+                    android:backgroundTint="#3B82F6"
+                    android:textColor="@android:color/white"
+                    style="@style/Widget.Material3.Button.TonalButton" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <!-- Interruptor Maestro -->
         <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/sw_monitoring"
@@ -142,6 +190,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="AJUSTES DE NOTIFICACIONES"
+            style="?attr/materialButtonOutlinedStyle" />
+
+        <Button
+            android:id="@+id/btn_refresh_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="REINICIAR LECTOR (Si falla)"
             style="?attr/materialButtonOutlinedStyle" />
 
         <Button

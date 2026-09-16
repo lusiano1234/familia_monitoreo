@@ -3096,14 +3096,17 @@ id bounce
 id btn_admin
 id btn_app_info
 id btn_battery
+id btn_brand_settings
 id btn_continue
 id btn_disable
 id btn_help_permission
+id btn_refresh_service
 id btn_save_token
 id btn_test
 id btn_unlock
 id buttonPanel
 id cancel_button
+id card_brand_optimization
 id card_permission_warning
 id cb_consent
 id center
@@ -3457,6 +3460,8 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
+id tv_brand_guide
+id tv_brand_title
 id tv_explanation
 id tv_status
 id unchecked

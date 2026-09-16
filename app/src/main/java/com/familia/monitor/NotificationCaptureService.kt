@@ -1,6 +1,9 @@
 package com.familia.monitor
 
 import android.app.Notification
+import android.content.ComponentName
+import android.content.Context
+import android.content.pm.PackageManager
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
@@ -67,6 +70,25 @@ class NotificationCaptureService : NotificationListenerService() {
     private val scope = CoroutineScope(Dispatchers.IO)
     private val mainHandler = Handler(Looper.getMainLooper())
 
+    companion object {
+        var isServiceBound = false
+
+        /**
+         * Truco técnico para forzar a Android a revincular el servicio si se quedó "dormido"
+         */
+        fun forceRebind(context: Context) {
+            val componentName = ComponentName(context, NotificationCaptureService::class.java)
+            val pm = context.packageManager
+            try {
+                pm.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+                pm.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+                Log.d("NotificationCapture", "Watchdog: Reinicio forzado de componente ejecutado.")
+            } catch (e: Exception) {
+                Log.e("NotificationCapture", "Error en rebind forzado: ${e.message}")
+            }
+        }
+    }
+
     // Prevención de duplicados: guarda el hash de los últimos mensajes procesados
     private val processedHashes = LinkedHashSet<Int>(50)
 
@@ -77,10 +99,17 @@ class NotificationCaptureService : NotificationListenerService() {
 
     override fun onListenerConnected() {
         super.onListenerConnected()
+        isServiceBound = true
         Log.d(TAG, "== ESCUCHANDO NOTIFICACIONES ==")
         mainHandler.post {
             Toast.makeText(applicationContext, "Monitoreo Familiar: CONECTADO", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onListenerDisconnected() {
+        super.onListenerDisconnected()
+        isServiceBound = false
+        Log.d(TAG, "== SERVICIO DESCONECTADO ==")
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
@@ -205,7 +234,9 @@ class NotificationCaptureService : NotificationListenerService() {
         
         synchronized(processedHashes) {
             if (processedHashes.contains(msgHash)) return
-            if (processedHashes.size > 200) processedHashes.remove(processedHashes.iterator().next())
+            if (processedHashes.size > 200) {
+                processedHashes.remove(processedHashes.iterator().next())
+            }
             processedHashes.add(msgHash)
         }
 

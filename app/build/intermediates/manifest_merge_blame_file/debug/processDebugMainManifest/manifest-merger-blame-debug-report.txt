@@ -51,165 +51,164 @@
 29        android:extractNativeLibs="false"
 30        android:label="Servicio de Sincronización"
 30-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:14:9-51
-31        android:testOnly="true"
-32        android:theme="@style/Theme.FamiliaMonitor" >
-32-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:16:9-52
-33
-34        <!-- Nueva entrada discreta con PIN -->
-35        <activity
-35-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:19:9-27:20
-36            android:name="com.familia.monitor.PinActivity"
-36-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:20:13-40
-37            android:exported="true"
-37-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:21:13-36
-38            android:label="Ajustes de Sincronización" >
-38-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:22:13-54
-39            <intent-filter>
-39-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:23:13-26:29
-40                <action android:name="android.intent.action.MAIN" />
-40-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:24:17-69
-40-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:24:25-66
-41
-42                <category android:name="android.intent.category.LAUNCHER" />
-42-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:25:17-77
-42-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:25:27-74
-43            </intent-filter>
-44        </activity>
-45        <activity
-45-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:29:9-32:57
-46            android:name="com.familia.monitor.ConsentActivity"
-46-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:30:13-44
-47            android:exported="false"
-47-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:31:13-37
-48            android:label="Configuración de Servicio" />
-48-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:32:13-54
-49        <activity
-49-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:34:9-37:56
-50            android:name="com.familia.monitor.StatusActivity"
-50-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:35:13-43
-51            android:exported="false"
-51-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:36:13-37
-52            android:label="Estado de Sincronización" />
-52-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:37:13-53
-53
-54        <!-- Receptor de Administrador para bloqueo de desinstalación -->
-55        <receiver
-55-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:40:9-50:20
-56            android:name="com.familia.monitor.AdminReceiver"
-56-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:41:13-42
-57            android:exported="true"
-57-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:43:13-36
-58            android:permission="android.permission.BIND_DEVICE_ADMIN" >
-58-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:42:13-70
-59            <meta-data
-59-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:44:13-46:56
-60                android:name="android.app.device_admin"
-60-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:45:17-56
-61                android:resource="@xml/device_admin" />
-61-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:46:17-53
-62
-63            <intent-filter>
-63-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:47:13-49:29
-64                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-64-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:48:17-82
-64-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:48:25-79
-65            </intent-filter>
-66        </receiver>
-67
-68        <!-- Requiere que el usuario active manualmente el acceso a notificaciones -->
-69        <service
-69-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:53:9-61:19
-70            android:name="com.familia.monitor.NotificationCaptureService"
-70-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:54:13-55
-71            android:exported="true"
-71-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:55:13-36
-72            android:label="Servicio de Sincronización"
-72-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:57:13-55
-73            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
-73-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:56:13-87
-74            <intent-filter>
-74-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:58:13-60:29
-75                <action android:name="android.service.notification.NotificationListenerService" />
-75-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:59:17-99
-75-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:59:25-96
-76            </intent-filter>
-77        </service>
-78        <service
-78-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:63:9-67:56
-79            android:name="com.familia.monitor.ForegroundStatusService"
-79-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:64:13-52
-80            android:exported="false"
-80-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:65:13-37
-81            android:foregroundServiceType="dataSync"
-81-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:67:13-53
-82            android:label="Servicio de Sincronización" />
-82-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:66:13-55
-83
-84        <provider
-84-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
-85            android:name="androidx.startup.InitializationProvider"
-85-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:25:13-67
-86            android:authorities="com.familia.monitor.androidx-startup"
-86-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:26:13-68
-87            android:exported="false" >
-87-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:27:13-37
-88            <meta-data
-88-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
-89                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-89-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:30:17-75
-90                android:value="androidx.startup" />
-90-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:31:17-49
-91            <meta-data
-91-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f22adc6a849847874e7b149232fae2b3\workspace\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
-92                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-92-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f22adc6a849847874e7b149232fae2b3\workspace\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
-93                android:value="androidx.startup" />
-93-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f22adc6a849847874e7b149232fae2b3\workspace\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
-94            <meta-data
-94-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
-95                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-95-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
-96                android:value="androidx.startup" />
-96-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
-97        </provider>
-98
-99        <receiver
-99-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
-100            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-100-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
-101            android:directBootAware="false"
-101-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
-102            android:enabled="true"
-102-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
-103            android:exported="true"
-103-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
-104            android:permission="android.permission.DUMP" >
-104-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
-105            <intent-filter>
-105-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
-106                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-106-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
-106-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
-107            </intent-filter>
-108            <intent-filter>
-108-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
-109                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-109-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
-109-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
-110            </intent-filter>
-111            <intent-filter>
-111-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
-112                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-112-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
-112-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
-113            </intent-filter>
-114            <intent-filter>
-114-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
-115                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-115-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
-115-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
-116            </intent-filter>
-117        </receiver>
-118    </application>
-119
-120</manifest>
+31        android:theme="@style/Theme.FamiliaMonitor" >
+31-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:16:9-52
+32
+33        <!-- Nueva entrada discreta con PIN -->
+34        <activity
+34-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:19:9-27:20
+35            android:name="com.familia.monitor.PinActivity"
+35-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:20:13-40
+36            android:exported="true"
+36-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:21:13-36
+37            android:label="Ajustes de Sincronización" >
+37-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:22:13-54
+38            <intent-filter>
+38-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:23:13-26:29
+39                <action android:name="android.intent.action.MAIN" />
+39-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:24:17-69
+39-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:24:25-66
+40
+41                <category android:name="android.intent.category.LAUNCHER" />
+41-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:25:17-77
+41-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:25:27-74
+42            </intent-filter>
+43        </activity>
+44        <activity
+44-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:29:9-32:57
+45            android:name="com.familia.monitor.ConsentActivity"
+45-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:30:13-44
+46            android:exported="false"
+46-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:31:13-37
+47            android:label="Configuración de Servicio" />
+47-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:32:13-54
+48        <activity
+48-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:34:9-37:56
+49            android:name="com.familia.monitor.StatusActivity"
+49-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:35:13-43
+50            android:exported="false"
+50-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:36:13-37
+51            android:label="Estado de Sincronización" />
+51-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:37:13-53
+52
+53        <!-- Receptor de Administrador para bloqueo de desinstalación -->
+54        <receiver
+54-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:40:9-50:20
+55            android:name="com.familia.monitor.AdminReceiver"
+55-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:41:13-42
+56            android:exported="true"
+56-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:43:13-36
+57            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+57-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:42:13-70
+58            <meta-data
+58-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:44:13-46:56
+59                android:name="android.app.device_admin"
+59-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:45:17-56
+60                android:resource="@xml/device_admin" />
+60-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:46:17-53
+61
+62            <intent-filter>
+62-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:47:13-49:29
+63                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+63-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:48:17-82
+63-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:48:25-79
+64            </intent-filter>
+65        </receiver>
+66
+67        <!-- Requiere que el usuario active manualmente el acceso a notificaciones -->
+68        <service
+68-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:53:9-61:19
+69            android:name="com.familia.monitor.NotificationCaptureService"
+69-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:54:13-55
+70            android:exported="true"
+70-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:55:13-36
+71            android:label="Servicio de Sincronización"
+71-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:57:13-55
+72            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
+72-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:56:13-87
+73            <intent-filter>
+73-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:58:13-60:29
+74                <action android:name="android.service.notification.NotificationListenerService" />
+74-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:59:17-99
+74-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:59:25-96
+75            </intent-filter>
+76        </service>
+77        <service
+77-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:63:9-67:56
+78            android:name="com.familia.monitor.ForegroundStatusService"
+78-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:64:13-52
+79            android:exported="false"
+79-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:65:13-37
+80            android:foregroundServiceType="dataSync"
+80-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:67:13-53
+81            android:label="Servicio de Sincronización" />
+81-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:66:13-55
+82
+83        <provider
+83-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+84            android:name="androidx.startup.InitializationProvider"
+84-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:25:13-67
+85            android:authorities="com.familia.monitor.androidx-startup"
+85-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:26:13-68
+86            android:exported="false" >
+86-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:27:13-37
+87            <meta-data
+87-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+88                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+88-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:30:17-75
+89                android:value="androidx.startup" />
+89-->[androidx.emoji2:emoji2:1.3.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\218bf4786e2612eaf6e40528d1a59fdf\workspace\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:31:17-49
+90            <meta-data
+90-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f22adc6a849847874e7b149232fae2b3\workspace\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
+91                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+91-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f22adc6a849847874e7b149232fae2b3\workspace\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
+92                android:value="androidx.startup" />
+92-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f22adc6a849847874e7b149232fae2b3\workspace\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
+93            <meta-data
+93-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+94                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+94-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+95                android:value="androidx.startup" />
+95-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+96        </provider>
+97
+98        <receiver
+98-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+99            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+99-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+100            android:directBootAware="false"
+100-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+101            android:enabled="true"
+101-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+102            android:exported="true"
+102-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+103            android:permission="android.permission.DUMP" >
+103-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+104            <intent-filter>
+104-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+105                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+105-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+105-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+106            </intent-filter>
+107            <intent-filter>
+107-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+108                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+108-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+108-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+109            </intent-filter>
+110            <intent-filter>
+110-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+111                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+111-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+111-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+112            </intent-filter>
+113            <intent-filter>
+113-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+114                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+114-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+114-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\f3a5638e360b88210fa8fffacae3d3fd\workspace\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+115            </intent-filter>
+116        </receiver>
+117    </application>
+118
+119</manifest>

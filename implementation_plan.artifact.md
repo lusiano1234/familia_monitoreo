@@ -1,45 +1,53 @@
-# Plan de Implementación: Solución Definitiva para Permisos Bloqueados (Android 13/14)
+# Plan de Implementación: Compatibilidad Universal (Motorola, Xiaomi, Samsung, Vivo)
 
-Este plan aborda de manera integral el bloqueo de "Ajustes restringidos" en Android 13 y 14, proporcionando una interfaz de asistencia que guía al usuario para habilitar el monitoreo de mensajes en cualquier teléfono moderno.
-
-## Diagnóstico Técnico
-Android 13+ introdujo una protección que deshabilita el "Acceso a notificaciones" para apps instaladas por APK. El interruptor aparece "gris" y dice "Ajuste restringido". La única forma de habilitarlo es a través de un menú oculto en la pantalla de **Información de la aplicación**.
+Este plan introduce un sistema de asistencia inteligente que detecta la marca del teléfono y guía al usuario para configurar los ajustes específicos que impiden que el sistema "mate" la aplicación en segundo plano.
 
 ## Objetivos
-1.  **Detección Automática**: Avisar al usuario con un banner rojo si el sistema no tiene permiso para leer mensajes.
-2.  **Guía de Desbloqueo (3 Puntos)**: Mostrar instrucciones visuales claras sobre cómo habilitar los "Ajustes restringidos".
-3.  **Accesos Directos Inteligentes**:
-    *   Botón para ir a **Ajustes de Notificaciones** (donde está el interruptor).
-    *   Botón para ir a **Información de la App** (donde están los 3 puntos para desbloquear).
-4.  **Optimización de Batería**: Guía para desactivar el ahorro de energía que detiene el monitoreo.
-
-## Cambios Propuestos
-
-### 1. App Android
-
-#### [MODIFY] [StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)
-- Implementar `isNotificationServiceEnabled()` para detectar el estado real del permiso.
-- Añadir lógica para mostrar un diálogo de "Asistente de Configuración" si el permiso está bloqueado.
-- Añadir función `openAppInfo()` para llevar al usuario directamente al menú de los 3 puntos.
-
-#### [MODIFY] [res/layout/activity_status.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_status.xml)
-- Añadir un **CardView de Alerta** que solo aparezca cuando falten permisos.
-- Incluir un botón de "Cómo desbloquear permisos" con un diseño llamativo.
-
-### 2. Guía Visual (Diálogo de Ayuda)
-- Crear un diálogo interactivo que explique los 3 pasos:
-    1.  Abrir "Información de la aplicación".
-    2.  Tocar los **3 puntos (⋮)** arriba a la derecha.
-    3.  Elegir **"Permitir ajustes restringidos"**.
-
-## Plan de Verificación
-1.  **Sideload Test**: Instalar la app en un teléfono con Android 13/14.
-2.  **Validación de Banner**: Confirmar que el banner de error aparece si el interruptor está bloqueado.
-3.  **Flujo de Desbloqueo**: Seguir la guía de los 3 puntos y confirmar que el interruptor se vuelve habilitable.
+1.  **Detección de Marca**: Identificar automáticamente el fabricante del dispositivo.
+2.  **Asistente Multi-Marca**: Mostrar guías personalizadas para los menús críticos de cada fabricante.
+3.  **Persistencia Robusta**: Implementar técnicas de "revinculación" forzada para despertar el servicio si el sistema lo duerme.
+4.  **Avisos de "Ajustes Restringidos"**: Facilitar el desbloqueo de los 3 puntos (⋮) en Android 13/14 para todas las marcas.
 
 ---
 
-> [!IMPORTANT]
-> Sin este cambio, los usuarios de teléfonos nuevos no podrán activar el monitoreo por más que intenten mover el interruptor. Esta es la única solución técnica permitida por Android.
+## 1. Guías Específicas por Fabricante
 
-**¿Deseas que proceda con este asistente de permisos avanzados para cubrir todos los teléfonos?**
+### Motorola (Edge/Moto G)
+*   **Ajuste Crítico**: Rendimiento -> Gestión de aplicaciones -> **Permitir siempre**.
+*   **Batería**: Desactivar "Mejorar batería mientras está inactivo".
+
+### Xiaomi (MIUI / HyperOS)
+*   **Ajuste Crítico**: Activar **Inicio automático**.
+*   **Batería**: Ahorro de batería -> **Sin restricciones**.
+*   **Otros**: Permitir "Mostrar ventanas emergentes en segundo plano".
+
+### Samsung (One UI)
+*   **Ajuste Crítico**: Límites de uso de fondo -> **Aplicaciones nunca inactivas**.
+*   **Batería**: Optimizar uso de batería -> **No optimizar**.
+
+### Vivo (Funtouch OS)
+*   **Ajuste Crítico**: Batería -> Gestión de consumo de energía en segundo plano -> **No restringir**.
+*   **Inicio**: Activar "Inicio automático".
+
+---
+
+## 2. Cambios Propuestos en la App
+
+### [MODIFY] [StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)
+*   Implementar `detectBrand()` para mostrar el logo y el botón de ayuda correspondiente.
+*   Crear un sistema de diálogos dinámicos que cambien según el fabricante detectado.
+
+### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
+*   **Watchdog (Perro guardián)**: Implementar una técnica de auto-reinicio si el servicio es desconectado por el sistema (vía `requestRebind`).
+
+### [MODIFY] [res/layout/activity_status.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_status.xml)
+*   Diseñar un área de "Configuración de Marca" que llame la atención del usuario con un diseño intuitivo.
+
+---
+
+## 3. Plan de Verificación
+1.  **Validación de Marca**: Abrir la app en los 4 modelos y confirmar que muestra la guía correcta.
+2.  **Prueba de "Sueño Profundo"**: Bloquear cada teléfono por 30 minutos y verificar que los mensajes siguen llegando al panel.
+3.  **Facilidad de Uso**: Confirmar que los botones llevan a las pantallas de ajustes correctas de cada marca.
+
+**¿Deseas que proceda con la implementación de esta compatibilidad universal para cubrir Motorola, Xiaomi, Samsung y Vivo?**

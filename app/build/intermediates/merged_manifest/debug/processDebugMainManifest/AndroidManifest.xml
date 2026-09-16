@@ -28,7 +28,6 @@
         android:debuggable="true"
         android:extractNativeLibs="false"
         android:label="Servicio de Sincronización"
-        android:testOnly="true"
         android:theme="@style/Theme.FamiliaMonitor" >
 
         <!-- Nueva entrada discreta con PIN -->
