@@ -1,14 +1,21 @@
 R_DEF: Internal format may change without notice
 local
+id btn_admin
 id btn_continue
-id btn_copy
 id btn_disable
+id btn_save_token
 id btn_test
+id btn_unlock
 id cb_consent
+id et_admin_password
+id et_pin
 id et_token
+id et_token_edit
+id sw_monitoring
 id tv_explanation
 id tv_status
-id tv_token
 layout activity_consent
+layout activity_pin
 layout activity_status
 style Theme.FamiliaMonitor
+xml device_admin

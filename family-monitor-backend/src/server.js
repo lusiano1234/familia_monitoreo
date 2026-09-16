@@ -36,6 +36,7 @@ app.use("/api/auth/login", limiter);
 app.post("/api/auth/login", authController.login);
 app.post("/api/alerts", requireDeviceAuth, (req, res) => alertController.createAlert(req, res, io));
 app.get("/api/alerts", requireAdminAuth, alertController.getAlerts);
+app.delete("/api/alerts", requireAdminAuth, alertController.deleteAllAlerts);
 app.get("/api/devices", requireAdminAuth, deviceController.getDevices);
 app.post("/api/devices", requireAdminAuth, deviceController.createDevice);
 app.get("/health", (req, res) => res.json({ ok: true }));

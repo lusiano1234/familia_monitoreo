@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-51:12
-INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-51:12
-INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-51:12
-INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-51:12
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-70:12
+INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-70:12
+INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-70:12
+INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-70:12
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\a830005bea064a70f9c1c680ed75d01c\workspace\transformed\material-1.12.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.appcompat:appcompat-resources:1.7.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\3e4c57bb36509737e9a82011eb6e7df9\workspace\transformed\jetified-appcompat-resources-1.7.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\7c0c7982b34940b91b190e63080721d3\workspace\transformed\constraintlayout-2.0.1\AndroidManifest.xml:2:1-11:12
@@ -83,8 +83,8 @@ ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\Andro
 	android:name
 		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:11:22-69
 application
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:13:5-50:19
-INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:13:5-50:19
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:13:5-69:19
+INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:13:5-69:19
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\a830005bea064a70f9c1c680ed75d01c\workspace\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\a830005bea064a70f9c1c680ed75d01c\workspace\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\7c0c7982b34940b91b190e63080721d3\workspace\transformed\constraintlayout-2.0.1\AndroidManifest.xml:9:5-20
@@ -106,19 +106,19 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\LENOVO SERIES PRO\
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.13.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\eebb6c66365b3b9b003428b74df8a932\workspace\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
 	android:label
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:14:9-43
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:14:9-51
 	android:allowBackup
 		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:15:9-36
 	android:theme
 		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:16:9-52
-activity#com.familia.monitor.ConsentActivity
+activity#com.familia.monitor.PinActivity
 ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:19:9-27:20
 	android:label
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:22:13-63
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:22:13-54
 	android:exported
 		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:21:13-36
 	android:name
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:20:13-44
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:20:13-40
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
 ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:23:13-26:29
 action#android.intent.action.MAIN
@@ -129,38 +129,68 @@ category#android.intent.category.LAUNCHER
 ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:25:17-77
 	android:name
 		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:25:27-74
-activity#com.familia.monitor.StatusActivity
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:29:9-32:59
+activity#com.familia.monitor.ConsentActivity
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:29:9-32:57
 	android:label
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:32:13-56
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:32:13-54
 	android:exported
 		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:31:13-37
 	android:name
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:30:13-43
-service#com.familia.monitor.NotificationCaptureService
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:35:9-43:19
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:30:13-44
+activity#com.familia.monitor.StatusActivity
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:34:9-37:56
 	android:label
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:39:13-47
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:37:13-53
 	android:exported
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:37:13-36
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:36:13-37
+	android:name
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:35:13-43
+receiver#com.familia.monitor.AdminReceiver
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:40:9-50:20
+	android:exported
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:43:13-36
 	android:permission
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:38:13-87
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:42:13-70
 	android:name
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:36:13-55
-intent-filter#action:name:android.service.notification.NotificationListenerService
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:40:13-42:29
-action#android.service.notification.NotificationListenerService
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:41:17-99
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:41:13-42
+meta-data#android.app.device_admin
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:44:13-46:56
+	android:resource
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:46:17-53
 	android:name
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:41:25-96
-service#com.familia.monitor.ForegroundStatusService
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:45:9-48:56
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:45:17-56
+intent-filter#action:name:android.app.action.DEVICE_ADMIN_ENABLED
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:47:13-49:29
+action#android.app.action.DEVICE_ADMIN_ENABLED
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:48:17-82
+	android:name
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:48:25-79
+service#com.familia.monitor.NotificationCaptureService
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:53:9-61:19
+	android:label
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:57:13-55
 	android:exported
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:47:13-37
-	android:foregroundServiceType
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:48:13-53
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:55:13-36
+	android:permission
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:56:13-87
 	android:name
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:46:13-52
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:54:13-55
+intent-filter#action:name:android.service.notification.NotificationListenerService
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:58:13-60:29
+action#android.service.notification.NotificationListenerService
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:59:17-99
+	android:name
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:59:25-96
+service#com.familia.monitor.ForegroundStatusService
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:63:9-67:56
+	android:label
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:66:13-55
+	android:exported
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:65:13-37
+	android:foregroundServiceType
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:67:13-53
+	android:name
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:64:13-52
 uses-sdk
 INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml

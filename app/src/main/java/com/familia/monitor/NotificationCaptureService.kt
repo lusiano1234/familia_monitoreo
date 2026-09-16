@@ -60,6 +60,12 @@ class NotificationCaptureService : NotificationListenerService() {
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
+        val devicePrefs = getSharedPreferences("device", MODE_PRIVATE)
+        if (!devicePrefs.getBoolean("monitoring_enabled", true)) {
+            Log.d(TAG, "Monitoreo desactivado por el usuario. Ignorando.")
+            return
+        }
+
         val packageName = sbn.packageName
         if (packageName !in MONITORED_PACKAGES) return
 

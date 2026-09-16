@@ -66,6 +66,16 @@ async function getAlerts(req, res) {
   }
 }
 
+async function deleteAllAlerts(req, res) {
+  try {
+    await pool.query("DELETE FROM alerts");
+    res.json({ ok: true });
+  } catch (err) {
+    console.error("Error eliminando alertas:", err);
+    res.status(500).json({ error: "Error al eliminar alertas" });
+  }
+}
+
 async function sendEmailNotification(alert) {
   const { SENDGRID_API_KEY, FROM_EMAIL, PARENT_EMAIL } = process.env;
   if (!SENDGRID_API_KEY || !FROM_EMAIL || !PARENT_EMAIL) return;
@@ -91,4 +101,4 @@ async function sendEmailNotification(alert) {
   }
 }
 
-module.exports = { createAlert, getAlerts };
+module.exports = { createAlert, getAlerts, deleteAllAlerts };

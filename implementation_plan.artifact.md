@@ -1,38 +1,38 @@
-# Plan de Implementación: Monitoreo Multimedia y Llamadas
+# Plan de Implementación: Gestión de Seguridad y Configuración Avanzada
 
-Este plan expande las capacidades de detección para incluir interacciones no textuales, como llamadas entrantes, recepción de fotos, audios y videos, asegurando una vigilancia completa de las comunicaciones del dispositivo.
+Este plan permite a los padres controlar funciones críticas de la aplicación (monitoreo, token y protección anti-borrado) utilizando la misma contraseña del panel administrativo para garantizar que el niño no pueda desactivar la protección.
 
 ## Objetivos
-1.  **Detección de Llamadas**: Identificar llamadas entrantes de WhatsApp y del sistema (Dialer), alertando especialmente si el contacto es desconocido.
-2.  **Captura Multimedia**: Detectar cuando se recibe una foto, un audio (nota de voz) o un video.
-3.  **Identificación Amigable**: Traducir los paquetes técnicos (`com.whatsapp`) a nombres legibles para los padres.
-4.  **Categorización Detallada**: Diferenciar en el panel entre "Mensaje", "Llamada", "Foto" y "Audio".
+1.  **Validación de Contraseña Administrativa**: Sincronizar el acceso a la app con la clave del panel web.
+2.  **Control de Monitoreo**: Añadir un interruptor maestro para pausar/activar la captura de mensajes.
+3.  **Gestión de Token**: Permitir la edición del token de vinculación directamente desde la app.
+4.  **Gestión de Protección Anti-Borrado**: Permitir desactivar el permiso de Administrador de Dispositivo de forma sencilla (pero protegida por clave).
 
 ## Cambios Propuestos
 
 ### 1. App Android
 
+#### [MODIFY] [PinActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/PinActivity.kt)
+- Reemplazar el PIN fijo `1234` por una validación de contraseña.
+- *Nota*: La contraseña se validará contra el servidor o se guardará de forma segura durante la configuración inicial para permitir acceso offline.
+
+#### [MODIFY] [res/layout/activity_status.xml](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/res/layout/activity_status.xml)
+- **Interruptor Maestro**: Añadir un `MaterialSwitch` para activar/desactivar el monitoreo.
+- **Campo de Token**: Cambiar el texto estático por un `TextInputLayout` con `TextInputEditText`.
+- **Botón de Protección**: Cambiar el botón de "Activar" por uno dinámico que también permita "Desactivar" si ya está activo.
+
+#### [MODIFY] [StatusActivity.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/StatusActivity.kt)
+- **Lógica de Desactivación**: Implementar `dpm.removeActiveAdmin(componentName)` para quitar la protección anti-borrado.
+- **Persistencia**: Guardar el estado `is_monitoring_enabled` en SharedPreferences.
+
 #### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
-- **Lógica de Llamadas**: Detectar notificaciones con categoría `Notification.CATEGORY_CALL`.
-- **Análisis de Metadatos Multimedia**:
-    - Extraer tipos MIME (`image/*`, `audio/*`, `video/*`) de los mensajes en `MessagingStyle`.
-    - Buscar etiquetas de texto comunes (ej: "Foto", "Nota de voz", "Audio") como respaldo.
-- **Normalización de Nombres de App**: Crear un mapa para mostrar "WhatsApp", "Instagram", "Telegram", "Teléfono" en lugar de los nombres de paquete.
-
-#### [MODIFY] [RiskEngine.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/RiskEngine.kt)
-- Añadir una nueva función `getMediaCategory` para clasificar el tipo de archivo recibido.
-
-### 2. Frontend (Panel Web)
-
-#### [MODIFY] [index.html](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/public/index.html)
-- Actualizar los colores y etiquetas para las nuevas categorías multimedia.
-- Ejemplo: Llamadas en un color distintivo (Azul) para diferenciarlas de los mensajes de riesgo (Rojo).
+- Añadir un chequeo al inicio de `onNotificationPosted`: si el monitoreo está apagado, ignorar el mensaje.
 
 ## Plan de Verificación
-1.  **Prueba de Llamada**: Realizar una llamada de WhatsApp desde un número no registrado. El panel debe mostrar "LLAMADA DESCONOCIDA".
-2.  **Prueba de Foto**: Enviar una foto por WhatsApp. El panel debe mostrar "FOTO RECIBIDA".
-3.  **Prueba de Audio**: Enviar una nota de voz. El panel debe mostrar "AUDIO RECIBIDO".
+1.  **Seguridad**: Intentar desactivar el monitoreo sin poner la clave correcta.
+2.  **Desactivación de Admin**: Activar la protección, confirmar que no se puede borrar la app, luego desactivarla desde el botón protegido y confirmar que ahora sí se puede desinstalar.
+3.  **Edición de Token**: Cambiar el token y verificar que las alertas lleguen al nuevo destino.
 
 ---
 
-**¿Deseas que proceda con la expansión multimedia para que no se escape ninguna interacción?**
+**¿Deseas que proceda con esta actualización para darte control total sobre la seguridad de la app?**

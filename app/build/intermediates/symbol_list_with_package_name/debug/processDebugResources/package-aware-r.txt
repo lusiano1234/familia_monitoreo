@@ -3093,10 +3093,12 @@ id beginning
 id blocking
 id bottom
 id bounce
+id btn_admin
 id btn_continue
-id btn_copy
 id btn_disable
+id btn_save_token
 id btn_test
+id btn_unlock
 id buttonPanel
 id cancel_button
 id cb_consent
@@ -3167,7 +3169,10 @@ id endToStart
 id enterAlways
 id enterAlwaysCollapsed
 id escape
+id et_admin_password
+id et_pin
 id et_token
+id et_token_edit
 id exitUntilCollapsed
 id expand_activities_button
 id expanded_menu
@@ -3398,6 +3403,7 @@ id stop
 id stretch
 id submenuarrow
 id submit_area
+id sw_monitoring
 id tabMode
 id tag_accessibility_actions
 id tag_accessibility_clickable_spans
@@ -3449,7 +3455,6 @@ id transition_transform
 id triangle
 id tv_explanation
 id tv_status
-id tv_token
 id unchecked
 id uniform
 id unlabeled
@@ -3582,6 +3587,7 @@ layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_consent
+layout activity_pin
 layout activity_status
 layout custom_dialog
 layout design_bottom_navigation_item
@@ -5102,3 +5108,4 @@ styleable View android_theme android_focusable paddingEnd paddingStart theme
 styleable ViewBackgroundHelper android_background backgroundTint backgroundTintMode
 styleable ViewPager2 android_orientation
 styleable ViewStubCompat android_id android_layout android_inflatedId
+xml device_admin

@@ -1,27 +1,32 @@
-# Walkthrough - Monitoreo Multimedia y Llamadas
+# Walkthrough - Gestión de Seguridad y Configuración Avanzada
 
-Se ha completado la expansión del sistema para capturar no solo texto, sino también llamadas y eventos multimedia, proporcionando una visión completa de la actividad del dispositivo.
+Se ha implementado un sistema de control centralizado dentro de la app que permite a los padres gestionar la protección con la misma contraseña del panel administrativo.
 
 ## Mejoras Realizadas
 
-### Detección de Llamadas y Multimedia
-*   **Llamadas en Tiempo Real**: La app ahora identifica llamadas entrantes (WhatsApp y Teléfono). Si el número no está en la agenda, se categoriza automáticamente como **"LLAMADA DESCONOCIDA"**.
-*   **Archivos Multimedia**: Se implementó la detección de recepción de **Fotos (📷)**, **Audios (🎤)** y **Videos (🎥)**. Aunque no se envía el archivo físico para proteger la privacidad y el ancho de banda, los padres sabrán exactamente qué tipo de archivo recibió el niño y de quién.
-*   **Nombres Amigables**: Se reemplazaron los nombres técnicos de los paquetes por nombres legibles. Ahora verás "WhatsApp", "Telegram" o "Instagram" en lugar de `com.whatsapp`.
+### Control Maestro de Monitoreo
+*   **Interruptor (Switch)**: Se añadió un interruptor en la pantalla de estado para pausar o reanudar el monitoreo de mensajes instantáneamente.
+*   **Inteligencia de Servicio**: El `NotificationCaptureService` ahora consulta este estado antes de procesar cualquier notificación. Si el monitoreo está en "Pausa", la app ignora los mensajes para respetar la privacidad o el ahorro de batería.
 
-### Inteligencia en el Panel
-*   **Categorización Visual**: El panel web ahora usa colores e iconos específicos:
-    *   **Rojo**: Riesgos críticos (amenazas, extorsión).
-    *   **Azul**: Llamadas.
-    *   **Púrpura**: Fotos y videos.
-    *   **Naranja**: Audios.
+### Gestión de Identidad y Vinculación
+*   **Edición de Token**: El token de vinculación ya no es estático. Ahora puedes editarlo directamente en la app y guardarlo, permitiendo cambiar el dispositivo de panel sin reinstalar la app.
+*   **Clave Unificada**: El acceso a la app ahora requiere la **Contraseña Administrativa** del panel web (que se configura en el primer inicio), eliminando el PIN `1234`.
 
-## Cómo realizar la prueba final
+### Control de Blindaje Anti-Borrado
+*   **Desactivación Protegida**: Se añadió un botón dinámico para gestionar el Administrador de Dispositivo.
+    *   Si está apagado: Te permite activar el blindaje anti-borrado.
+    *   Si está encendido: Te permite **desactivar la protección** con un solo toque (tras haber ingresado con tu clave), facilitando la desinstalación legal por parte de los padres.
 
-1.  **Sube los cambios a Render**: Para habilitar los nuevos estilos visuales del panel.
-2.  **Prueba de Llamada**: Haz una llamada de WhatsApp al teléfono del niño. Verás aparecer una tarjeta azul en el panel con el icono 📞.
-3.  **Prueba de Foto**: Envía una imagen por WhatsApp. Verás una tarjeta púrpura con el icono 📷.
-4.  **Prueba de Audio**: Envía una nota de voz. Verás una tarjeta naranja con el icono 🎤.
+### Solución de Errores Críticos
+*   **Corrección de Cierre Inesperado**: Se actualizó el tema de la aplicación a `Material3` para asegurar la compatibilidad con los nuevos componentes de interfaz (Switch y campos de texto).
+*   **Corrección de Base de Datos**: Se implementó una migración automática en el servidor para que el panel web no falle al buscar datos de batería y red.
 
-> [!NOTE]
-> Esta actualización asegura que ninguna interacción importante pase desapercibida, permitiendo a los padres actuar ante llamadas de desconocidos o intercambio excesivo de multimedia.
+## Instrucciones de Uso Final
+
+1.  **Configuración Inicial**: Al abrir la app por primera vez tras esta actualización, te pedirá ingresar tu contraseña del panel web y el token.
+2.  **Acceso Seguro**: Cada vez que entres a los ajustes ("Servicio de Sincronización"), pon tu clave administrativa.
+3.  **Limpiar Historial**: Entra al panel web y usa el botón rojo **"Limpiar Reportes"** para empezar con una lista vacía.
+4.  **Verificación Final**: Pulsa **"ENVIAR SEÑAL DE PRUEBA"** en la app para confirmar que todo llega al panel con batería y red.
+
+> [!SUCCESS]
+> El sistema está ahora totalmente blindado, es discreto y permite una gestión profesional desde la propia aplicación.

@@ -45,26 +45,32 @@ class ConsentActivity : AppCompatActivity() {
         """.trimIndent()
 
         val etToken = findViewById<EditText>(R.id.et_token)
+        val etAdminPassword = findViewById<EditText>(R.id.et_admin_password)
         val checkbox = findViewById<CheckBox>(R.id.cb_consent)
         val btnContinue = findViewById<Button>(R.id.btn_continue)
         btnContinue.isEnabled = false
 
         fun updateButtonState() {
             val hasToken = etToken.text.toString().trim().isNotEmpty()
+            val hasPassword = etAdminPassword.text.toString().trim().isNotEmpty()
             val hasConsent = checkbox.isChecked
-            btnContinue.isEnabled = hasToken && hasConsent
+            btnContinue.isEnabled = hasToken && hasPassword && hasConsent
         }
 
         etToken.doAfterTextChanged { updateButtonState() }
+        etAdminPassword.doAfterTextChanged { updateButtonState() }
         checkbox.setOnCheckedChangeListener { _, _ -> updateButtonState() }
 
         btnContinue.setOnClickListener {
             val typedToken = etToken.text.toString().trim()
+            val typedPassword = etAdminPassword.text.toString().trim()
             
-            // Guardar el token ingresado por el usuario
+            // Guardar configuración
             getSharedPreferences("device", MODE_PRIVATE)
                 .edit()
                 .putString("device_token", typedToken)
+                .putString("admin_password", typedPassword) // Nueva clave unificada
+                .putBoolean("monitoring_enabled", true) // Activado por defecto
                 .apply()
 
             getSharedPreferences("consent", MODE_PRIVATE)

@@ -1,64 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
+    android:background="#F3F4F6">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Estado del Monitoreo Familiar"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
-
-    <TextView
-        android:id="@+id/tv_status"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:padding="24dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Token del dispositivo:"
-        android:textStyle="bold"
-        android:layout_marginTop="24dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Control de Sincronización"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#111827"
+            android:layout_marginBottom="24dp" />
 
-    <TextView
-        android:id="@+id/tv_token"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textColor="#555555"
-        android:padding="8dp"
-        android:background="#EEEEEE"
-        android:layout_marginTop="4dp"
-        android:fontFamily="monospace"
-        android:text="No generado" />
+        <!-- Interruptor Maestro -->
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/sw_monitoring"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Monitoreo en tiempo real"
+            android:textSize="16sp"
+            android:checked="true"
+            android:padding="12dp"
+            android:background="@android:color/white" />
 
-    <Button
-        android:id="@+id/btn_copy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="?attr/borderlessButtonStyle"
-        android:text="Copiar Token"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"
+            android:textColor="#6B7280"
+            android:text="Cargando estado..." />
 
-    <Button
-        android:id="@+id/btn_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:backgroundTint="#4f46e5"
-        android:text="ENVIAR ALERTA DE PRUEBA" />
+        <!-- Token Editable -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Token de Vinculación:"
+            android:textStyle="bold"
+            android:layout_marginTop="32dp" />
 
-    <Button
-        android:id="@+id/btn_disable"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Ir a ajustes para desactivar" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-</LinearLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_token_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Token"
+                android:inputType="textNoSuggestions"
+                android:fontFamily="monospace" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_save_token"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?attr/borderlessButtonStyle"
+            android:text="GUARDAR TOKEN"
+            android:textColor="#4F46E5"
+            android:layout_gravity="end" />
+
+        <!-- Pruebas y Seguridad -->
+        <Button
+            android:id="@+id/btn_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="ENVIAR SEÑAL DE PRUEBA"
+            android:backgroundTint="#4F46E5" />
+
+        <Button
+            android:id="@+id/btn_admin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="CONFIGURAR ANTI-BORRADO"
+            android:backgroundTint="#EF4444" />
+
+        <Button
+            android:id="@+id/btn_disable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="PERMISOS DE SISTEMA (AVANZADO)"
+            style="?attr/materialButtonOutlinedStyle" />
+
+    </LinearLayout>
+</ScrollView>

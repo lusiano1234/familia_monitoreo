@@ -36,7 +36,10 @@
         <h1 style="margin:0; font-size: 1.5rem;">Panel de Monitoreo</h1>
         <div id="socket-status" class="offline">● DESCONECTADO</div>
       </div>
-      <button onclick="logout()" style="background:#6b7280">Cerrar Sesión</button>
+      <div style="display:flex; gap: 10px;">
+        <button onclick="clearAlerts()" style="background:#ef4444">Limpiar Reportes</button>
+        <button onclick="logout()" style="background:#6b7280">Cerrar Sesión</button>
+      </div>
     </div>
 
     <div id="alerts">Cargando reportes...</div>
@@ -122,6 +125,21 @@ async function loadAlerts() {
   const alerts = await res.json();
   const el = document.getElementById('alerts');
   el.innerHTML = alerts.map(a => renderAlert(a)).join('') || '<p>No hay reportes guardados.</p>';
+}
+
+async function clearAlerts() {
+  if (!confirm('¿Estás seguro de que deseas borrar todos los reportes? Esta acción no se puede deshacer.')) return;
+
+  const res = await fetch('/api/alerts', {
+    method: 'DELETE',
+    headers: { Authorization: 'Bearer ' + token }
+  });
+
+  if (res.ok) {
+    loadAlerts();
+  } else {
+    alert('Error al limpiar los reportes');
+  }
 }
 
 function renderAlert(a, isNew = false) {
