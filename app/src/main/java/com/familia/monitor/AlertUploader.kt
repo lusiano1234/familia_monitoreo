@@ -24,13 +24,14 @@ object AlertUploader {
         category: String,
         level: String,
         fragment: String,
-        timestamp: Long
+        timestamp: Long,
+        battery: Int = -1,
+        connection: String = "Desconocido"
     ) {
         val deviceToken = context.getSharedPreferences("device", Context.MODE_PRIVATE)
             .getString("device_token", null)
 
-        Log.d(TAG, "Iniciando envío de alerta. Token actual: $deviceToken")
-        Log.d(TAG, "URL de destino: $BASE_URL")
+        Log.d(TAG, "Enviando alerta extendida ($category). Batería: $battery%, Red: $connection")
 
         if (deviceToken == null) {
             Log.e(TAG, "ERROR: No hay token de dispositivo configurado. Abortando envío.")
@@ -43,6 +44,8 @@ object AlertUploader {
             put("level", level)
             put("fragment", fragment)
             put("timestamp", timestamp)
+            put("batteryLevel", battery)
+            put("connectionType", connection)
         }.toString()
         
         Log.d(TAG, "Cuerpo del JSON: $bodyJson")

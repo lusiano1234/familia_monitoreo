@@ -28,6 +28,8 @@ async function initDb() {
       level TEXT NOT NULL,
       fragment TEXT NOT NULL,
       device_timestamp BIGINT NOT NULL,
+      battery_level INTEGER,
+      connection_type TEXT,
       received_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
   `);

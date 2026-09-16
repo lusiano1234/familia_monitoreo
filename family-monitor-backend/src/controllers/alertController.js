@@ -6,7 +6,7 @@ if (process.env.SENDGRID_API_KEY) {
 }
 
 async function createAlert(req, res, io) {
-  const { sourceApp, category, level, fragment, timestamp } = req.body || {};
+  const { sourceApp, category, level, fragment, timestamp, batteryLevel, connectionType } = req.body || {};
 
   if (!sourceApp || !category || !level || !fragment || !timestamp) {
     return res.status(400).json({ error: "Faltan campos obligatorios" });
@@ -14,9 +14,9 @@ async function createAlert(req, res, io) {
 
   try {
     const result = await pool.query(
-      `INSERT INTO alerts (device_token, source_app, category, level, fragment, device_timestamp)
-       VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, received_at`,
-      [req.deviceToken, sourceApp, category, level, fragment, timestamp]
+      `INSERT INTO alerts (device_token, source_app, category, level, fragment, device_timestamp, battery_level, connection_type)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, received_at`,
+      [req.deviceToken, sourceApp, category, level, fragment, timestamp, batteryLevel || null, connectionType || null]
     );
 
     const newAlert = {
@@ -26,6 +26,8 @@ async function createAlert(req, res, io) {
       level,
       fragment,
       device_timestamp: timestamp,
+      battery_level: batteryLevel,
+      connection_type: connectionType,
       received_at: result.rows[0].received_at,
       device_label: req.device.label || "Sin nombre"
     };
@@ -50,6 +52,7 @@ async function getAlerts(req, res) {
   try {
     const result = await pool.query(
       `SELECT a.id, a.source_app, a.category, a.level, a.fragment, a.device_timestamp,
+              a.battery_level, a.connection_type,
               a.received_at, d.label AS device_label
        FROM alerts a
        LEFT JOIN devices d ON d.device_token = a.device_token

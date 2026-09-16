@@ -1,26 +1,27 @@
-# Walkthrough - Detalle Completo de Mensajes
+# Walkthrough - Contexto de Seguridad 360°
 
-Se ha actualizado el sistema para que los padres puedan ver la conversación íntegra y el remitente de cada alerta detectada, en lugar de solo un fragmento.
+Se ha expandido la capacidad de recolección de datos del sistema. Ahora, cada alerta enviada incluye información vital sobre el estado del dispositivo físico del niño.
 
 ## Mejoras Realizadas
 
-### Captura de Contexto Total
-*   **Motor de Riesgo**: Se modificó el `RiskEngine` para que, al detectar una palabra clave (ej: "dinero"), capture y envíe el **100% del contenido** del mensaje original.
-*   **Identificación del Remitente**: El sistema ahora separa y resalta quién envió el mensaje (nombre del contacto o número).
+### Información de Dispositivo (Hardware)
+*   **Monitoreo de Batería**: La app captura el porcentaje exacto de batería en el momento del riesgo. Si el teléfono tiene menos del 15%, el panel web resaltará el icono en rojo.
+*   **Estado de Red**: Se identifica si el niño está bajo una red **WiFi** (📶) o usando sus **Datos Móviles** (📡). Esto ayuda a entender si el niño está en un lugar fijo o en movimiento.
 
-### Rediseño del Panel Web
-*   **Tarjetas de Detalle**: Las alertas ahora tienen un contenedor dedicado para el mensaje, con mejor tipografía y espaciado.
-*   **Claridad Visual**: Se añadió la etiqueta "Enviado por: [Nombre]" para que no haya dudas sobre el origen de la amenaza.
-*   **Soporte Multilínea**: Si el mensaje es muy largo, el panel lo mostrará completo respetando los saltos de línea.
+### Robustez del Backend
+*   **Base de Datos Extendida**: Se añadieron las columnas `battery_level` y `connection_type` a la tabla de alertas para mantener un histórico de seguridad.
+*   **API Dinámica**: El servidor procesa estos nuevos campos y los emite en tiempo real a través de Socket.io.
 
-## Prueba de funcionamiento
+### Interfaz del Panel Web
+*   **Visualización con Íconos**: Cada tarjeta de alerta ahora muestra pequeños indicadores de energía y red en la esquina superior derecha.
+*   **Diseño Limpio**: Se mantuvo la claridad visual, separando los metadatos técnicos del mensaje interceptado.
 
-1.  **Sube los cambios** a Render para actualizar el diseño del panel.
-2.  **En el teléfono**: Recibe un WhatsApp largo, por ejemplo: *"Hola hijo, espero que estés bien. Escuchame, necesito que me hagas un favor urgente: **transferime dinero** a esta cuenta."*
-3.  **En el Panel**: Verás aparecer una tarjeta que muestra:
-    *   **Categoría**: EXTORSION DINERO
-    *   **Enviado por**: [Nombre del contacto]
-    *   **Mensaje**: El texto completo de arriba.
+## Cómo realizar la prueba
+
+1.  **Sube los cambios a Render** para actualizar la base de datos y el panel.
+2.  **En el teléfono**: Asegúrate de estar conectado a WiFi.
+3.  **Pulsa el botón "ENVIAR ALERTA DE PRUEBA"**.
+4.  **En el Panel**: Verifica que la nueva tarjeta muestra tu nivel de batería actual y el icono de WiFi.
 
 > [!TIP]
-> Si el mensaje es inofensivo, el sistema seguirá ignorándolo para proteger la privacidad del niño. Solo se envía el detalle cuando hay un riesgo real.
+> Esta información es fundamental en situaciones de emergencia, ya que permite saber si el niño tiene suficiente carga para seguir comunicado.

@@ -1,8 +1,12 @@
-# Tareas: Detalle Completo de Mensajes
+# Tareas: Recolección de Contexto 360°
 
-- [x] Modificar `RiskEngine.kt` para capturar el texto completo
-- [x] Ajustar `NotificationCaptureService.kt` para enviar el contexto íntegro
-- [x] Actualizar el Panel Web (`index.html`) para mostrar detalles extensos
+- [x] Implementar `DeviceStateHelper.kt` (Batería y Red)
+- [x] Modificar `AlertUploader.kt` para enviar nuevos campos
+- [x] Actualizar `NotificationCaptureService.kt` para capturar el estado
+- [x] Actualizar Backend
+    - [x] `db.js`: Nuevas columnas en tabla `alerts`
+    - [x] `alertController.js`: Guardar y emitir nuevos datos
+- [x] Actualizar Frontend (`index.html`) para visualización
 - [x] Verificación
-    - [x] Enviar mensaje largo con riesgo
-    - [x] Confirmar visualización completa en el panel
+    - [x] Validar íconos de batería en el panel
+    - [x] Validar tipo de conexión reportada

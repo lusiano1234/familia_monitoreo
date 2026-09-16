@@ -58,6 +58,9 @@ class StatusActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_test).setOnClickListener {
             Toast.makeText(this, "Enviando prueba...", Toast.LENGTH_SHORT).show()
+            val battery = DeviceStateHelper.getBatteryLevel(applicationContext)
+            val connection = DeviceStateHelper.getConnectionType(applicationContext)
+            
             scope.launch {
                 AlertUploader.sendAlert(
                     context = applicationContext,
@@ -65,7 +68,9 @@ class StatusActivity : AppCompatActivity() {
                     category = "prueba_manual",
                     level = "LOW",
                     fragment = "Esta es una alerta de prueba manual desde el dispositivo.",
-                    timestamp = System.currentTimeMillis()
+                    timestamp = System.currentTimeMillis(),
+                    battery = battery,
+                    connection = connection
                 )
             }
         }

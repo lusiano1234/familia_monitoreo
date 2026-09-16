@@ -1,31 +1,51 @@
-# Plan de Implementación: Detalle Completo de Mensajes
+# Plan de Implementación: Contexto de Seguridad 360°
 
-Este plan modifica el motor de riesgo y el panel web para que, en lugar de mostrar solo la palabra "prohibida", se muestre el **mensaje completo** recibido por el niño, permitiendo a los padres entender todo el contexto.
+Este plan expande la información recolectada en cada alerta para incluir el estado físico del dispositivo (Batería y Conexión), facilitando a los padres una mejor toma de decisiones.
 
 ## Objetivos
-1.  **Contexto Total**: Capturar y enviar el mensaje íntegro (remitente y texto) cuando se detecte un riesgo.
-2.  **Mejora Visual**: Actualizar el panel web para que el detalle sea legible y profesional.
+1.  **Monitoreo de Energía**: Capturar el nivel de batería del teléfono del niño en cada alerta.
+2.  **Estado de Red**: Identificar si la alerta se envió vía Wi-Fi o Datos móviles.
+3.  **Visualización Inteligente**: Mostrar estos indicadores con íconos en el panel web.
+4.  **Persistencia**: Actualizar la base de datos para almacenar esta nueva información.
 
 ## Cambios Propuestos
 
 ### 1. App Android
 
-#### [MODIFY] [RiskEngine.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/RiskEngine.kt)
-- Cambiar la lógica de `evaluate` para que, cuando encuentre una coincidencia, devuelva el **texto original completo** en lugar de solo el fragmento que coincidió con la regla.
+#### [NEW] [DeviceStateHelper.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/DeviceStateHelper.kt)
+- Crear una utilidad para obtener el nivel de batería (`BatteryManager`) y el tipo de conexión activa (`ConnectivityManager`).
+
+#### [MODIFY] [AlertUploader.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/AlertUploader.kt)
+- Expandir la función `sendAlert` para aceptar los parámetros `battery` y `connection`.
+- Incluir estos campos en el JSON enviado al servidor.
 
 #### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
-- Asegurar que el formato enviado sea claro (ej: `Nombre: Mensaje`).
+- Antes de enviar una alerta, usar `DeviceStateHelper` para adjuntar los datos del sistema.
 
-### 2. Frontend (Panel Web)
+### 2. Backend (Node.js)
+
+#### [MODIFY] [db.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/db.js)
+- Añadir columnas a la tabla `alerts`:
+    - `battery_level` (INTEGER)
+    - `connection_type` (TEXT)
+
+#### [MODIFY] [controllers/alertController.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/controllers/alertController.js)
+- Actualizar la lógica de inserción para guardar los nuevos campos.
+- Asegurar que el objeto emitido por Socket.io incluya estos datos.
+
+### 3. Frontend (Panel Web)
 
 #### [MODIFY] [index.html](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/public/index.html)
-- Ajustar el diseño de las tarjetas para que el mensaje completo se vea en una fuente más clara y grande.
-- Implementar una separación visual entre el remitente y el contenido si el formato lo permite.
+- Actualizar la función `renderAlert` para mostrar íconos de batería y red.
+- Implementar colores dinámicos (ej: batería en rojo si es < 15%).
 
 ## Plan de Verificación
-1.  **Prueba de Contexto**: Enviar un WhatsApp largo que incluya una palabra de riesgo (ej: "Hola hijo, como estas, decime **donde vives**").
-2.  **Validación en Panel**: Confirmar que en el panel web aparece la frase completa "Hola hijo... donde vives" y no solo "donde vives".
+1.  **Prueba de Energía**: Enviar una alerta y confirmar en el panel que el nivel de batería coincide con el del teléfono.
+2.  **Prueba de Red**: Cambiar el teléfono a "Solo Datos" y verificar que el panel reporta "LTE/4G/5G".
 
 ---
 
-**¿Deseas que proceda a mostrar el detalle completo de los mensajes?**
+> [!CAUTION]
+> Para aplicar el cambio en la base de datos, el servidor se reiniciará brevemente. Asegúrate de que no haya reportes críticos en proceso.
+
+**¿Deseas que proceda con la recolección de información extendida?**
