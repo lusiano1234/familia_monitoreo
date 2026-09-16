@@ -30,6 +30,33 @@ class ChatLogActivity : AppCompatActivity() {
         rv.adapter = ChatAdapter(messages)
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (!PinActivity.isSessionUnlocked) {
+            val intent = android.content.Intent(this, PinActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        PinActivity.isNavigatingInternal = false
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (!PinActivity.isNavigatingInternal) {
+            PinActivity.isSessionUnlocked = false
+        }
+    }
+
+    override fun finish() {
+        PinActivity.isNavigatingInternal = true
+        super.finish()
+    }
+
     override fun onCreateOptionsMenu(menu: android.view.Menu): Boolean {
         val clearItem = menu.add(0, 100, 0, "Limpiar")
         clearItem.setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS)

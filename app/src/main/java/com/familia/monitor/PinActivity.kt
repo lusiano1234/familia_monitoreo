@@ -18,6 +18,7 @@ class PinActivity : AppCompatActivity() {
 
     companion object {
         var isSessionUnlocked: Boolean = false
+        var isNavigatingInternal: Boolean = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

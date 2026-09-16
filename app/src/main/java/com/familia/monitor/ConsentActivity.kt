@@ -80,6 +80,9 @@ class ConsentActivity : AppCompatActivity() {
                 .putLong("consent_timestamp", System.currentTimeMillis())
                 .apply()
 
+            // Desbloquear sesión al registrar inicialmente
+            PinActivity.isSessionUnlocked = true
+
             // Iniciar servicio en primer plano
             val serviceIntent = Intent(this, ForegroundStatusService::class.java)
             startForegroundService(serviceIntent)

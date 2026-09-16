@@ -94,6 +94,7 @@ class StatusActivity : AppCompatActivity() {
 
         // 4. Botón de Prueba y Logs
         findViewById<Button>(R.id.btn_view_logs).setOnClickListener {
+            PinActivity.isNavigatingInternal = true
             startActivity(Intent(this, ChatLogActivity::class.java))
         }
 
@@ -297,6 +298,14 @@ class StatusActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        PinActivity.isNavigatingInternal = false
         updateUi()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (!PinActivity.isNavigatingInternal) {
+            PinActivity.isSessionUnlocked = false
+        }
     }
 }
