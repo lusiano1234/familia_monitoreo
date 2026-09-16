@@ -72,9 +72,12 @@ async function getAlerts(req, res) {
  * Skeleton para notificaciones por email
  */
 async function sendEmailNotification(alert) {
-  // Configura esto en Render con tus variables de entorno
-  // SMTP_USER, SMTP_PASS, PARENT_EMAIL
-  if (!process.env.SMTP_USER) return;
+  console.log("[EMAIL] Intentando enviar notificación de correo...");
+
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS || !process.env.PARENT_EMAIL) {
+    console.log("[EMAIL] OMITIDO: Faltan variables de entorno (SMTP_USER, SMTP_PASS o PARENT_EMAIL)");
+    return;
+  }
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -84,15 +87,15 @@ async function sendEmailNotification(alert) {
   const mailOptions = {
     from: `"Monitor Familiar" <${process.env.SMTP_USER}>`,
     to: process.env.PARENT_EMAIL,
-    subject: `⚠️ ALERTA CRÍTICA: ${alert.category}`,
-    text: `Se ha detectado un riesgo nivel ${alert.level} en el dispositivo ${alert.device_label}.\n\nApp: ${alert.source_app}\nFragmento: "${alert.fragment}"`
+    subject: `⚠️ ALERTA CRÍTICA: ${alert.category.replace('_', ' ').toUpperCase()}`,
+    text: `Se ha detectado un riesgo nivel ${alert.level} en el dispositivo ${alert.device_label}.\n\nApp: ${alert.source_app}\nFragmento: "${alert.fragment}"\n\nRevisa el panel: https://familia-monitoreo.onrender.com`
   };
 
   try {
-    await transporter.sendMail(mailOptions);
-    console.log("Email de alerta enviado.");
+    const info = await transporter.sendMail(mailOptions);
+    console.log("[EMAIL] ÉXITO: Correo enviado correctamente:", info.messageId);
   } catch (err) {
-    console.error("Error enviando email:", err);
+    console.error("[EMAIL] ERROR al enviar el correo:", err.message);
   }
 }
 
