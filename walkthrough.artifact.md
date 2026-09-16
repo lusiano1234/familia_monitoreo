@@ -1,27 +1,21 @@
-# Walkthrough - Contexto de Seguridad 360°
+# Walkthrough - Corrección de Base de Datos y Panel Web
 
-Se ha expandido la capacidad de recolección de datos del sistema. Ahora, cada alerta enviada incluye información vital sobre el estado del dispositivo físico del niño.
+Se ha solucionado el problema que impedía cargar los reportes en el panel web debido a una incompatibilidad entre la base de datos antigua y los nuevos campos de Batería y Red.
 
-## Mejoras Realizadas
+## Cambios Realizados
 
-### Información de Dispositivo (Hardware)
-*   **Monitoreo de Batería**: La app captura el porcentaje exacto de batería en el momento del riesgo. Si el teléfono tiene menos del 15%, el panel web resaltará el icono en rojo.
-*   **Estado de Red**: Se identifica si el niño está bajo una red **WiFi** (📶) o usando sus **Datos Móviles** (📡). Esto ayuda a entender si el niño está en un lugar fijo o en movimiento.
+### Reparación de la Base de Datos (Backend)
+*   **[db.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/db.js)**: Se implementó una lógica de **migración forzada**. Ahora, el servidor asegura que las columnas `battery_level` y `connection_type` existan en la tabla `alerts` cada vez que arranca, sin importar si la tabla ya existía.
 
-### Robustez del Backend
-*   **Base de Datos Extendida**: Se añadieron las columnas `battery_level` y `connection_type` a la tabla de alertas para mantener un histórico de seguridad.
-*   **API Dinámica**: El servidor procesa estos nuevos campos y los emite en tiempo real a través de Socket.io.
+### Mejora de Visualización (Frontend)
+*   **[index.html](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/public/index.html)**: Se ajustó la lógica para manejar reportes antiguos.
+    *   Si un reporte no tiene datos de batería o red (porque se creó antes de la actualización), los íconos se ocultarán automáticamente para no mostrar información vacía o errónea.
 
-### Interfaz del Panel Web
-*   **Visualización con Íconos**: Cada tarjeta de alerta ahora muestra pequeños indicadores de energía y red en la esquina superior derecha.
-*   **Diseño Limpio**: Se mantuvo la claridad visual, separando los metadatos técnicos del mensaje interceptado.
+## Instrucciones para Restaurar el Panel
 
-## Cómo realizar la prueba
-
-1.  **Sube los cambios a Render** para actualizar la base de datos y el panel.
-2.  **En el teléfono**: Asegúrate de estar conectado a WiFi.
-3.  **Pulsa el botón "ENVIAR ALERTA DE PRUEBA"**.
-4.  **En el Panel**: Verifica que la nueva tarjeta muestra tu nivel de batería actual y el icono de WiFi.
+1.  **Sube los cambios a Render**: Al desplegar, el servidor ejecutará la migración y añadirá las piezas que faltaban en la base de datos.
+2.  **Refresca tu Navegador**: Una vez que Render termine de cargar ("Deploy Live"), abre el panel.
+3.  **Los reportes deberían aparecer de inmediato**.
 
 > [!TIP]
-> Esta información es fundamental en situaciones de emergencia, ya que permite saber si el niño tiene suficiente carga para seguir comunicado.
+> Los reportes nuevos (los que envíes después de esta actualización) mostrarán los iconos de 🔋 y de Red. Los reportes viejos se verán limpios, solo con el mensaje.

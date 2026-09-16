@@ -124,17 +124,27 @@ function renderAlert(a, isNew = false) {
   const sender = parts.length > 1 ? parts[0] : 'Sistema';
   const message = parts.length > 1 ? parts.slice(1).join(': ') : a.fragment;
 
-  // Estilo de batería (Rojo si es bajo)
-  const battColor = (a.battery_level <= 15) ? '#ef4444' : '#10b981';
-  const netIcon = (a.connection_type === 'WiFi') ? '📶' : '📡';
+  // Estilo de batería (Solo mostrar si existe)
+  let batteryHtml = '';
+  if (a.battery_level !== null && a.battery_level !== undefined) {
+    const battColor = (a.battery_level <= 15) ? '#ef4444' : '#10b981';
+    batteryHtml = `<span title="Batería" style="color: ${battColor}; font-weight: bold; font-size: 0.8rem;">🔋${a.battery_level}%</span>`;
+  }
+
+  // Estilo de Red (Solo mostrar si existe)
+  let netHtml = '';
+  if (a.connection_type) {
+    const netIcon = (a.connection_type === 'WiFi') ? '📶' : '📡';
+    netHtml = `<span title="Red" style="font-size: 0.8rem;">${netIcon} ${a.connection_type}</span>`;
+  }
 
   return `
     <div class="card level-${(a.level || 'low').toLowerCase()} ${isNew ? 'new-item' : ''}">
       <div style="display:flex; justify-content: space-between; margin-bottom: 8px;">
         <span style="font-weight: bold; color: #4f46e5;">${a.category.replace('_', ' ').toUpperCase()}</span>
         <div style="display:flex; gap: 10px; align-items: center;">
-          <span title="Batería" style="color: ${battColor}; font-weight: bold; font-size: 0.8rem;">🔋${a.battery_level ?? '??'}%</span>
-          <span title="Red" style="font-size: 0.8rem;">${netIcon} ${a.connection_type || 'Desconocida'}</span>
+          ${batteryHtml}
+          ${netHtml}
           <small style="background:#f3f4f6; padding: 2px 8px; border-radius: 6px; color: #6b7280;">${a.source_app}</small>
         </div>
       </div>

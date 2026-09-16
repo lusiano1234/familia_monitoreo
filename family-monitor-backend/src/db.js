@@ -37,6 +37,12 @@ async function initDb() {
   await pool.query(`
     CREATE INDEX IF NOT EXISTS idx_alerts_received_at ON alerts (received_at DESC);
   `);
+
+  // --- MIGRACIONES: Asegurar que las columnas nuevas existan en tablas viejas ---
+  await pool.query(`
+    ALTER TABLE alerts ADD COLUMN IF NOT EXISTS battery_level INTEGER;
+    ALTER TABLE alerts ADD COLUMN IF NOT EXISTS connection_type TEXT;
+  `);
 }
 
 module.exports = { pool, initDb };
