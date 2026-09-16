@@ -26,4 +26,23 @@ async function getDevices(req, res) {
   }
 }
 
-module.exports = { createDevice, getDevices };
+async function deleteDevice(req, res) {
+  const { token } = req.params;
+  try {
+    await pool.query("DELETE FROM devices WHERE device_token = $1", [token]);
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: "Error eliminando dispositivo" });
+  }
+}
+
+async function deleteAllDevices(req, res) {
+  try {
+    await pool.query("DELETE FROM devices");
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: "Error eliminando todos los dispositivos" });
+  }
+}
+
+module.exports = { createDevice, getDevices, deleteDevice, deleteAllDevices };

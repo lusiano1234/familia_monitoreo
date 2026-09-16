@@ -39,6 +39,8 @@ app.get("/api/alerts", requireAdminAuth, alertController.getAlerts);
 app.delete("/api/alerts", requireAdminAuth, alertController.deleteAllAlerts);
 app.get("/api/devices", requireAdminAuth, deviceController.getDevices);
 app.post("/api/devices", requireAdminAuth, deviceController.createDevice);
+app.delete("/api/devices/:token", requireAdminAuth, deviceController.deleteDevice);
+app.delete("/api/devices", requireAdminAuth, deviceController.deleteAllDevices);
 app.get("/health", (req, res) => res.json({ ok: true }));
 
 io.on("connection", (socket) => {

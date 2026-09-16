@@ -45,7 +45,10 @@
     <div id="alerts">Cargando reportes...</div>
 
     <div id="devices" style="margin-top: 50px;">
-      <h3>Dispositivos Vinculados</h3>
+      <div style="display:flex; justify-content: space-between; align-items: center;">
+        <h3>Dispositivos Vinculados</h3>
+        <button onclick="clearAllDevices()" style="background:#ef4444; padding: 6px 12px; font-size: 0.8rem;">Limpiar Lista</button>
+      </div>
       <div id="deviceList" style="display: grid; gap: 10px;"></div>
       <div style="margin-top: 20px; background: #fff; padding: 15px; border-radius: 10px;">
         <strong>Vincular nuevo dispositivo:</strong><br><br>
@@ -207,11 +210,32 @@ async function loadDevices() {
   const res = await fetch('/api/devices', { headers: { Authorization: 'Bearer ' + token } });
   const devices = await res.json();
   document.getElementById('deviceList').innerHTML = devices.map(d => `
-    <div style="background:#fff; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb; display:flex; justify-content: space-between;">
-      <strong>${d.label || 'Sin nombre'}</strong>
-      <code>${d.device_token}</code>
+    <div style="background:#fff; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb; display:flex; justify-content: space-between; align-items: center;">
+      <div>
+        <strong>${d.label || 'Sin nombre'}</strong>
+        <code style="display:block; font-size: 0.8rem; margin-top: 4px;">${d.device_token}</code>
+      </div>
+      <button onclick="deleteDevice('${d.device_token}')" style="background:none; color:#ef4444; border:none; cursor:pointer; font-size: 1.2rem;" title="Eliminar">🗑️</button>
     </div>
   `).join('') || 'No hay dispositivos.';
+}
+
+async function deleteDevice(deviceToken) {
+  if (!confirm('¿Desvincular este dispositivo? La app dejará de enviar reportes.')) return;
+  const res = await fetch(\`/api/devices/\${deviceToken}\`, {
+    method: 'DELETE',
+    headers: { Authorization: 'Bearer ' + token }
+  });
+  if (res.ok) loadDevices();
+}
+
+async function clearAllDevices() {
+  if (!confirm('¿BORRAR TODOS LOS DISPOSITIVOS? Esta acción es irreversible.')) return;
+  const res = await fetch('/api/devices', {
+    method: 'DELETE',
+    headers: { Authorization: 'Bearer ' + token }
+  });
+  if (res.ok) loadDevices();
 }
 
 async function createDevice() {

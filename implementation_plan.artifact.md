@@ -1,30 +1,39 @@
-# Plan de Implementación: Expansión de Cobertura de Aplicaciones
+# Plan de Implementación: Gestión y Limpieza de Dispositivos Enlazados
 
-Este plan tiene como objetivo ampliar el monitoreo a aplicaciones adicionales como TikTok, Discord y otras redes sociales populares para garantizar que no haya puntos ciegos en la supervisión de seguridad.
+Este plan introduce la funcionalidad necesaria para gestionar la lista de dispositivos vinculados, permitiendo eliminar dispositivos individuales o limpiar la lista completa desde el panel administrativo.
 
 ## Objetivos
-1.  **Monitoreo de TikTok**: Añadir los paquetes de TikTok e implementar la captura de sus notificaciones de mensajes directos.
-2.  **Ampliación Social**: Incluir soporte para Discord, X (Twitter) y otras apps de interacción social.
-3.  **Mantenimiento de Nombres Amigables**: Asegurar que en el panel estas nuevas apps aparezcan con sus nombres reales y no con códigos técnicos.
+1.  **Eliminación Individual**: Permitir a los padres desvincular un teléfono específico si ya no se desea monitorear.
+2.  **Limpieza Total**: Opción para borrar todos los tokens generados y empezar de cero.
+3.  **Seguridad**: Asegurar que solo el administrador autenticado pueda realizar estas acciones.
+4.  **Actualización de UI**: Añadir botones de "Eliminar" en la sección de dispositivos del panel web.
 
 ## Cambios Propuestos
 
-### 1. App Android
+### 1. Backend (Node.js)
 
-#### [MODIFY] [NotificationCaptureService.kt](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/app/src/main/java/com/familia/monitor/NotificationCaptureService.kt)
-- Añadir a `MONITORED_PACKAGES`:
-    - `com.zhiliaoapp.musically` (TikTok Internacional)
-    - `com.ss.android.ugc.trill` (TikTok variante)
-    - `com.discord` (Discord)
-    - `com.twitter.android` (X / Twitter)
-    - `com.google.android.youtube` (YouTube - Comentarios/Mensajes)
-- Actualizar el mapa `APP_NAMES` con las etiquetas correspondientes.
+#### [MODIFY] [deviceController.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/controllers/deviceController.js)
+- Añadir función `deleteDevice(token)`: Elimina un dispositivo específico de la base de datos.
+- Añadir función `deleteAllDevices()`: Limpia toda la tabla de dispositivos.
+
+#### [MODIFY] [server.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/server.js)
+- Registrar nuevas rutas:
+    - `DELETE /api/devices/:token` (Individual)
+    - `DELETE /api/devices` (Masivo)
+- Ambas protegidas por el middleware `requireAdminAuth`.
+
+### 2. Frontend (Panel Web)
+
+#### [MODIFY] [index.html](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/public/index.html)
+- Actualizar la función `loadDevices()` para incluir un botón de "Eliminar" (🗑️) al lado de cada token.
+- Añadir un botón general de "Limpiar Todos los Dispositivos" en la sección de gestión.
+- Implementar las llamadas a la API correspondientes con confirmación previa.
 
 ## Plan de Verificación
-1.  **Prueba de TikTok**: Enviar un mensaje directo a la cuenta de TikTok en el teléfono del niño. Verificar que el panel web registra el mensaje y el nombre del remitente.
-2.  **Prueba de Discord/X**: Confirmar que las notificaciones de estas apps disparan el proceso de evaluación de riesgo.
-3.  **Robustez de Nombres**: Asegurar que en el panel web se lea claramente "TikTok" o "Discord".
+1.  **Prueba de Desvinculación**: Borrar un dispositivo del panel y verificar que la app Android correspondiente recibe un error "401 No autorizado" al intentar enviar alertas.
+2.  **Prueba de Limpieza**: Usar la opción masiva y confirmar que la lista de dispositivos queda vacía.
+3.  **Persistencia**: Verificar que las alertas existentes no se borren (ya que están asociadas al token pero no dependen de la existencia del dispositivo en la tabla `devices` para su lectura histórica, aunque se recomienda limpiar alertas antes si se desea un borrado total).
 
 ---
 
-**¿Deseas que proceda con la expansión a TikTok y estas redes sociales adicionales?**
+**¿Deseas que proceda con la implementación de la limpieza de dispositivos?**
