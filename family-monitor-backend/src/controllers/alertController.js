@@ -72,38 +72,43 @@ async function getAlerts(req, res) {
  * Skeleton para notificaciones por email
  */
 async function sendEmailNotification(alert) {
-  console.log("[EMAIL] Iniciando proceso de envío (Modo Gmail Service)...");
+  console.log("[EMAIL] Iniciando proceso de envío (Puerto 465 - SSL Seguro)...");
 
   const { SMTP_USER, SMTP_PASS, PARENT_EMAIL } = process.env;
 
   if (!SMTP_USER || !SMTP_PASS || !PARENT_EMAIL) {
-    console.log("[EMAIL] ERROR: Variables de entorno incompletas en Render.");
+    console.log("[EMAIL] ERROR: Variables de entorno incompletas.");
     return;
   }
 
-  // Usamos el 'service' predefinido para Gmail, que Nodemailer configura automáticamente
+  // Configuración directa y robusta para Gmail en la nube
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // Forzamos SSL directo
     auth: {
       user: SMTP_USER,
       pass: SMTP_PASS
     },
-    // Activamos debug para ver la conversación completa en los logs
+    tls: {
+      // No fallar por certificados auto-firmados o problemas de red local
+      rejectUnauthorized: false
+    },
     debug: true,
     logger: true
   });
 
   try {
-    console.log("[EMAIL] Enviando mensaje crítico...");
+    console.log("[EMAIL] Enviando mensaje a:", PARENT_EMAIL);
 
     const mailOptions = {
       from: `"Protección Familiar" <${SMTP_USER}>`,
       to: PARENT_EMAIL,
       subject: `🚨 ALERTA CRÍTICA: ${alert.category.replace('_', ' ').toUpperCase()}`,
       html: `
-        <div style="font-family: sans-serif; border: 2px solid #ef4444; padding: 20px; border-radius: 10px; max-width: 600px;">
+        <div style="font-family: sans-serif; border: 2px solid #ef4444; padding: 20px; border-radius: 10px; max-width: 600px; background-color: #ffffff;">
           <h2 style="color: #ef4444; margin-top: 0;">Detección de Riesgo Crítico</h2>
-          <p style="font-size: 16px;">Se ha detectado una situación de peligro en el dispositivo de monitoreo.</p>
+          <p style="font-size: 16px; color: #111827;">Se ha detectado una situación de peligro en el dispositivo de monitoreo.</p>
           <div style="background: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
             <p><strong>Categoría:</strong> ${alert.category}</p>
             <p><strong>Aplicación:</strong> ${alert.source_app}</p>
@@ -122,12 +127,10 @@ async function sendEmailNotification(alert) {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log("[EMAIL] ÉXITO: Correo enviado. ID:", info.messageId);
+    console.log("[EMAIL] ÉXITO TOTAL: Correo enviado. ID:", info.messageId);
   } catch (err) {
-    console.error("[EMAIL] ERROR FINAL:", err.message);
-    if (err.message.includes("Invalid login") || err.message.includes("auth")) {
-      console.error("[EMAIL] RECOMENDACIÓN: Verifica tu App Password en Google. No debe tener espacios.");
-    }
+    console.error("[EMAIL] FALLO EN EL ENVÍO:", err.message);
+    console.error("[EMAIL] DETALLE TÉCNICO:", err.code || "Sin código");
   }
 }
 
