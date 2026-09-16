@@ -3096,6 +3096,7 @@ id bounce
 id btn_continue
 id btn_copy
 id btn_disable
+id btn_test
 id buttonPanel
 id cancel_button
 id cb_consent

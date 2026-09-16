@@ -32,26 +32,21 @@ class NotificationCaptureService : NotificationListenerService() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.d(TAG, "SERVICIO CREADO (onCreate)")
+        Log.d(TAG, "== SERVICIO CREADO ==")
+        mainHandler.post {
+            Toast.makeText(applicationContext, "Monitoreo: Iniciando servicio...", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onListenerConnected() {
         super.onListenerConnected()
-        Log.d(TAG, "Servicio de captura conectado y escuchando...")
+        Log.d(TAG, "== ESCUCHANDO NOTIFICACIONES ==")
 
         val prefs = getSharedPreferences("consent", MODE_PRIVATE)
         val consentGiven = prefs.getBoolean("consent_given", false)
-        Log.d(TAG, "Estado del consentimiento: $consentGiven")
-
-        // Señal visual de que el servicio arrancó
+        
         mainHandler.post {
-            val status = if (consentGiven) "ACTIVO" else "INACTIVO (Falta Consentimiento)"
-            Toast.makeText(applicationContext, "Monitoreo Familiar: $status", Toast.LENGTH_SHORT).show()
-        }
-
-        if (!consentGiven) {
-            Log.w(TAG, "Consentimiento no detectado, desconectando servicio.")
-            requestUnbind()
+            Toast.makeText(applicationContext, "Monitoreo Familiar: CONECTADO", Toast.LENGTH_SHORT).show()
         }
     }
 

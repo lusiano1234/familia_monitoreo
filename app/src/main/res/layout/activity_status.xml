@@ -47,6 +47,14 @@
         android:textSize="12sp" />
 
     <Button
+        android:id="@+id/btn_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#4f46e5"
+        android:text="ENVIAR ALERTA DE PRUEBA" />
+
+    <Button
         android:id="@+id/btn_disable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

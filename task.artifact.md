@@ -1,9 +1,9 @@
-# Tareas: Diagnóstico de Actualización Real-Time
+# Tareas: Solución de Silencio en el Servicio
 
-- [x] Añadir avisos visuales (Toasts) en `NotificationCaptureService.kt`
-- [x] Mejorar logs de red en `AlertUploader.kt`
-- [x] Habilitar logs de intentos de dispositivos en el backend
-- [/] Verificación
-    - [ ] Desplegar app actualizada
-    - [ ] Realizar prueba de envío (WhatsApp: "borra los mensajes")
-    - [ ] Observar pantalla del teléfono y logs de Render
+- [x] Añadir avisos visuales (Toasts)
+- [x] Mejorar logs de red
+- [ ] Forzar ejecución del servicio (Remover bloqueos de consentimiento temporales)
+- [ ] Restaurar permisos en `AndroidManifest.xml` (`READ_CONTACTS`)
+- [ ] Verificación final
+    - [ ] Confirmar aparición de Toast "Monitoreo Familiar: ACTIVO"
+    - [ ] Confirmar envío de alerta

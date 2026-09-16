@@ -9,12 +9,17 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * Accesible en cualquier momento desde el ícono de la app o la notificación
  * persistente. Muestra el estado real y permite desactivar el monitoreo.
  */
 class StatusActivity : AppCompatActivity() {
+
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,9 +29,7 @@ class StatusActivity : AppCompatActivity() {
         val given = prefs.getBoolean("consent_given", false)
 
         findViewById<TextView>(R.id.tv_status).text = if (given) {
-            "Monitoreo ACTIVO. Se están revisando notificaciones de apps de " +
-            "mensajería en busca de señales de riesgo (extorsión, amenazas, " +
-            "pedidos sospechosos)."
+            "Monitoreo ACTIVO."
         } else {
             "Monitoreo INACTIVO."
         }
@@ -41,7 +44,21 @@ class StatusActivity : AppCompatActivity() {
             val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("Device Token", token)
             clipboard.setPrimaryClip(clip)
-            Toast.makeText(this, "Token copiado al portapapeles", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Token copiado", Toast.LENGTH_SHORT).show()
+        }
+
+        findViewById<Button>(R.id.btn_test).setOnClickListener {
+            Toast.makeText(this, "Enviando prueba...", Toast.LENGTH_SHORT).show()
+            scope.launch {
+                AlertUploader.sendAlert(
+                    context = applicationContext,
+                    sourceApp = "com.familia.monitor.test",
+                    category = "prueba_manual",
+                    level = "LOW",
+                    fragment = "Esta es una alerta de prueba manual desde el dispositivo.",
+                    timestamp = System.currentTimeMillis()
+                )
+            }
         }
 
         findViewById<Button>(R.id.btn_disable).setOnClickListener {

@@ -3095,6 +3095,7 @@ int id bounce 0x7f080057
 int id btn_continue 0x7f080058
 int id btn_copy 0x7f080059
 int id btn_disable 0x7f08005a
+int id btn_test 0x7f0801cd
 int id buttonPanel 0x7f08005b
 int id cancel_button 0x7f08005c
 int id cb_consent 0x7f08005d
