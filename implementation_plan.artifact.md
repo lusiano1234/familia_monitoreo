@@ -1,39 +1,34 @@
-# Plan de Implementación: Gestión y Limpieza de Dispositivos Enlazados
+# Plan de Reparación: Desbloqueo del Panel Administrativo
 
-Este plan introduce la funcionalidad necesaria para gestionar la lista de dispositivos vinculados, permitiendo eliminar dispositivos individuales o limpiar la lista completa desde el panel administrativo.
+Este plan corrige de forma definitiva el problema técnico que impide presionar el botón de acceso al panel web, añadiendo además mejoras de usabilidad y diagnóstico.
+
+## Diagnóstico
+Aunque el código parece correcto, el síntoma de "no poder presionar el botón" suele indicar un error de JavaScript que detiene la ejecución antes de que el usuario interactúe, o una falla silenciosa en la red (CORS o Mixed Content) que no muestra avisos.
 
 ## Objetivos
-1.  **Eliminación Individual**: Permitir a los padres desvincular un teléfono específico si ya no se desea monitorear.
-2.  **Limpieza Total**: Opción para borrar todos los tokens generados y empezar de cero.
-3.  **Seguridad**: Asegurar que solo el administrador autenticado pueda realizar estas acciones.
-4.  **Actualización de UI**: Añadir botones de "Eliminar" en la sección de dispositivos del panel web.
+1.  **Restaurar el Botón de Acceso**: Asegurar que la función `login()` se ejecute sin errores.
+2.  **Soporte de Tecla ENTER**: Permitir que el usuario ingrese presionando la tecla Enter en lugar de solo hacer clic.
+3.  **Diagnóstico Visible**: Mostrar mensajes de error detallados si la conexión con Render falla (ej: "Error de red", "Servidor no responde").
+4.  **Estado de Carga**: Cambiar el texto del botón a "Verificando..." para que el usuario sepa que la petición está en curso.
 
 ## Cambios Propuestos
 
-### 1. Backend (Node.js)
-
-#### [MODIFY] [deviceController.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/controllers/deviceController.js)
-- Añadir función `deleteDevice(token)`: Elimina un dispositivo específico de la base de datos.
-- Añadir función `deleteAllDevices()`: Limpia toda la tabla de dispositivos.
-
-#### [MODIFY] [server.js](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/src/server.js)
-- Registrar nuevas rutas:
-    - `DELETE /api/devices/:token` (Individual)
-    - `DELETE /api/devices` (Masivo)
-- Ambas protegidas por el middleware `requireAdminAuth`.
-
-### 2. Frontend (Panel Web)
+### 1. Frontend (Panel Web)
 
 #### [MODIFY] [index.html](file:///C:/Users/LENOVO SERIES PRO/Desktop/android/android/family-monitor-backend/public/index.html)
-- Actualizar la función `loadDevices()` para incluir un botón de "Eliminar" (🗑️) al lado de cada token.
-- Añadir un botón general de "Limpiar Todos los Dispositivos" en la sección de gestión.
-- Implementar las llamadas a la API correspondientes con confirmación previa.
+- Reemplazar el contenedor de login por un elemento `<form>` para soporte nativo de teclado.
+- Envolver la petición `fetch` en un bloque `try/catch` robusto.
+- Añadir un indicador visual de carga en el botón.
+- Asegurar que no existan funciones duplicadas o etiquetas mal cerradas.
+
+### 2. Backend (Opcional/Seguridad)
+- No se requieren cambios en el servidor, ya que el problema es de interfaz.
 
 ## Plan de Verificación
-1.  **Prueba de Desvinculación**: Borrar un dispositivo del panel y verificar que la app Android correspondiente recibe un error "401 No autorizado" al intentar enviar alertas.
-2.  **Prueba de Limpieza**: Usar la opción masiva y confirmar que la lista de dispositivos queda vacía.
-3.  **Persistencia**: Verificar que las alertas existentes no se borren (ya que están asociadas al token pero no dependen de la existencia del dispositivo en la tabla `devices` para su lectura histórica, aunque se recomienda limpiar alertas antes si se desea un borrado total).
+1. **Acceso**: Ingresar la clave y pulsar ENTER. El panel debe cargar.
+2. **Error**: Ingresar una clave incorrecta y verificar que aparece el mensaje "Contraseña incorrecta".
+3. **Red**: Si el servidor está caído, verificar que aparece un aviso de "No se pudo conectar con el servidor".
 
 ---
 
-**¿Deseas que proceda con la implementación de la limpieza de dispositivos?**
+**¿Deseas que proceda con esta reparación final de la interfaz para que puedas entrar al panel?**
