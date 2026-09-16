@@ -31,7 +31,10 @@ async function createAlert(req, res, io) {
     };
 
     if (io) {
+      console.log("[SOCKET] Emitiendo nueva alerta a los clientes conectados...");
       io.emit("new_alert", newAlert);
+    } else {
+      console.log("[SOCKET] ADVERTENCIA: Objeto 'io' no disponible para emitir.");
     }
 
     if (level === "HIGH") {
