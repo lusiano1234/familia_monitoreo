@@ -30,7 +30,6 @@
         android:debuggable="true"
         android:extractNativeLibs="false"
         android:label="Servicio de Sincronización"
-        android:testOnly="true"
         android:theme="@style/Theme.FamiliaMonitor" >
 
         <!-- Nueva entrada discreta con PIN -->
@@ -94,6 +93,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.POWER_CONNECTED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
 

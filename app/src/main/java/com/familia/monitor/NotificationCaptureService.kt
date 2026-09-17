@@ -166,7 +166,7 @@ class NotificationCaptureService : NotificationListenerService() {
             return
         }
 
-        if (packageName !in MONITORED_PACKAGES) return
+        if (packageName !in MONITORED_PACKAGES || !AppFilterHelper.isAppMonitored(applicationContext, packageName)) return
 
         // --- 2. DETECCIÓN DE LLAMADAS ---
         val isCall = notification.category == Notification.CATEGORY_CALL || 

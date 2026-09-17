@@ -1,7 +1,7 @@
 [
     {
-        "merged": "com.familia.monitor.app-debug-38:/xml_accessibility_service_config.xml.flat",
-        "source": "com.familia.monitor.app-main-40:/xml/accessibility_service_config.xml"
+        "merged": "com.familia.monitor.app-debug-38:/layout_activity_status.xml.flat",
+        "source": "com.familia.monitor.app-main-40:/layout/activity_status.xml"
     },
     {
         "merged": "C:\\Users\\LENOVO SERIES PRO\\.gradle\\daemon\\9.3.0\\com.familia.monitor.app-debug-38:\\layout_activity_chat_log.xml.flat",

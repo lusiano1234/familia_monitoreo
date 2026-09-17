@@ -1,78 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="32dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Monitoreo Familiar"
-            android:textSize="22sp"
-            android:textStyle="bold"
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_menu_myplaces"
+            app:tint="#4F46E5"
             android:layout_marginBottom="16dp" />
 
         <TextView
-            android:id="@+id/tv_explanation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:lineSpacingExtra="4dp" />
+            android:text="Bienvenido a Monitoreo Familiar"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#111827"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Configuración de Enlace:"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp" />
-
-        <EditText
-            android:id="@+id/et_token"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Ingresa el token del sitio web"
-            android:inputType="textNoSuggestions"
-            android:maxLines="1"
-            android:background="@android:drawable/edit_text"
-            android:padding="12dp" />
+            android:text="Configura el dispositivo para proteger a tu familia"
+            android:textSize="14sp"
+            android:textColor="#6B7280"
+            android:gravity="center"
+            android:layout_marginBottom="32dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Contraseña Administrativa (Panel):"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
-
-        <EditText
-            android:id="@+id/et_admin_password"
+        <!-- Puntos clave del servicio -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Usa la misma que en el panel web"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:background="@android:drawable/edit_text"
-            android:padding="12dp" />
+            android:orientation="vertical"
+            android:background="#F9FAFB"
+            android:padding="16dp"
+            android:layout_marginBottom="32dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Detecta señales de riesgo (acoso, extorsión)"
+                android:textSize="14sp"
+                android:textColor="#374151"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Analiza solo fragmentos sospechosos"
+                android:textSize="14sp"
+                android:textColor="#374151"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Privacidad: NO graba conversaciones completas"
+                android:textSize="14sp"
+                android:textColor="#374151" />
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_token"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Token del Panel Web"
+                android:inputType="textNoSuggestions" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_admin_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contraseña Administrativa"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <CheckBox
             android:id="@+id/cb_consent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Entiendo qué hace esta app y acepto activarla" />
+            android:text="Acepto los términos y el inicio del servicio"
+            android:textSize="14sp"
+            android:textColor="#374151"
+            android:layout_marginBottom="32dp" />
 
         <Button
             android:id="@+id/btn_continue"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Continuar y activar acceso a notificaciones" />
+            android:layout_height="60dp"
+            android:text="ACTIVAR PROTECCIÓN"
+            android:backgroundTint="#4F46E5"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 </ScrollView>

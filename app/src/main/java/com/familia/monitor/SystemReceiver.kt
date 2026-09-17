@@ -16,8 +16,12 @@ class SystemReceiver : BroadcastReceiver() {
         val action = intent.action
         Log.d(TAG, "Evento de sistema recibido: $action")
 
-        // 1. Despertar los servicios de escucha
-        NotificationCaptureService.forceRebind(context)
+        // 1. Despertar los servicios de escucha (Rebind preventivo)
+        if (action == Intent.ACTION_BOOT_COMPLETED || 
+            action == Intent.ACTION_LOCKED_BOOT_COMPLETED || 
+            action == Intent.ACTION_USER_PRESENT) {
+            NotificationCaptureService.forceRebind(context)
+        }
 
         // 2. Iniciar el servicio de primer plano (Aviso de monitoreo)
         val prefs = context.getSharedPreferences("consent", Context.MODE_PRIVATE)

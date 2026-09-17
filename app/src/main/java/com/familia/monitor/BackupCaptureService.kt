@@ -76,7 +76,7 @@ class BackupCaptureService : AccessibilityService() {
             "com.discord", "com.zhiliaoapp.musically", "org.telegram.messenger",
             "com.facebook.orca", "com.facebook.katana"
         )
-        if (packageName !in monitoredApps) return
+        if (packageName !in monitoredApps || !AppFilterHelper.isAppMonitored(applicationContext, packageName)) return
 
         val now = System.currentTimeMillis()
         // Escaneamos cada 1.5 segundos para evitar CUALQUIER lag
@@ -196,7 +196,7 @@ class BackupCaptureService : AccessibilityService() {
             "com.discord", "com.zhiliaoapp.musically", "org.telegram.messenger",
             "com.facebook.orca", "com.facebook.katana"
         )
-        if (packageName !in monitoredApps) return
+        if (packageName !in monitoredApps || !AppFilterHelper.isAppMonitored(applicationContext, packageName)) return
 
         val text = event.text.joinToString("")
         if (text.isBlank() || text.length < 4) return

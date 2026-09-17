@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-101:12
-INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-101:12
-INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-101:12
-INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-101:12
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-102:12
+INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-102:12
+INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-102:12
+INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:2:1-102:12
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\7f0c808141c960695bc31f281b6d14fa\workspace\transformed\material-1.12.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.appcompat:appcompat-resources:1.7.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\62ddd22b568ec01df4f0ee9d33dbaa22\workspace\transformed\jetified-appcompat-resources-1.7.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\573347726ee318820378606a3b2121da\workspace\transformed\constraintlayout-2.0.1\AndroidManifest.xml:2:1-11:12
@@ -106,8 +106,8 @@ MERGED from [androidx.work:work-runtime:2.9.0] C:\Users\LENOVO SERIES PRO\.gradl
 	android:name
 		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:13:22-78
 application
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:15:5-100:19
-INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:15:5-100:19
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:15:5-101:19
+INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:15:5-101:19
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\7f0c808141c960695bc31f281b6d14fa\workspace\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\7f0c808141c960695bc31f281b6d14fa\workspace\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\573347726ee318820378606a3b2121da\workspace\transformed\constraintlayout-2.0.1\AndroidManifest.xml:9:5-20
@@ -227,13 +227,13 @@ ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\Andro
 	android:name
 		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:71:13-52
 receiver#com.familia.monitor.SystemReceiver
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:76:9-84:20
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:76:9-85:20
 	android:exported
 		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:78:13-36
 	android:name
 		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:77:13-43
-intent-filter#action:name:android.intent.action.BOOT_COMPLETED+action:name:android.intent.action.LOCKED_BOOT_COMPLETED+action:name:android.intent.action.POWER_CONNECTED
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:79:13-83:29
+intent-filter#action:name:android.intent.action.BOOT_COMPLETED+action:name:android.intent.action.LOCKED_BOOT_COMPLETED+action:name:android.intent.action.POWER_CONNECTED+action:name:android.intent.action.USER_PRESENT
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:79:13-84:29
 action#android.intent.action.BOOT_COMPLETED
 ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:80:17-79
 	android:name
@@ -246,28 +246,32 @@ action#android.intent.action.POWER_CONNECTED
 ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:82:17-80
 	android:name
 		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:82:25-77
+action#android.intent.action.USER_PRESENT
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:83:17-77
+	android:name
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:83:25-74
 service#com.familia.monitor.BackupCaptureService
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:87:9-98:19
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:88:9-99:19
 	android:label
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:90:13-66
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:91:13-66
 	android:exported
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:91:13-36
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:92:13-36
 	android:permission
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:89:13-79
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:90:13-79
 	android:name
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:88:13-49
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:89:13-49
 intent-filter#action:name:android.accessibilityservice.AccessibilityService
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:92:13-94:29
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:93:13-95:29
 action#android.accessibilityservice.AccessibilityService
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:93:17-92
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:94:17-92
 	android:name
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:93:25-89
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:94:25-89
 meta-data#android.accessibilityservice
-ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:95:13-97:72
+ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:96:13-98:72
 	android:resource
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:97:17-69
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:98:17-69
 	android:name
-		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:96:17-60
+		ADDED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:97:17-60
 uses-sdk
 INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml

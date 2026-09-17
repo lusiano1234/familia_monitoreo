@@ -48,7 +48,7 @@
 25-->[androidx.core:core:1.13.1] C:\Users\LENOVO SERIES PRO\.gradle\caches\9.3.0\transforms\d045ecc5e4c578e5e4fc88b617fd7f04\workspace\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
 26
 27    <application
-27-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:15:5-100:19
+27-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:15:5-101:19
 28        android:allowBackup="false"
 28-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:17:9-36
 29        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -57,152 +57,154 @@
 31        android:extractNativeLibs="false"
 32        android:label="Servicio de Sincronización"
 32-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:16:9-51
-33        android:testOnly="true"
-34        android:theme="@style/Theme.FamiliaMonitor" >
-34-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:18:9-52
-35
-36        <!-- Nueva entrada discreta con PIN -->
-37        <activity
-37-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:21:9-29:20
-38            android:name="com.familia.monitor.PinActivity"
-38-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:22:13-40
-39            android:exported="true"
-39-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:23:13-36
-40            android:label="Ajustes de Sincronización" >
-40-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:24:13-54
-41            <intent-filter>
-41-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:25:13-28:29
-42                <action android:name="android.intent.action.MAIN" />
-42-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:26:17-69
-42-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:26:25-66
-43
-44                <category android:name="android.intent.category.LAUNCHER" />
-44-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:27:17-77
-44-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:27:27-74
-45            </intent-filter>
-46        </activity>
-47        <activity
-47-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:31:9-34:57
-48            android:name="com.familia.monitor.ConsentActivity"
-48-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:32:13-44
-49            android:exported="false"
-49-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:33:13-37
-50            android:label="Configuración de Servicio" />
-50-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:34:13-54
-51        <activity
-51-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:36:9-39:56
-52            android:name="com.familia.monitor.StatusActivity"
-52-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:37:13-43
-53            android:exported="false"
-53-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:38:13-37
-54            android:label="Estado de Sincronización" />
-54-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:39:13-53
-55        <activity
-55-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:41:9-44:51
-56            android:name="com.familia.monitor.ChatLogActivity"
-56-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:42:13-44
-57            android:exported="false"
-57-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:43:13-37
-58            android:label="Mensajes Capturados" />
-58-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:44:13-48
-59
-60        <!-- Receptor de Administrador para bloqueo de desinstalación -->
-61        <receiver
-61-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:47:9-57:20
-62            android:name="com.familia.monitor.AdminReceiver"
-62-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:48:13-42
-63            android:exported="true"
-63-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:50:13-36
-64            android:permission="android.permission.BIND_DEVICE_ADMIN" >
-64-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:49:13-70
-65            <meta-data
-65-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:51:13-53:56
-66                android:name="android.app.device_admin"
-66-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:52:17-56
-67                android:resource="@xml/device_admin" />
-67-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:53:17-53
-68
-69            <intent-filter>
-69-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:54:13-56:29
-70                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-70-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:55:17-82
-70-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:55:25-79
-71            </intent-filter>
-72        </receiver>
-73
-74        <!-- Requiere que el usuario active manualmente el acceso a notificaciones -->
-75        <service
-75-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:60:9-68:19
-76            android:name="com.familia.monitor.NotificationCaptureService"
-76-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:61:13-55
-77            android:exported="true"
-77-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:62:13-36
-78            android:label="Servicio de Sincronización"
-78-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:64:13-55
-79            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
-79-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:63:13-87
-80            <intent-filter>
-80-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:65:13-67:29
-81                <action android:name="android.service.notification.NotificationListenerService" />
-81-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:66:17-99
-81-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:66:25-96
-82            </intent-filter>
-83        </service>
-84        <service
-84-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:70:9-74:56
-85            android:name="com.familia.monitor.ForegroundStatusService"
-85-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:71:13-52
-86            android:exported="false"
-86-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:72:13-37
-87            android:foregroundServiceType="dataSync"
-87-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:74:13-53
-88            android:label="Servicio de Sincronización" />
-88-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:73:13-55
-89
-90        <receiver
-90-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:76:9-84:20
-91            android:name="com.familia.monitor.SystemReceiver"
-91-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:77:13-43
-92            android:exported="true" >
-92-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:78:13-36
-93            <intent-filter>
-93-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:79:13-83:29
-94                <action android:name="android.intent.action.BOOT_COMPLETED" />
-94-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:80:17-79
-94-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:80:25-76
-95                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
-95-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:81:17-86
-95-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:81:25-83
-96                <action android:name="android.intent.action.POWER_CONNECTED" />
-96-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:82:17-80
-96-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:82:25-77
+33        android:theme="@style/Theme.FamiliaMonitor" >
+33-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:18:9-52
+34
+35        <!-- Nueva entrada discreta con PIN -->
+36        <activity
+36-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:21:9-29:20
+37            android:name="com.familia.monitor.PinActivity"
+37-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:22:13-40
+38            android:exported="true"
+38-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:23:13-36
+39            android:label="Ajustes de Sincronización" >
+39-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:24:13-54
+40            <intent-filter>
+40-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:25:13-28:29
+41                <action android:name="android.intent.action.MAIN" />
+41-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:26:17-69
+41-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:26:25-66
+42
+43                <category android:name="android.intent.category.LAUNCHER" />
+43-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:27:17-77
+43-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:27:27-74
+44            </intent-filter>
+45        </activity>
+46        <activity
+46-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:31:9-34:57
+47            android:name="com.familia.monitor.ConsentActivity"
+47-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:32:13-44
+48            android:exported="false"
+48-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:33:13-37
+49            android:label="Configuración de Servicio" />
+49-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:34:13-54
+50        <activity
+50-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:36:9-39:56
+51            android:name="com.familia.monitor.StatusActivity"
+51-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:37:13-43
+52            android:exported="false"
+52-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:38:13-37
+53            android:label="Estado de Sincronización" />
+53-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:39:13-53
+54        <activity
+54-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:41:9-44:51
+55            android:name="com.familia.monitor.ChatLogActivity"
+55-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:42:13-44
+56            android:exported="false"
+56-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:43:13-37
+57            android:label="Mensajes Capturados" />
+57-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:44:13-48
+58
+59        <!-- Receptor de Administrador para bloqueo de desinstalación -->
+60        <receiver
+60-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:47:9-57:20
+61            android:name="com.familia.monitor.AdminReceiver"
+61-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:48:13-42
+62            android:exported="true"
+62-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:50:13-36
+63            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+63-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:49:13-70
+64            <meta-data
+64-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:51:13-53:56
+65                android:name="android.app.device_admin"
+65-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:52:17-56
+66                android:resource="@xml/device_admin" />
+66-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:53:17-53
+67
+68            <intent-filter>
+68-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:54:13-56:29
+69                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+69-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:55:17-82
+69-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:55:25-79
+70            </intent-filter>
+71        </receiver>
+72
+73        <!-- Requiere que el usuario active manualmente el acceso a notificaciones -->
+74        <service
+74-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:60:9-68:19
+75            android:name="com.familia.monitor.NotificationCaptureService"
+75-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:61:13-55
+76            android:exported="true"
+76-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:62:13-36
+77            android:label="Servicio de Sincronización"
+77-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:64:13-55
+78            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
+78-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:63:13-87
+79            <intent-filter>
+79-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:65:13-67:29
+80                <action android:name="android.service.notification.NotificationListenerService" />
+80-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:66:17-99
+80-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:66:25-96
+81            </intent-filter>
+82        </service>
+83        <service
+83-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:70:9-74:56
+84            android:name="com.familia.monitor.ForegroundStatusService"
+84-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:71:13-52
+85            android:exported="false"
+85-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:72:13-37
+86            android:foregroundServiceType="dataSync"
+86-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:74:13-53
+87            android:label="Servicio de Sincronización" />
+87-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:73:13-55
+88
+89        <receiver
+89-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:76:9-85:20
+90            android:name="com.familia.monitor.SystemReceiver"
+90-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:77:13-43
+91            android:exported="true" >
+91-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:78:13-36
+92            <intent-filter>
+92-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:79:13-84:29
+93                <action android:name="android.intent.action.BOOT_COMPLETED" />
+93-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:80:17-79
+93-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:80:25-76
+94                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+94-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:81:17-86
+94-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:81:25-83
+95                <action android:name="android.intent.action.POWER_CONNECTED" />
+95-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:82:17-80
+95-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:82:25-77
+96                <action android:name="android.intent.action.USER_PRESENT" />
+96-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:83:17-77
+96-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:83:25-74
 97            </intent-filter>
 98        </receiver>
 99
 100        <!-- Lector de Respaldo vía Accesibilidad -->
 101        <service
-101-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:87:9-98:19
+101-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:88:9-99:19
 102            android:name="com.familia.monitor.BackupCaptureService"
-102-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:88:13-49
+102-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:89:13-49
 103            android:exported="true"
-103-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:91:13-36
+103-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:92:13-36
 104            android:label="Servicio de Sincronización (Respaldo)"
-104-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:90:13-66
+104-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:91:13-66
 105            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
-105-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:89:13-79
+105-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:90:13-79
 106            <intent-filter>
-106-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:92:13-94:29
+106-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:93:13-95:29
 107                <action android:name="android.accessibilityservice.AccessibilityService" />
-107-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:93:17-92
-107-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:93:25-89
+107-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:94:17-92
+107-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:94:25-89
 108            </intent-filter>
 109
 110            <meta-data
-110-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:95:13-97:72
+110-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:96:13-98:72
 111                android:name="android.accessibilityservice"
-111-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:96:17-60
+111-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:97:17-60
 112                android:resource="@xml/accessibility_service_config" />
-112-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:97:17-69
+112-->C:\Users\LENOVO SERIES PRO\Desktop\android\android\app\src\main\AndroidManifest.xml:98:17-69
 113        </service>
 114
 115        <provider

